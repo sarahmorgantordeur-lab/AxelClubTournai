@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paiements de {{ user.first_name }} {{ user.last_name }} - Axel Club</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .payment-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: var(--space-md);
+        }
+        .payment-table th, .payment-table td {
+            padding: 12px 16px;
+            text-align: center;
+            border-bottom: 1px solid var(--silver-light);
+        }
+        .payment-table th {
+            background: var(--ice-light);
+            color: var(--ice-deep);
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .payment-table th:first-child, .payment-table td:first-child {
+            text-align: left;
+        }
+        .payment-table tr:hover {
+            background: var(--pearl);
+        }
+        .payment-table input[type="number"] {
+            width: 100px;
+            padding: 6px 8px;
+            border: 1px solid var(--silver-light);
+            border-radius: var(--radius-sm);
+            text-align: right;
+            font-size: 0.9rem;
+        }
+        .payment-table input[type="number"]:focus {
+            outline: none;
+            border-color: var(--ice-deep);
+            box-shadow: 0 0 0 2px rgba(100, 180, 220, 0.2);
+        }
+        .payment-table .total-row {
+            background: var(--ice-light);
+            font-weight: 700;
+        }
+        .payment-table .total-row td {
+            border-top: 2px solid var(--ice-deep);
+        }
+        .reste-positif { color: var(--danger); font-weight: 600; }
+        .reste-zero { color: var(--success); font-weight: 600; }
+        .user-header {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            margin-bottom: var(--space-lg);
+        }
+        .user-header .avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--ice-medium), var(--ice-deep));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body class="admin-layout">
+    <nav class="navbar">
+        <div class="container">
+            <h1 class="logo">Axel Club</h1>
+            <ul class="nav-links">
+                <li><a href="{{ url_for('admin.dashboard') }}">Tableau de Bord</a></li>
+                <li><a href="{{ url_for('admin.users') }}">Membres</a></li>
+                <li><a href="{{ url_for('admin.groups') }}">Groupes</a></li>
+                <li><a href="{{ url_for('admin.registrations') }}">Réinscriptions</a></li>
+                <li><a href="{{ url_for('admin.attendance') }}">Présences</a></li>
+                <li><a href="{{ url_for('admin.payments') }}">Paiements</a></li>
+                <li><a href="{{ url_for('admin.reports') }}">Rapports</a></li>
+                <li><a href="{{ url_for('admin.send_email') }}">Email</a></li>
+                <li><a href="{{ url_for('admin.database_table') }}" class="active">Base de données</a></li>
+                <li><a href="{{ url_for('main.dashboard') }}" class="btn btn-outline btn-sm">← Retour</a></li>
+                <li><a href="{{ url_for('auth.logout') }}" class="active">Déconnexion</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container admin-container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="user-header">
+            <div class="avatar">{{ user.first_name[0] }}{{ user.last_name[0] }}</div>
+            <div>
+                <h2 style="margin: 0;">Paiements de {{ user.first_name }} {{ user.last_name }}</h2>
+                <p style="color: var(--text-light); margin: 4px 0 0;">
+                    {{ user.get_role_display() }}
+                    {% if user.group %} — Groupe {{ user.group.name }}{% endif %}
+                    — Saison {{ current_year }}
+                </p>
+            </div>
+        </div>
+
+        <div class="info-card">
+            <div class="info-card-header">
+                <h3>Détail des paiements — Saison {{ current_year }}</h3>
+            </div>
+            <div class="info-card-body">
+                <form method="POST" action="{{ url_for('admin.update_user_payments', user_id=user.id) }}">
+                    <div style="overflow-x: auto;">
+                        <table class="payment-table">
+                            <thead>
+                                <tr>
+                                    <th>Catégorie</th>
+                                    <th>Montant dû (€)</th>
+                                    <th>Montant payé (€)</th>
+                                    <th>Reste à payer (€)</th>
+                                    <th>Statut</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Licence et assurance</strong></td>
+                                    <td><input type="number" name="licence_due" value="{{ payment.licence_due or 0 }}" step="0.01" min="0"></td>
+                                    <td><input type="number" name="licence_paid" value="{{ payment.licence_paid or 0 }}" step="0.01" min="0"></td>
+                                    <td class="reste" data-due="licence_due" data-paid="licence_paid">{{ '%.2f'|format((payment.licence_due or 0) - (payment.licence_paid or 0)) }}</td>
+                                    <td>
+                                        {% set reste = (payment.licence_due or 0) - (payment.licence_paid or 0) %}
+                                        <span class="badge {% if reste <= 0 %}badge-success{% elif reste < (payment.licence_due or 0) %}badge-warning{% else %}badge-danger{% endif %}">
+                                            {% if reste <= 0 %}Payé{% elif reste < (payment.licence_due or 0) %}Partiel{% else %}Non payé{% endif %}
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Saison Tournai</strong></td>
+                                    <td><input type="number" name="saison_tournai_due" value="{{ payment.saison_tournai_due or 0 }}" step="0.01" min="0"></td>
+                                    <td><input type="number" name="saison_tournai_paid" value="{{ payment.saison_tournai_paid or 0 }}" step="0.01" min="0"></td>
+                                    <td class="reste" data-due="saison_tournai_due" data-paid="saison_tournai_paid">{{ '%.2f'|format((payment.saison_tournai_due or 0) - (payment.saison_tournai_paid or 0)) }}</td>
+                                    <td>
+                                        {% set reste = (payment.saison_tournai_due or 0) - (payment.saison_tournai_paid or 0) %}
+                                        <span class="badge {% if reste <= 0 %}badge-success{% elif reste < (payment.saison_tournai_due or 0) %}badge-warning{% else %}badge-danger{% endif %}">
+                                            {% if reste <= 0 %}Payé{% elif reste < (payment.saison_tournai_due or 0) %}Partiel{% else %}Non payé{% endif %}
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Wasquehal P1</strong></td>
+                                    <td><input type="number" name="wasquehal_p1_due" value="{{ payment.wasquehal_p1_due or 0 }}" step="0.01" min="0"></td>
+                                    <td><input type="number" name="wasquehal_p1_paid" value="{{ payment.wasquehal_p1_paid or 0 }}" step="0.01" min="0"></td>
+                                    <td class="reste" data-due="wasquehal_p1_due" data-paid="wasquehal_p1_paid">{{ '%.2f'|format((payment.wasquehal_p1_due or 0) - (payment.wasquehal_p1_paid or 0)) }}</td>
+                                    <td>
+                                        {% set reste = (payment.wasquehal_p1_due or 0) - (payment.wasquehal_p1_paid or 0) %}
+                                        <span class="badge {% if reste <= 0 %}badge-success{% elif reste < (payment.wasquehal_p1_due or 0) %}badge-warning{% else %}badge-danger{% endif %}">
+                                            {% if reste <= 0 %}Payé{% elif reste < (payment.wasquehal_p1_due or 0) %}Partiel{% else %}Non payé{% endif %}
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Wasquehal P2</strong></td>
+                                    <td><input type="number" name="wasquehal_p2_due" value="{{ payment.wasquehal_p2_due or 0 }}" step="0.01" min="0"></td>
+                                    <td><input type="number" name="wasquehal_p2_paid" value="{{ payment.wasquehal_p2_paid or 0 }}" step="0.01" min="0"></td>
+                                    <td class="reste" data-due="wasquehal_p2_due" data-paid="wasquehal_p2_paid">{{ '%.2f'|format((payment.wasquehal_p2_due or 0) - (payment.wasquehal_p2_paid or 0)) }}</td>
+                                    <td>
+                                        {% set reste = (payment.wasquehal_p2_due or 0) - (payment.wasquehal_p2_paid or 0) %}
+                                        <span class="badge {% if reste <= 0 %}badge-success{% elif reste < (payment.wasquehal_p2_due or 0) %}badge-warning{% else %}badge-danger{% endif %}">
+                                            {% if reste <= 0 %}Payé{% elif reste < (payment.wasquehal_p2_due or 0) %}Partiel{% else %}Non payé{% endif %}
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Compétitions</strong></td>
+                                    <td><input type="number" name="competitions_due" value="{{ payment.competitions_due or 0 }}" step="0.01" min="0"></td>
+                                    <td><input type="number" name="competitions_paid" value="{{ payment.competitions_paid or 0 }}" step="0.01" min="0"></td>
+                                    <td class="reste" data-due="competitions_due" data-paid="competitions_paid">{{ '%.2f'|format((payment.competitions_due or 0) - (payment.competitions_paid or 0)) }}</td>
+                                    <td>
+                                        {% set reste = (payment.competitions_due or 0) - (payment.competitions_paid or 0) %}
+                                        <span class="badge {% if reste <= 0 %}badge-success{% elif reste < (payment.competitions_due or 0) %}badge-warning{% else %}badge-danger{% endif %}">
+                                            {% if reste <= 0 %}Payé{% elif reste < (payment.competitions_due or 0) %}Partiel{% else %}Non payé{% endif %}
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr class="total-row">
+                                    <td><strong>TOTAL</strong></td>
+                                    <td id="total-due"><strong>{{ '%.2f'|format(payment.total_due()) }} €</strong></td>
+                                    <td id="total-paid"><strong>{{ '%.2f'|format(payment.total_paid()) }} €</strong></td>
+                                    <td id="total-reste" class="{% if payment.balance() > 0 %}reste-positif{% else %}reste-zero{% endif %}">
+                                        <strong>{{ '%.2f'|format(payment.balance()) }} €</strong>
+                                    </td>
+                                    <td>
+                                        <span class="badge {% if payment.is_fully_paid() %}badge-success{% elif payment.total_paid() > 0 %}badge-warning{% else %}badge-danger{% endif %}" style="font-size: 0.9rem;">
+                                            {% if payment.is_fully_paid() %}Tout payé{% elif payment.total_paid() > 0 %}En cours{% else %}Non payé{% endif %}
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="form-group" style="margin-top: var(--space-md);">
+                        <label>Notes</label>
+                        <textarea name="notes" rows="3" style="width: 100%; padding: 8px; border: 1px solid var(--silver-light); border-radius: var(--radius-sm);">{{ payment.notes or '' }}</textarea>
+                    </div>
+
+                    <div style="display: flex; gap: var(--space-sm); margin-top: var(--space-md);">
+                        <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
+                        <a href="{{ url_for('admin.users') }}" class="btn btn-secondary">Retour aux membres</a>
+                        <a href="{{ url_for('admin.edit_user', user_id=user.id) }}" class="btn btn-outline">Modifier le profil</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    // Mise à jour dynamique des "reste à payer" et totaux quand on modifie les inputs
+    document.querySelectorAll('.payment-table input[type="number"]').forEach(input => {
+        input.addEventListener('input', updateTotals);
+    });
+
+    function updateTotals() {
+        const categories = ['licence', 'saison_tournai', 'wasquehal_p1', 'wasquehal_p2', 'competitions'];
+        let totalDue = 0, totalPaid = 0;
+
+        categories.forEach(cat => {
+            const due = parseFloat(document.querySelector(`input[name="${cat}_due"]`).value) || 0;
+            const paid = parseFloat(document.querySelector(`input[name="${cat}_paid"]`).value) || 0;
+            const reste = due - paid;
+            totalDue += due;
+            totalPaid += paid;
+
+            // Mettre à jour la cellule reste
+            const row = document.querySelector(`input[name="${cat}_due"]`).closest('tr');
+            const resteCell = row.querySelector('.reste');
+            resteCell.textContent = reste.toFixed(2);
+            resteCell.className = 'reste ' + (reste > 0 ? 'reste-positif' : 'reste-zero');
+
+            // Mettre à jour le badge
+            const badge = row.querySelector('.badge');
+            if (reste <= 0) {
+                badge.textContent = 'Payé';
+                badge.className = 'badge badge-success';
+            } else if (paid > 0) {
+                badge.textContent = 'Partiel';
+                badge.className = 'badge badge-warning';
+            } else {
+                badge.textContent = 'Non payé';
+                badge.className = 'badge badge-danger';
+            }
+        });
+
+        const totalReste = totalDue - totalPaid;
+        document.getElementById('total-due').innerHTML = `<strong>${totalDue.toFixed(2)} €</strong>`;
+        document.getElementById('total-paid').innerHTML = `<strong>${totalPaid.toFixed(2)} €</strong>`;
+
+        const totalResteEl = document.getElementById('total-reste');
+        totalResteEl.innerHTML = `<strong>${totalReste.toFixed(2)} €</strong>`;
+        totalResteEl.className = totalReste > 0 ? 'reste-positif' : 'reste-zero';
+
+        // Badge total
+        const totalBadge = document.querySelector('.total-row .badge');
+        if (totalReste <= 0) {
+            totalBadge.textContent = 'Tout payé';
+            totalBadge.className = 'badge badge-success';
+        } else if (totalPaid > 0) {
+            totalBadge.textContent = 'En cours';
+            totalBadge.className = 'badge badge-warning';
+        } else {
+            totalBadge.textContent = 'Non payé';
+            totalBadge.className = 'badge badge-danger';
+        }
+    }
+    </script>
+</body>
+</html>

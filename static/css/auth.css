@@ -1,0 +1,716 @@
+/* ===========================================
+   AXEL CLUB - Authentication Pages Styles
+   Login, Register, Profile - Elegant ice theme
+   With Sparkle & Rhinestone Effects
+   =========================================== */
+
+/* ===== Auth Container ===== */
+.auth-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-md);
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, var(--ice-light) 0%, var(--pearl) 50%, var(--ice-medium) 100%);
+}
+
+@media (min-width: 768px) {
+    .auth-container {
+        padding: var(--space-lg);
+    }
+}
+
+/* Animated background with ice crystals */
+.auth-container::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background:
+        radial-gradient(circle at 30% 20%, var(--crystal-glow) 0%, transparent 25%),
+        radial-gradient(circle at 70% 80%, rgba(183, 110, 121, 0.15) 0%, transparent 25%),
+        radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.5) 0%, transparent 40%);
+    animation: float 15s ease-in-out infinite;
+}
+
+/* Sparkle particles */
+.auth-container::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image:
+        radial-gradient(circle, var(--gold) 1px, transparent 1px),
+        radial-gradient(circle, rgba(212, 175, 55, 0.4) 1px, transparent 1px),
+        radial-gradient(circle, rgba(183, 110, 121, 0.3) 1px, transparent 1px);
+    background-size: 100px 100px, 60px 60px, 80px 80px;
+    background-position: 0 0, 30px 30px, 15px 45px;
+    opacity: 0.3;
+    pointer-events: none;
+    animation: shimmerWave 20s linear infinite;
+}
+
+/* ===== Auth Box ===== */
+.auth-box {
+    position: relative;
+    z-index: 1;
+    background: var(--crystal-white);
+    padding: var(--space-lg);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-strong);
+    width: 100%;
+    max-width: 400px;
+    border: 1px solid rgba(168, 212, 230, 0.3);
+    animation: fadeIn 0.8s ease-out;
+}
+
+@media (min-width: 576px) {
+    .auth-box {
+        padding: var(--space-xl);
+        max-width: 440px;
+    }
+}
+
+/* Rhinestone top border */
+.auth-box::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background: linear-gradient(90deg, var(--gold), var(--rose-gold), var(--silver), var(--rose-gold), var(--gold));
+    background-size: 200% 100%;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    animation: shimmerWave 3s linear infinite;
+}
+
+/* Corner sparkles */
+.auth-box::after {
+    content: '';
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 8px;
+    height: 8px;
+    background: var(--gold);
+    border-radius: 50%;
+    box-shadow: 0 0 12px var(--gold), 0 0 24px rgba(212, 175, 55, 0.3);
+    animation: twinkle 2s ease-in-out infinite;
+}
+
+/* Logo & Title */
+.auth-box h1 {
+    text-align: center;
+    font-family: var(--font-display);
+    font-size: 1.75rem;
+    background: linear-gradient(135deg, var(--ice-deep) 0%, var(--rose-gold) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: var(--space-xs);
+}
+
+@media (min-width: 576px) {
+    .auth-box h1 {
+        font-size: 2rem;
+    }
+}
+
+.auth-box h2 {
+    text-align: center;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--text-medium);
+    margin-bottom: var(--space-md);
+}
+
+@media (min-width: 576px) {
+    .auth-box h2 {
+        font-size: 1.1rem;
+        margin-bottom: var(--space-lg);
+    }
+}
+
+/* Decorative icon */
+.auth-icon {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto var(--space-sm);
+    background: linear-gradient(135deg, var(--ice-light) 0%, var(--ice-medium) 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.75rem;
+    box-shadow: var(--shadow-soft);
+    position: relative;
+}
+
+@media (min-width: 576px) {
+    .auth-icon {
+        width: 70px;
+        height: 70px;
+        font-size: 2rem;
+        margin-bottom: var(--space-md);
+    }
+}
+
+/* Rhinestone ring around icon */
+.auth-icon::before {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 50%;
+    background: linear-gradient(45deg, var(--gold), var(--silver), var(--rose-gold), var(--gold));
+    background-size: 200% 200%;
+    animation: shimmerWave 2s linear infinite;
+    z-index: -1;
+    opacity: 0.7;
+}
+
+.auth-icon::after {
+    content: '';
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    width: 10px;
+    height: 10px;
+    background: var(--gold);
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--gold);
+    animation: twinkle 1.5s ease-in-out infinite;
+}
+
+/* ===== Form Styling ===== */
+.auth-box .form {
+    gap: var(--space-sm);
+}
+
+@media (min-width: 576px) {
+    .auth-box .form {
+        gap: var(--space-md);
+    }
+}
+
+.auth-box .form-group label {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text-dark);
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+}
+
+@media (min-width: 576px) {
+    .auth-box .form-group label {
+        font-size: 0.9rem;
+    }
+}
+
+.auth-box .form-group input {
+    padding: 12px 16px;
+    border: 2px solid var(--silver-light);
+    border-radius: var(--radius-sm);
+    font-size: 1rem;
+    transition: var(--transition-smooth);
+    background: var(--pearl);
+}
+
+@media (min-width: 576px) {
+    .auth-box .form-group input {
+        padding: 14px 18px;
+    }
+}
+
+.auth-box .form-group input:focus {
+    border-color: var(--ice-dark);
+    background: white;
+    box-shadow: 0 0 0 4px var(--crystal-glow), var(--shadow-sparkle);
+}
+
+.auth-box .form-group input:valid:not(:placeholder-shown) {
+    border-color: var(--success);
+}
+
+/* Password visibility toggle */
+.password-wrapper {
+    position: relative;
+}
+
+.password-wrapper input {
+    padding-right: 45px;
+}
+
+@media (min-width: 576px) {
+    .password-wrapper input {
+        padding-right: 50px;
+    }
+}
+
+.password-toggle {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-light);
+    font-size: 1.1rem;
+    transition: var(--transition-fast);
+}
+
+@media (min-width: 576px) {
+    .password-toggle {
+        right: 15px;
+        font-size: 1.2rem;
+    }
+}
+
+.password-toggle:hover {
+    color: var(--ice-deep);
+}
+
+/* ===== Submit Button ===== */
+.auth-box .btn-primary {
+    width: 100%;
+    padding: 14px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-top: var(--space-xs);
+    background: linear-gradient(135deg, var(--ice-dark) 0%, var(--ice-deep) 100%);
+    border-radius: var(--radius-full);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    position: relative;
+    overflow: hidden;
+}
+
+@media (min-width: 576px) {
+    .auth-box .btn-primary {
+        padding: 16px;
+        font-size: 1rem;
+        letter-spacing: 1px;
+        margin-top: var(--space-sm);
+    }
+}
+
+/* Sparkle effect on button */
+.auth-box .btn-primary::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 6px;
+    height: 6px;
+    background: var(--sparkle);
+    border-radius: 50%;
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0);
+}
+
+.auth-box .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(45, 106, 143, 0.3), var(--shadow-sparkle);
+}
+
+.auth-box .btn-primary:active {
+    transform: translateY(0);
+}
+
+.auth-box .btn-primary:active::after {
+    animation: sparkle 0.6s ease-out;
+}
+
+/* ===== Auth Footer ===== */
+.auth-footer {
+    text-align: center;
+    margin-top: var(--space-md);
+    padding-top: var(--space-sm);
+    border-top: 1px solid var(--silver-light);
+    color: var(--text-medium);
+    font-size: 0.9rem;
+}
+
+@media (min-width: 576px) {
+    .auth-footer {
+        margin-top: var(--space-lg);
+        padding-top: var(--space-md);
+        font-size: 0.95rem;
+    }
+}
+
+.auth-footer a {
+    color: var(--ice-deep);
+    font-weight: 600;
+    position: relative;
+}
+
+.auth-footer a::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--gold), var(--rose-gold));
+    transition: var(--transition-smooth);
+}
+
+.auth-footer a:hover {
+    color: var(--rose-gold);
+}
+
+.auth-footer a:hover::after {
+    width: 100%;
+}
+
+/* ===== Social Login ===== */
+.social-divider {
+    display: flex;
+    align-items: center;
+    margin: var(--space-md) 0;
+    color: var(--text-light);
+    font-size: 0.8rem;
+}
+
+@media (min-width: 576px) {
+    .social-divider {
+        margin: var(--space-lg) 0;
+        font-size: 0.85rem;
+    }
+}
+
+.social-divider::before,
+.social-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--silver-light);
+}
+
+.social-divider span {
+    padding: 0 var(--space-sm);
+}
+
+.social-buttons {
+    display: flex;
+    gap: var(--space-sm);
+}
+
+.social-btn {
+    flex: 1;
+    padding: 10px;
+    border: 2px solid var(--silver-light);
+    border-radius: var(--radius-sm);
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-xs);
+    font-size: 0.85rem;
+    color: var(--text-dark);
+    transition: var(--transition-smooth);
+    cursor: pointer;
+}
+
+@media (min-width: 576px) {
+    .social-btn {
+        padding: 12px;
+        font-size: 0.9rem;
+    }
+}
+
+.social-btn:hover {
+    border-color: var(--ice-medium);
+    background: var(--ice-light);
+    box-shadow: var(--shadow-soft);
+}
+
+/* ===== Remember Me & Forgot Password ===== */
+.form-options {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    margin-top: var(--space-sm);
+    font-size: 0.85rem;
+}
+
+@media (min-width: 576px) {
+    .form-options {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.9rem;
+    }
+}
+
+.remember-me {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    cursor: pointer;
+}
+
+.remember-me input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--ice-deep);
+    cursor: pointer;
+}
+
+@media (min-width: 576px) {
+    .remember-me input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+    }
+}
+
+.forgot-password {
+    color: var(--ice-deep);
+    font-weight: 500;
+}
+
+.forgot-password:hover {
+    color: var(--rose-gold);
+}
+
+/* ===== Profile Page Specific ===== */
+.profile-container {
+    padding: var(--space-md);
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+@media (min-width: 768px) {
+    .profile-container {
+        padding: var(--space-xl) var(--space-md);
+    }
+}
+
+.profile-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-md);
+    margin-bottom: var(--space-lg);
+    padding: var(--space-lg);
+    background: var(--crystal-white);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-soft);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+@media (min-width: 576px) {
+    .profile-header {
+        flex-direction: row;
+        text-align: left;
+        gap: var(--space-lg);
+    }
+}
+
+@media (min-width: 768px) {
+    .profile-header {
+        margin-bottom: var(--space-xl);
+    }
+}
+
+/* Sparkle decoration */
+.profile-header::after {
+    content: '';
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 8px;
+    height: 8px;
+    background: var(--gold);
+    border-radius: 50%;
+    box-shadow: 0 0 12px var(--gold);
+    animation: twinkle 2s ease-in-out infinite;
+}
+
+.profile-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--ice-dark) 0%, var(--ice-deep) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    color: white;
+    font-family: var(--font-display);
+    box-shadow: var(--shadow-glow);
+    position: relative;
+    flex-shrink: 0;
+}
+
+@media (min-width: 576px) {
+    .profile-avatar {
+        width: 120px;
+        height: 120px;
+        font-size: 3rem;
+    }
+}
+
+/* Rhinestone ring around avatar */
+.profile-avatar::after {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    background: linear-gradient(45deg, var(--gold), var(--silver), var(--rose-gold), var(--gold));
+    background-size: 200% 200%;
+    animation: shimmerWave 2s linear infinite;
+    z-index: -1;
+    opacity: 0.6;
+}
+
+.profile-info h1 {
+    color: var(--ice-deep);
+    margin-bottom: var(--space-xs);
+    font-size: 1.5rem;
+}
+
+@media (min-width: 576px) {
+    .profile-info h1 {
+        font-size: 1.75rem;
+    }
+}
+
+.profile-info .badge {
+    margin-bottom: var(--space-sm);
+}
+
+.profile-info p {
+    color: var(--text-medium);
+    font-size: 0.9rem;
+}
+
+/* Profile Form Card */
+.profile-card {
+    background: var(--crystal-white);
+    border-radius: var(--radius-lg);
+    padding: var(--space-md);
+    box-shadow: var(--shadow-soft);
+    margin-bottom: var(--space-md);
+    position: relative;
+    overflow: hidden;
+}
+
+@media (min-width: 768px) {
+    .profile-card {
+        padding: var(--space-lg);
+        margin-bottom: var(--space-lg);
+    }
+}
+
+/* Sparkle accent on profile cards */
+.profile-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--gold), var(--rose-gold), var(--silver), var(--gold));
+    background-size: 200% 100%;
+    animation: shimmerWave 3s linear infinite;
+}
+
+.profile-card h3 {
+    color: var(--ice-deep);
+    margin-bottom: var(--space-sm);
+    padding-bottom: var(--space-sm);
+    border-bottom: 2px solid var(--ice-light);
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    font-size: 1.1rem;
+}
+
+@media (min-width: 768px) {
+    .profile-card h3 {
+        margin-bottom: var(--space-md);
+        font-size: 1.2rem;
+    }
+}
+
+/* ===== Alerts ===== */
+.auth-box .alert {
+    margin-bottom: var(--space-sm);
+    padding: var(--space-sm);
+    border-radius: var(--radius-sm);
+    font-size: 0.85rem;
+}
+
+@media (min-width: 576px) {
+    .auth-box .alert {
+        margin-bottom: var(--space-md);
+        padding: var(--space-sm) var(--space-md);
+        font-size: 0.9rem;
+    }
+}
+
+/* ===== Loading State ===== */
+.btn-loading {
+    position: relative;
+    color: transparent !important;
+    pointer-events: none;
+}
+
+.btn-loading::after {
+    content: '';
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    border: 2px solid white;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@media (min-width: 576px) {
+    .btn-loading::after {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+/* ===== Floating Sparkles ===== */
+.auth-sparkles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.auth-sparkle {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: var(--gold);
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--gold), 0 0 20px rgba(255, 255, 255, 0.5);
+    animation: floatSparkle 4s ease-in-out infinite;
+}
+
+.auth-sparkle:nth-child(1) { top: 10%; left: 15%; animation-delay: 0s; }
+.auth-sparkle:nth-child(2) { top: 20%; left: 85%; animation-delay: 0.8s; }
+.auth-sparkle:nth-child(3) { top: 70%; left: 10%; animation-delay: 1.6s; }
+.auth-sparkle:nth-child(4) { top: 80%; left: 80%; animation-delay: 2.4s; }
+.auth-sparkle:nth-child(5) { top: 40%; left: 5%; animation-delay: 3.2s; }
+.auth-sparkle:nth-child(6) { top: 50%; left: 95%; animation-delay: 0.4s; }

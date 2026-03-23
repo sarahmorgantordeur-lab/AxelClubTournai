@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Profil - Administration - Axel Club</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .profile-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: var(--space-lg);
+        }
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: var(--space-lg);
+            margin-bottom: var(--space-xl);
+            padding: var(--space-lg);
+            background: var(--crystal-white);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-soft);
+        }
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, var(--ice-dark) 0%, var(--ice-deep) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: white;
+            flex-shrink: 0;
+        }
+        .profile-info h1 {
+            margin-bottom: var(--space-xs);
+            color: var(--ice-deep);
+        }
+        .profile-info p {
+            color: var(--text-light);
+            margin: 0;
+        }
+        .profile-info .badge {
+            margin-right: var(--space-xs);
+            margin-bottom: var(--space-xs);
+        }
+        .profile-card {
+            background: var(--crystal-white);
+            border-radius: var(--radius-lg);
+            padding: var(--space-lg);
+            margin-bottom: var(--space-lg);
+            box-shadow: var(--shadow-soft);
+        }
+        .profile-card h3 {
+            color: var(--ice-deep);
+            margin-bottom: var(--space-md);
+            padding-bottom: var(--space-sm);
+            border-bottom: 2px solid var(--ice-light);
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: var(--space-md);
+            margin-top: var(--space-md);
+        }
+        .stat-item {
+            text-align: center;
+            padding: var(--space-md);
+            background: var(--ice-light);
+            border-radius: var(--radius-sm);
+        }
+        .stat-item .value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--ice-deep);
+        }
+        .stat-item .label {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+        @media (max-width: 768px) {
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body class="admin-layout">
+    <nav class="navbar">
+        <div class="container">
+            <h1 class="logo">Axel Club</h1>
+            <ul class="nav-links">
+                <li><a href="{{ url_for('admin.dashboard') }}">Tableau de Bord</a></li>
+                <li><a href="{{ url_for('admin.users') }}">Membres</a></li>
+                <li><a href="{{ url_for('admin.groups') }}">Groupes</a></li>
+                <li><a href="{{ url_for('admin.registrations') }}">Réinscriptions</a></li>
+                <li><a href="{{ url_for('admin.attendance') }}">Présences</a></li>
+                <li><a href="{{ url_for('admin.payments') }}">Paiements</a></li>
+                <li><a href="{{ url_for('admin.reports') }}">Rapports</a></li>
+                <li><a href="{{ url_for('admin.send_email') }}">Email</a></li>
+                <li><a href="{{ url_for('admin.database_table') }}" class="active">Base de données</a></li>
+                <li><a href="{{ url_for('main.dashboard') }}" class="btn btn-outline btn-sm">← Retour</a></li>
+                <li><a href="{{ url_for('auth.logout') }}" class="active">Déconnexion</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container admin-container">
+        <div class="profile-container">
+            <h2 style="color: var(--ice-deep); margin-bottom: var(--space-lg);">Mon Profil Administrateur</h2>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}" style="margin-bottom: var(--space-md);">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            {% if user %}
+                <div class="profile-header">
+                    <div class="profile-avatar">
+                        {{ user.first_name[0] }}{{ user.last_name[0] }}
+                    </div>
+                    <div class="profile-info">
+                        <h1>{{ user.first_name }} {{ user.last_name }}</h1>
+                        <div style="margin: var(--space-sm) 0;">
+                            <span class="badge badge-success">{{ (user.status or 'actif')|capitalize }}</span>
+                            <span class="badge badge-gold">{{ user.get_role_display() }}</span>
+                        </div>
+                        <p>Membre depuis {{ user.joined_date.strftime('%B %Y') if user.joined_date else 'recemment' }}</p>
+                        <p style="margin-top: var(--space-xs);">{{ user.email }}</p>
+                    </div>
+                </div>
+
+                <div class="profile-card">
+                    <h3>Statistiques Administrateur</h3>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="value">{{ total_users }}</div>
+                            <div class="label">Utilisateurs geres</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="value">{{ total_groups }}</div>
+                            <div class="label">Groupes</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="value">{{ registered_count }}</div>
+                            <div class="label">Inscrits {{ current_year }}</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="value">{{ not_registered_count }}</div>
+                            <div class="label">Non reinscrits</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="profile-card">
+                    <h3>Modifier mes informations</h3>
+                    <form method="POST" action="{{ url_for('admin.edit_profile') }}" class="form" style="margin-top: var(--space-md);">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Prenom</label>
+                                <input type="text" name="first_name" value="{{ user.first_name }}" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Nom</label>
+                                <input type="text" name="last_name" value="{{ user.last_name }}" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Telephone</label>
+                                <input type="tel" name="phone" value="{{ user.phone or '' }}" placeholder="+32 XXX XX XX XX">
+                            </div>
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="email" name="email" value="{{ user.email }}" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Date de naissance</label>
+                            <input type="date" name="date_of_birth" value="{{ user.date_of_birth.strftime('%Y-%m-%d') if user.date_of_birth else '' }}">
+                        </div>
+
+                        <div style="display: flex; gap: var(--space-sm); margin-top: var(--space-md);">
+                            <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
+                            <a href="{{ url_for('admin.dashboard') }}" class="btn btn-secondary">Annuler</a>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="profile-card">
+                    <h3>Actions rapides</h3>
+                    <div style="display: flex; flex-wrap: wrap; gap: var(--space-sm); margin-top: var(--space-md);">
+                        <a href="{{ url_for('admin.users') }}" class="btn btn-outline">Gerer les membres</a>
+                        <a href="{{ url_for('admin.registrations') }}" class="btn btn-outline">Reinscriptions</a>
+                        <a href="{{ url_for('admin.reports') }}" class="btn btn-outline">Voir les rapports</a>
+                        <a href="{{ url_for('auth.profile') }}" class="btn btn-secondary">Profil public</a>
+                    </div>
+                </div>
+            {% else %}
+                <div class="profile-card" style="text-align: center; padding: 60px;">
+                    <div style="font-size: 4rem; margin-bottom: 20px;">👤</div>
+                    <h3>Profil non trouve</h3>
+                    <p style="color: var(--text-light);">Une erreur s'est produite.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section footer-brand">
+                    <h4>Axel Club</h4>
+                    <p>Club de patinage artistique depuis 2010.<br>Passion, elegance et performance.</p>
+                    <div class="footer-sparkle"></div>
+                </div>
+                <div class="footer-section">
+                    <h4>Navigation</h4>
+                    <ul>
+                        <li><a href="{{ url_for('public.home') }}">Accueil</a></li>
+                        <li><a href="{{ url_for('public.groups') }}">Groupes</a></li>
+                        <li><a href="{{ url_for('public.about') }}">A Propos</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <ul class="contact-list">
+                        <li>
+                            <span class="contact-icon">&#9993;</span>
+                            <a href="mailto:axelclubtournai@federe.com">axelclubtournai@federe.com</a>
+                        </li>
+                        <li>
+                            <span class="contact-icon">&#128222;</span>
+                            <a href="tel:+32491365328">+32 491 36 53 28</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Horaires</h4>
+                    <p>Entrainements selon le groupe<br>Consultez la page Groupes pour plus d'infos</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="footer-bottom-content">
+                    <p>&copy; 2026 Axel Club - Club de Patinage Artistique. Tous droits reserves.</p>
+                    <p class="footer-credit">Site realise avec &#10084; par Sarah Tordeur</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

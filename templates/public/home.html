@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accueil - Axel Club</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <h1 class="logo">Axel Club</h1>
+            <div class="menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="{{ url_for('public.home') }}">Accueil</a></li>
+                <li><a href="{{ url_for('public.groups') }}">Groupes</a></li>
+                <li><a href="{{ url_for('public.about') }}">À Propos</a></li>
+                {% if current_user.is_authenticated %}
+                    <li><a href="{{ url_for('main.dashboard') }}">Tableau de Bord</a></li>
+                    <li><a href="{{ url_for('auth.profile') }}">Profil</a></li>
+                    {% if current_user.has_role('admin') %}
+                        <li><a href="{{ url_for('admin.dashboard') }}" class="btn btn-outline btn-sm">Administration</a></li>
+                    {% endif %}
+                    <li><a href="{{ url_for('auth.logout') }}">Déconnexion</a></li>
+                {% else %}
+                    <li><a href="{{ url_for('auth.login') }}">Connexion</a></li>
+                    <li><a href="{{ url_for('auth.register') }}">Inscription</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <!-- Sparkles overlay - glitter effect -->
+        <div class="sparkles-overlay">
+            <span class="sparkle"></span>
+            <span class="sparkle"></span>
+            <span class="sparkle"></span>
+            <span class="sparkle"></span>
+            <span class="sparkle"></span>
+            <span class="sparkle"></span>
+            <span class="sparkle"></span>
+            <span class="sparkle"></span>
+            <span class="sparkle"></span>
+            <span class="sparkle"></span>
+            <span class="sparkle"></span>
+            <span class="sparkle"></span>
+        </div>
+        <div class="hero-content">
+            <div class="hero-icon animate-elegant">⛸</div>
+            <h1><span class="skating-text">Bienvenue au Axel Club</span>
+                <span>L'élégance sur glace</span>
+            </h1>
+            <p>Découvrez la passion du patinage artistique dans un environnement chaleureux et professionnel, pour tous les âges et tous les niveaux.</p>
+            {% if not current_user.is_authenticated %}
+                <a href="{{ url_for('auth.register') }}" class="btn btn-rhinestone btn-lg competition-glow">Rejoignez-nous</a>
+            {% endif %}
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="container">
+            <h2>Nos Services</h2>
+            <div class="features-grid">
+                <div class="feature-card animate-fade">
+                    <div class="feature-icon">👥</div>
+                    <h3>Groupes par Niveau</h3>
+                    <p>Débutant, Intermédiaire, Avancé et Compétition - Un parcours adapté à chaque patineur</p>
+                </div>
+                <div class="feature-card animate-fade">
+                    <div class="feature-icon">🏅</div>
+                    <h3>Coachs Expérimentés</h3>
+                    <p>Suivi personnalisé par des professionnels passionnés et certifiés</p>
+                </div>
+                <div class="feature-card animate-fade">
+                    <div class="feature-icon">📊</div>
+                    <h3>Suivi des Progrès</h3>
+                    <p>Suivi des présences, évaluations régulières et statistiques détaillées</p>
+                </div>
+                <div class="feature-card animate-fade">
+                    <div class="feature-icon">🎯</div>
+                    <h3>Événements</h3>
+                    <p>Galas, compétitions et événements conviviaux tout au long de l'année</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <div class="cta-content">
+            <h2>Prêt à glisser ?</h2>
+            <p>Rejoignez notre communauté de patineurs passionnés et découvrez le plaisir de la glisse.</p>
+            <a href="{{ url_for('public.groups') }}" class="btn btn-primary btn-lg">Découvrir nos groupes</a>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section footer-brand">
+                    <h4>⛸ Axel Club</h4>
+                    <p>Club de patinage artistique depuis 2010.<br>Passion, élégance et performance.</p>
+                    <div class="footer-sparkle"></div>
+                </div>
+                <div class="footer-section">
+                    <h4>Navigation</h4>
+                    <ul>
+                        <li><a href="{{ url_for('public.home') }}">Accueil</a></li>
+                        <li><a href="{{ url_for('public.groups') }}">Groupes</a></li>
+                        <li><a href="{{ url_for('public.about') }}">À Propos</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <ul class="contact-list">
+                        <li>
+                            <span class="contact-icon">✉</span>
+                            <a href="mailto:axelclubtournai@federe.com">axelclubtournai@federe.com</a>
+                        </li>
+                        <li>
+                            <span class="contact-icon">📞</span>
+                            <a href="tel:+32491365328">+32 491 36 53 28</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Horaires</h4>
+                    <p>Entraînements selon le groupe<br>Consultez la page Groupes pour plus d'infos</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="footer-bottom-content">
+                    <p>&copy; 2026 Axel Club - Club de Patinage Artistique. Tous droits réservés.</p>
+                    <p class="footer-credit">Site réalisé avec ❤ par Sarah Tordeur</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        document.querySelector('.menu-toggle').addEventListener('click', function() {
+            document.querySelector('.nav-links').classList.toggle('active');
+        });
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+    </script>
+</body>
+</html>

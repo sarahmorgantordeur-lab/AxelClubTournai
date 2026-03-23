@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion des Membres - Axel Club</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="admin-layout">
+    <nav class="navbar">
+        <div class="container">
+            <h1 class="logo">Axel Club</h1>
+            <ul class="nav-links">
+                <li><a href="{{ url_for('admin.dashboard') }}">Tableau de Bord</a></li>
+                <li><a href="{{ url_for('admin.users') }}">Membres</a></li>
+                <li><a href="{{ url_for('admin.groups') }}">Groupes</a></li>
+                <li><a href="{{ url_for('admin.registrations') }}">Réinscriptions</a></li>
+                <li><a href="{{ url_for('admin.attendance') }}">Présences</a></li>
+                <li><a href="{{ url_for('admin.payments') }}">Paiements</a></li>
+                <li><a href="{{ url_for('admin.reports') }}">Rapports</a></li>
+                <li><a href="{{ url_for('admin.send_email') }}">Email</a></li>
+                <li><a href="{{ url_for('admin.database_table') }}" class="active">Base de données</a></li>
+                <li><a href="{{ url_for('main.dashboard') }}" class="btn btn-outline btn-sm">← Retour</a></li>
+                <li><a href="{{ url_for('auth.logout') }}" class="active">Déconnexion</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container admin-container">
+        <div class="page-header">
+            <h2>Gestion des Membres</h2>
+            <a href="{{ url_for('admin.create_member') }}" class="btn btn-primary">+ Ajouter un membre</a>
+        </div>
+
+        <section class="admin-section">
+            <h3>Liste des membres</h3>
+            <div class="admin-section-body">
+                {% if members.items %}
+                    <div class="table-container">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Nom</th>
+                                    <th>Email</th>
+                                    <th>Groupe</th>
+                                    <th>Statut</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for member in members.items %}
+                                    <tr>
+                                        <td><strong>{{ member.first_name }} {{ member.last_name }}</strong></td>
+                                        <td>{{ member.user.email if member.user else '-' }}</td>
+                                        <td>{{ member.group.name if member.group else '-' }}</td>
+                                        <td>
+                                            <span class="badge {% if member.status == 'active' %}badge-success{% elif member.status == 'suspended' %}badge-warning{% else %}badge-silver{% endif %}">
+                                                {{ member.status }}
+                                            </span>
+                                        </td>
+                                        <td class="table-actions">
+                                            <a href="{{ url_for('admin.edit_member', member_id=member.id) }}" class="btn btn-secondary btn-sm">Modifier</a>
+                                            <form method="POST" action="{{ url_for('admin.delete_member', member_id=member.id) }}" style="display:inline;">
+                                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce membre ?')">Supprimer</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="empty-state">
+                        <div class="empty-state-icon">👥</div>
+                        <h3>Aucun membre</h3>
+                        <p>Commencez par ajouter votre premier membre.</p>
+                        <a href="{{ url_for('admin.create_member') }}" class="btn btn-primary">Ajouter un membre</a>
+                    </div>
+                {% endif %}
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section footer-brand">
+                    <h4>⛸ Axel Club</h4>
+                    <p>Club de patinage artistique depuis 2010.<br>Passion, élégance et performance.</p>
+                    <div class="footer-sparkle"></div>
+                </div>
+                <div class="footer-section">
+                    <h4>Navigation</h4>
+                    <ul>
+                        <li><a href="{{ url_for('public.home') }}">Accueil</a></li>
+                        <li><a href="{{ url_for('public.groups') }}">Groupes</a></li>
+                        <li><a href="{{ url_for('public.about') }}">À Propos</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <ul class="contact-list">
+                        <li>
+                            <span class="contact-icon">✉</span>
+                            <a href="mailto:axelclubtournai@federe.com">axelclubtournai@federe.com</a>
+                        </li>
+                        <li>
+                            <span class="contact-icon">📞</span>
+                            <a href="tel:+32491365328">+32 491 36 53 28</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Horaires</h4>
+                    <p>Entraînements selon le groupe<br>Consultez la page Groupes pour plus d'infos</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="footer-bottom-content">
+                    <p>&copy; 2026 Axel Club - Club de Patinage Artistique. Tous droits réservés.</p>
+                    <p class="footer-credit">Site réalisé avec ❤ par Sarah Tordeur</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

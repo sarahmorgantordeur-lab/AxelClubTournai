@@ -1,0 +1,1121 @@
+/* ===========================================
+   AXEL CLUB - Base Styles
+   Theme: Patinage Artistique / Figure Skating
+   With Sparkle & Rhinestone Effects
+   =========================================== */
+
+/* Google Fonts - Elegant typography */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Poppins:wght@300;400;500;600&display=swap');
+
+/* ===== CSS Variables - Ice & Elegance Theme ===== */
+:root {
+    /* Primary Colors - Ice Blue */
+    --ice-light: #e8f4fc;
+    --ice-medium: #a8d4e6;
+    --ice-dark: #5b9dc2;
+    --ice-deep: #2d6a8f;
+
+    /* Accent Colors - Rose Gold & Silver */
+    --rose-gold: #b76e79;
+    --rose-gold-light: #d4a5a5;
+    --silver: #c0c0c0;
+    --silver-light: #e8e8e8;
+    --pearl: #f8f8ff;
+    --gold: #d4af37;
+    --gold-light: #f0e68c;
+
+    /* New Sparkle Colors - Competition Style */
+    --diamond: #b9f2ff;
+    --platinum: #e5e4e2;
+    --champagne: #f7e7ce;
+    --blush: #ffb6c1;
+    --lavender: #e6e6fa;
+
+    /* Crystal Effects */
+    --crystal-white: rgba(255, 255, 255, 0.98);
+    --crystal-glow: rgba(168, 212, 230, 0.4);
+    --frost: rgba(232, 244, 252, 0.9);
+    --sparkle: rgba(255, 255, 255, 0.95);
+    --glitter-gold: rgba(212, 175, 55, 0.6);
+    --glitter-silver: rgba(192, 192, 192, 0.6);
+    --rhinestone-glow: rgba(185, 242, 255, 0.5);
+
+    /* Semantic Colors */
+    --success: #7cb69d;
+    --success-light: #d4edda;
+    --warning: #e6c567;
+    --warning-light: #fff8e1;
+    --danger: #d68585;
+    --danger-light: #ffe5e5;
+
+    /* Text Colors */
+    --text-dark: #2c3e50;
+    --text-medium: #5a6c7d;
+    --text-light: #8896a4;
+
+    /* Typography */
+    --font-display: 'Playfair Display', Georgia, serif;
+    --font-body: 'Poppins', 'Segoe UI', sans-serif;
+
+    /* Spacing */
+    --space-xs: 0.5rem;
+    --space-sm: 1rem;
+    --space-md: 1.5rem;
+    --space-lg: 2rem;
+    --space-xl: 3rem;
+
+    /* Border Radius - Soft curves */
+    --radius-sm: 8px;
+    --radius-md: 16px;
+    --radius-lg: 24px;
+    --radius-full: 50px;
+
+    /* Shadows - Soft & ethereal with sparkle */
+    --shadow-soft: 0 4px 20px rgba(91, 157, 194, 0.12);
+    --shadow-medium: 0 8px 30px rgba(91, 157, 194, 0.18);
+    --shadow-strong: 0 12px 40px rgba(45, 106, 143, 0.25);
+    --shadow-glow: 0 0 30px rgba(168, 212, 230, 0.5);
+    --shadow-sparkle: 0 0 25px rgba(212, 175, 55, 0.4);
+    --shadow-diamond: 0 0 20px rgba(185, 242, 255, 0.5);
+    --shadow-rhinestone: 0 0 15px rgba(255, 255, 255, 0.8), 0 0 30px rgba(212, 175, 55, 0.3);
+
+    /* Transitions */
+    --transition-fast: 0.2s ease;
+    --transition-smooth: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-elegant: 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+    --transition-graceful: 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* ===== Reset & Global Styles ===== */
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    font-size: 16px;
+}
+
+body {
+    font-family: var(--font-body);
+    font-weight: 400;
+    color: var(--text-dark);
+    background: linear-gradient(135deg, var(--ice-light) 0%, var(--pearl) 50%, var(--lavender) 100%);
+    min-height: 100vh;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* Subtle glitter background overlay */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image:
+        radial-gradient(circle at 20% 20%, var(--glitter-gold) 1px, transparent 1px),
+        radial-gradient(circle at 80% 40%, var(--glitter-silver) 1px, transparent 1px),
+        radial-gradient(circle at 40% 80%, var(--glitter-gold) 0.5px, transparent 0.5px),
+        radial-gradient(circle at 60% 10%, var(--glitter-silver) 0.5px, transparent 0.5px);
+    background-size: 100px 100px, 150px 150px, 80px 80px, 120px 120px;
+    opacity: 0.3;
+    pointer-events: none;
+    z-index: 0;
+    animation: subtleSparkle 8s ease-in-out infinite;
+}
+
+@keyframes subtleSparkle {
+    0%, 100% { opacity: 0.2; }
+    50% { opacity: 0.4; }
+}
+
+/* ===== Typography ===== */
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    color: var(--ice-deep);
+    line-height: 1.3;
+}
+
+h1 { font-size: clamp(1.75rem, 5vw, 3rem); }
+h2 { font-size: clamp(1.5rem, 4vw, 2.25rem); }
+h3 { font-size: clamp(1.15rem, 3vw, 1.75rem); }
+h4 { font-size: clamp(1rem, 2.5vw, 1.25rem); }
+
+p {
+    color: var(--text-medium);
+    margin-bottom: var(--space-sm);
+}
+
+a {
+    color: var(--ice-deep);
+    text-decoration: none;
+    transition: var(--transition-fast);
+}
+
+a:hover {
+    color: var(--rose-gold);
+}
+
+/* ===== Container ===== */
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--space-sm);
+}
+
+@media (min-width: 768px) {
+    .container {
+        padding: 0 var(--space-md);
+    }
+}
+
+/* ===== Sparkle & Glitter Animations ===== */
+@keyframes sparkle {
+    0%, 100% {
+        opacity: 0;
+        transform: scale(0) rotate(0deg);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1) rotate(180deg);
+    }
+}
+
+@keyframes twinkle {
+    0%, 100% { opacity: 0.3; transform: scale(0.8); }
+    50% { opacity: 1; transform: scale(1.2); }
+}
+
+@keyframes shimmerWave {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+
+@keyframes floatSparkle {
+    0%, 100% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0.6;
+    }
+    25% {
+        transform: translateY(-15px) rotate(90deg);
+        opacity: 1;
+    }
+    50% {
+        transform: translateY(-5px) rotate(180deg);
+        opacity: 0.8;
+    }
+    75% {
+        transform: translateY(-20px) rotate(270deg);
+        opacity: 1;
+    }
+}
+
+@keyframes rhinestoneGlow {
+    0%, 100% {
+        box-shadow: 0 0 5px var(--sparkle), 0 0 10px rgba(212, 175, 55, 0.3);
+    }
+    50% {
+        box-shadow: 0 0 15px var(--sparkle), 0 0 25px rgba(212, 175, 55, 0.5), 0 0 35px rgba(183, 110, 121, 0.3);
+    }
+}
+
+@keyframes crystalRotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* New graceful skating animations */
+@keyframes gracefulSpin {
+    0% { transform: rotate(0deg) scale(1); }
+    25% { transform: rotate(90deg) scale(1.05); }
+    50% { transform: rotate(180deg) scale(1); }
+    75% { transform: rotate(270deg) scale(1.05); }
+    100% { transform: rotate(360deg) scale(1); }
+}
+
+@keyframes diamondSparkle {
+    0%, 100% {
+        box-shadow: 0 0 5px var(--diamond), 0 0 10px rgba(255, 255, 255, 0.5);
+        opacity: 0.6;
+    }
+    25% {
+        box-shadow: 0 0 15px var(--diamond), 0 0 25px rgba(255, 255, 255, 0.8);
+        opacity: 1;
+    }
+    50% {
+        box-shadow: 0 0 8px var(--gold), 0 0 15px rgba(212, 175, 55, 0.6);
+        opacity: 0.8;
+    }
+    75% {
+        box-shadow: 0 0 12px var(--rose-gold), 0 0 20px rgba(183, 110, 121, 0.5);
+        opacity: 1;
+    }
+}
+
+@keyframes sequinFlash {
+    0%, 90%, 100% { opacity: 0.3; transform: scale(0.8); }
+    95% { opacity: 1; transform: scale(1.2); }
+}
+
+@keyframes iceTrail {
+    0% {
+        background-position: 0% 50%;
+        opacity: 0.5;
+    }
+    50% {
+        background-position: 100% 50%;
+        opacity: 1;
+    }
+    100% {
+        background-position: 0% 50%;
+        opacity: 0.5;
+    }
+}
+
+@keyframes elegantGlow {
+    0%, 100% {
+        filter: drop-shadow(0 0 3px var(--ice-medium));
+    }
+    50% {
+        filter: drop-shadow(0 0 8px var(--ice-dark)) drop-shadow(0 0 15px var(--gold));
+    }
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateX(-30px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.8; transform: scale(1.05); }
+}
+
+/* ===== Sparkle Element Classes ===== */
+.sparkle-container {
+    position: relative;
+    overflow: hidden;
+}
+
+.sparkle-container::before,
+.sparkle-container::after {
+    content: '';
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: radial-gradient(circle, var(--gold) 0%, transparent 70%);
+    border-radius: 50%;
+    animation: twinkle 2s ease-in-out infinite;
+    pointer-events: none;
+}
+
+.sparkle-container::before {
+    top: 15%;
+    right: 10%;
+    animation-delay: 0s;
+}
+
+.sparkle-container::after {
+    bottom: 20%;
+    left: 15%;
+    animation-delay: 1s;
+}
+
+/* Multiple sparkle dots */
+.sparkles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.sparkle-dot {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: var(--gold);
+    border-radius: 50%;
+    animation: floatSparkle 3s ease-in-out infinite;
+    box-shadow: 0 0 6px var(--gold), 0 0 12px rgba(255, 255, 255, 0.8);
+}
+
+.sparkle-dot:nth-child(1) { top: 10%; left: 20%; animation-delay: 0s; }
+.sparkle-dot:nth-child(2) { top: 30%; left: 80%; animation-delay: 0.5s; }
+.sparkle-dot:nth-child(3) { top: 60%; left: 10%; animation-delay: 1s; }
+.sparkle-dot:nth-child(4) { top: 80%; left: 70%; animation-delay: 1.5s; }
+.sparkle-dot:nth-child(5) { top: 20%; left: 50%; animation-delay: 2s; }
+.sparkle-dot:nth-child(6) { top: 70%; left: 40%; animation-delay: 2.5s; }
+
+/* Rhinestone border effect */
+.rhinestone-border {
+    position: relative;
+}
+
+.rhinestone-border::before {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    background: linear-gradient(45deg,
+        var(--gold) 0%,
+        var(--silver) 25%,
+        var(--rose-gold) 50%,
+        var(--silver) 75%,
+        var(--gold) 100%
+    );
+    background-size: 200% 200%;
+    border-radius: inherit;
+    animation: shimmerWave 3s linear infinite;
+    z-index: -1;
+    opacity: 0.7;
+}
+
+/* Glitter text effect */
+.glitter-text {
+    background: linear-gradient(
+        90deg,
+        var(--ice-deep) 0%,
+        var(--gold) 25%,
+        var(--rose-gold) 50%,
+        var(--gold) 75%,
+        var(--ice-deep) 100%
+    );
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmerWave 4s linear infinite;
+}
+
+/* ===== Sequin/Rhinestone Decorative Elements ===== */
+.sequin-decoration {
+    position: relative;
+}
+
+.sequin-decoration::before,
+.sequin-decoration::after {
+    content: '';
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    animation: sequinFlash 3s ease-in-out infinite;
+}
+
+.sequin-decoration::before {
+    top: 10%;
+    right: 5%;
+    background: var(--gold);
+    box-shadow: 0 0 6px var(--gold);
+    animation-delay: 0s;
+}
+
+.sequin-decoration::after {
+    bottom: 15%;
+    left: 8%;
+    background: var(--silver);
+    box-shadow: 0 0 6px var(--silver);
+    animation-delay: 1.5s;
+}
+
+/* Ice skating costume inspired border */
+.costume-border {
+    position: relative;
+    border: 2px solid transparent;
+    background: linear-gradient(var(--crystal-white), var(--crystal-white)) padding-box,
+                linear-gradient(135deg, var(--gold), var(--rose-gold), var(--silver), var(--diamond), var(--gold)) border-box;
+    background-size: 100% 100%, 300% 300%;
+    animation: iceTrail 6s ease infinite;
+}
+
+/* Diamond dust effect overlay */
+.diamond-dust::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image:
+        radial-gradient(circle, var(--sparkle) 1px, transparent 1px),
+        radial-gradient(circle, var(--glitter-gold) 0.5px, transparent 0.5px);
+    background-size: 30px 30px, 20px 20px;
+    background-position: 0 0, 10px 10px;
+    opacity: 0.4;
+    pointer-events: none;
+    animation: subtleSparkle 4s ease-in-out infinite;
+}
+
+/* ===== Buttons ===== */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-xs);
+    padding: 12px 24px;
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    font-weight: 500;
+    border: none;
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    transition: var(--transition-elegant);
+}
+
+.btn:hover::before {
+    left: 100%;
+}
+
+/* Sparkle effect on buttons */
+.btn::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 5px;
+    height: 5px;
+    background: var(--sparkle);
+    border-radius: 50%;
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0);
+    transition: var(--transition-fast);
+}
+
+.btn:active::after {
+    animation: sparkle 0.6s ease-out;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--ice-dark) 0%, var(--ice-deep) 100%);
+    color: white;
+    box-shadow: var(--shadow-soft);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-medium), var(--shadow-sparkle);
+}
+
+.btn-secondary {
+    background: var(--crystal-white);
+    color: var(--ice-deep);
+    border: 2px solid var(--ice-medium);
+}
+
+.btn-secondary:hover {
+    background: var(--ice-light);
+    border-color: var(--ice-dark);
+}
+
+.btn-outline {
+    background: transparent;
+    color: var(--ice-deep);
+    border: 2px solid var(--ice-deep);
+}
+
+.btn-outline:hover {
+    background: var(--ice-deep);
+    color: white;
+}
+
+.btn-accent {
+    background: linear-gradient(135deg, var(--rose-gold) 0%, var(--rose-gold-light) 100%);
+    color: white;
+}
+
+.btn-accent:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(183, 110, 121, 0.3);
+}
+
+.btn-sparkle {
+    background: linear-gradient(135deg, var(--gold) 0%, var(--rose-gold) 50%, var(--gold) 100%);
+    background-size: 200% auto;
+    color: white;
+    animation: shimmerWave 3s linear infinite;
+    box-shadow: var(--shadow-sparkle);
+}
+
+.btn-sparkle:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 8px 30px rgba(212, 175, 55, 0.4);
+}
+
+.btn-success {
+    background: linear-gradient(135deg, var(--success) 0%, #5a9a7d 100%);
+    color: white;
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, var(--danger) 0%, #c46666 100%);
+    color: white;
+}
+
+.btn-sm {
+    padding: 8px 16px;
+    font-size: 0.8rem;
+}
+
+.btn-lg {
+    padding: 16px 36px;
+    font-size: 1rem;
+}
+
+/* ===== Form Elements ===== */
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+}
+
+.form-group label {
+    font-weight: 500;
+    color: var(--text-dark);
+    font-size: 0.9rem;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    padding: 12px 16px;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    border: 2px solid var(--silver-light);
+    border-radius: var(--radius-sm);
+    background: var(--crystal-white);
+    color: var(--text-dark);
+    transition: var(--transition-smooth);
+    width: 100%;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--ice-dark);
+    box-shadow: var(--shadow-glow), 0 0 0 3px rgba(168, 212, 230, 0.2);
+}
+
+.form-group input::placeholder {
+    color: var(--text-light);
+}
+
+.form-row {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+}
+
+@media (min-width: 576px) {
+    .form-row {
+        flex-direction: row;
+    }
+
+    .form-row > .form-group {
+        flex: 1;
+    }
+}
+
+/* ===== Cards ===== */
+.card {
+    background: var(--crystal-white);
+    border-radius: var(--radius-md);
+    padding: var(--space-md);
+    box-shadow: var(--shadow-soft);
+    transition: var(--transition-graceful);
+    border: 1px solid rgba(168, 212, 230, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Subtle rhinestone corner accents on cards */
+.card::before,
+.card::after {
+    content: '';
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    opacity: 0;
+    transition: var(--transition-smooth);
+}
+
+.card::before {
+    top: 12px;
+    right: 12px;
+    background: var(--gold);
+    box-shadow: 0 0 8px var(--gold);
+}
+
+.card::after {
+    bottom: 12px;
+    left: 12px;
+    background: var(--silver);
+    box-shadow: 0 0 8px var(--silver);
+}
+
+@media (min-width: 768px) {
+    .card {
+        padding: var(--space-lg);
+    }
+}
+
+.card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-medium), var(--shadow-rhinestone);
+    border-color: rgba(212, 175, 55, 0.3);
+}
+
+.card:hover::before,
+.card:hover::after {
+    opacity: 1;
+    animation: diamondSparkle 2s ease-in-out infinite;
+}
+
+/* Card with sparkle accent */
+.card-sparkle {
+    position: relative;
+}
+
+.card-sparkle::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--gold), var(--rose-gold), var(--silver), var(--gold));
+    background-size: 200% 100%;
+    animation: shimmerWave 3s linear infinite;
+}
+
+.card-sparkle::after {
+    content: '';
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 6px;
+    height: 6px;
+    background: var(--gold);
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--gold);
+    animation: twinkle 2s ease-in-out infinite;
+}
+
+.card-glass {
+    background: var(--frost);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+/* ===== Tables ===== */
+.table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border-radius: var(--radius-md);
+}
+
+.table {
+    width: 100%;
+    min-width: 500px;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: var(--crystal-white);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: var(--shadow-soft);
+}
+
+.table thead {
+    background: linear-gradient(135deg, var(--ice-dark) 0%, var(--ice-deep) 100%);
+}
+
+.table th {
+    padding: 14px 16px;
+    text-align: left;
+    font-family: var(--font-display);
+    font-weight: 600;
+    color: white;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+}
+
+.table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--silver-light);
+    color: var(--text-medium);
+    font-size: 0.9rem;
+}
+
+.table tbody tr {
+    transition: var(--transition-fast);
+}
+
+.table tbody tr:hover {
+    background: var(--ice-light);
+}
+
+.table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Responsive table for mobile */
+@media (max-width: 576px) {
+    .table th,
+    .table td {
+        padding: 10px 12px;
+        font-size: 0.8rem;
+    }
+}
+
+/* ===== Badges ===== */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 5px 12px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    border-radius: var(--radius-full);
+    background: linear-gradient(135deg, var(--ice-dark) 0%, var(--ice-deep) 100%);
+    color: white;
+}
+
+.badge-success {
+    background: linear-gradient(135deg, var(--success) 0%, #5a9a7d 100%);
+}
+
+.badge-warning {
+    background: linear-gradient(135deg, var(--warning) 0%, #d4b055 100%);
+    color: var(--text-dark);
+}
+
+.badge-danger {
+    background: linear-gradient(135deg, var(--danger) 0%, #c46666 100%);
+}
+
+.badge-silver {
+    background: linear-gradient(135deg, var(--silver) 0%, var(--silver-light) 100%);
+    color: var(--text-dark);
+}
+
+.badge-gold {
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+    color: var(--text-dark);
+    box-shadow: var(--shadow-sparkle);
+    animation: rhinestoneGlow 2s ease-in-out infinite;
+}
+
+.badge-diamond {
+    background: linear-gradient(135deg, var(--diamond) 0%, var(--platinum) 50%, var(--diamond) 100%);
+    background-size: 200% 200%;
+    color: var(--text-dark);
+    box-shadow: var(--shadow-diamond);
+    animation: shimmerWave 3s linear infinite, diamondSparkle 2s ease-in-out infinite;
+}
+
+.badge-competition {
+    background: linear-gradient(135deg, var(--gold) 0%, var(--rose-gold) 25%, var(--silver) 50%, var(--gold) 75%, var(--rose-gold) 100%);
+    background-size: 300% 300%;
+    color: white;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    box-shadow: var(--shadow-rhinestone);
+    animation: shimmerWave 4s linear infinite;
+    position: relative;
+}
+
+.badge-competition::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
+    border-radius: inherit;
+    animation: twinkle 1.5s ease-in-out infinite;
+}
+
+/* ===== Alerts ===== */
+.alert {
+    padding: var(--space-sm) var(--space-md);
+    border-radius: var(--radius-sm);
+    margin-bottom: var(--space-md);
+    border-left: 4px solid;
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    font-size: 0.9rem;
+}
+
+.alert-success {
+    background: var(--success-light);
+    border-color: var(--success);
+    color: #1e5631;
+}
+
+.alert-warning {
+    background: var(--warning-light);
+    border-color: var(--warning);
+    color: #7c5e10;
+}
+
+.alert-error {
+    background: var(--danger-light);
+    border-color: var(--danger);
+    color: #8b2525;
+}
+
+/* ===== Animation Classes ===== */
+.animate-fade {
+    animation: fadeIn 0.6s ease-out forwards;
+}
+
+.animate-slide {
+    animation: slideIn 0.5s ease-out forwards;
+}
+
+.animate-float {
+    animation: float 3s ease-in-out infinite;
+}
+
+.animate-sparkle {
+    animation: rhinestoneGlow 2s ease-in-out infinite;
+}
+
+.animate-twinkle {
+    animation: twinkle 2s ease-in-out infinite;
+}
+
+.animate-graceful {
+    animation: gracefulSpin 8s ease-in-out infinite;
+}
+
+.animate-diamond {
+    animation: diamondSparkle 2.5s ease-in-out infinite;
+}
+
+.animate-elegant {
+    animation: elegantGlow 3s ease-in-out infinite;
+}
+
+/* Competition/Performance style elements */
+.competition-glow {
+    position: relative;
+}
+
+.competition-glow::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    background: linear-gradient(45deg, var(--gold), var(--rose-gold), var(--silver), var(--diamond), var(--gold));
+    background-size: 400% 400%;
+    border-radius: inherit;
+    z-index: -1;
+    animation: shimmerWave 3s linear infinite;
+    opacity: 0;
+    transition: opacity var(--transition-smooth);
+}
+
+.competition-glow:hover::before {
+    opacity: 0.8;
+}
+
+/* Skating trail effect for text */
+.skating-text {
+    background: linear-gradient(
+        90deg,
+        var(--ice-deep) 0%,
+        var(--diamond) 15%,
+        var(--gold) 30%,
+        var(--rose-gold) 45%,
+        var(--silver) 60%,
+        var(--gold) 75%,
+        var(--diamond) 90%,
+        var(--ice-deep) 100%
+    );
+    background-size: 300% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmerWave 5s linear infinite;
+    text-shadow: none;
+}
+
+/* Rhinestone button style */
+.btn-rhinestone {
+    background: linear-gradient(135deg, var(--platinum) 0%, var(--silver) 50%, var(--platinum) 100%);
+    color: var(--text-dark);
+    border: 2px solid var(--gold);
+    position: relative;
+    overflow: visible;
+}
+
+.btn-rhinestone::before {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    background: linear-gradient(45deg, var(--gold), var(--rose-gold), var(--silver), var(--gold));
+    background-size: 200% 200%;
+    border-radius: inherit;
+    z-index: -1;
+    opacity: 0;
+    animation: shimmerWave 2s linear infinite;
+    transition: opacity var(--transition-smooth);
+}
+
+.btn-rhinestone:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: var(--shadow-rhinestone);
+}
+
+.btn-rhinestone:hover::before {
+    opacity: 0.6;
+}
+
+/* Performance spotlight effect */
+.spotlight {
+    position: relative;
+}
+
+.spotlight::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 150%;
+    height: 150%;
+    background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.2) 0%, transparent 70%);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity var(--transition-graceful);
+}
+
+.spotlight:hover::after {
+    opacity: 1;
+}
+
+/* ===== Ice Crystal Decorations ===== */
+.ice-decoration {
+    position: relative;
+}
+
+.ice-decoration::before {
+    content: '';
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    background: radial-gradient(circle, var(--crystal-glow) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+    top: -20px;
+    right: -20px;
+}
+
+/* ===== Scrollbar Styling ===== */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--ice-light);
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, var(--ice-medium) 0%, var(--ice-dark) 100%);
+    border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, var(--ice-dark) 0%, var(--ice-deep) 100%);
+}
+
+/* ===== Selection ===== */
+::selection {
+    background: var(--ice-medium);
+    color: white;
+}
+
+/* ===== Utility Classes ===== */
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+
+.mt-sm { margin-top: var(--space-sm); }
+.mt-md { margin-top: var(--space-md); }
+.mt-lg { margin-top: var(--space-lg); }
+.mb-sm { margin-bottom: var(--space-sm); }
+.mb-md { margin-bottom: var(--space-md); }
+.mb-lg { margin-bottom: var(--space-lg); }
+
+.hidden { display: none !important; }
+
+/* Hide on mobile, show on desktop */
+.hide-mobile {
+    display: none;
+}
+
+@media (min-width: 768px) {
+    .hide-mobile {
+        display: block;
+    }
+}
+
+/* Show on mobile, hide on desktop */
+.show-mobile {
+    display: block;
+}
+
+@media (min-width: 768px) {
+    .show-mobile {
+        display: none;
+    }
+}

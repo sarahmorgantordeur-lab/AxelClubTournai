@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Envoyer un Email - Axel Club</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="admin-layout">
+    <nav class="navbar">
+        <div class="container">
+            <h1 class="logo">Axel Club</h1>
+            <ul class="nav-links">
+                <li><a href="{{ url_for('admin.dashboard') }}">Tableau de Bord</a></li>
+                <li><a href="{{ url_for('admin.users') }}">Membres</a></li>
+                <li><a href="{{ url_for('admin.groups') }}">Groupes</a></li>
+                <li><a href="{{ url_for('admin.registrations') }}">Reinscriptions</a></li>
+                <li><a href="{{ url_for('admin.attendance') }}">Presences</a></li>
+                <li><a href="{{ url_for('admin.payments') }}">Paiements</a></li>
+                <li><a href="{{ url_for('admin.reports') }}">Rapports</a></li>
+                <li><a href="{{ url_for('admin.send_email') }}">Email</a></li>
+                <li><a href="{{ url_for('main.dashboard') }}" class="btn btn-outline btn-sm">&#8592; Retour</a></li>
+                <li><a href="{{ url_for('auth.logout') }}" class="active">Deconnexion</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container admin-container">
+        <div class="form-container">
+            <h2>Envoyer un Email</h2>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            {% if mailto_link %}
+                <div class="admin-section" style="margin-bottom: var(--space-lg);">
+                    <h3>Mail pret a envoyer</h3>
+                    <div class="admin-section-body">
+                        <p><strong>Groupes :</strong> {{ group_names|join(', ') }}</p>
+                        <p><strong>Nombre de destinataires :</strong> {{ recipients_count }}</p>
+                        <div style="margin: var(--space-sm) 0;">
+                            <strong>Liste des destinataires :</strong>
+                            <ul style="margin-top: var(--space-xs); list-style: none; padding: 0;">
+                                {% for email in recipients_list %}
+                                    <li style="padding: 2px 0;">{{ email }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <div style="display: flex; gap: var(--space-sm); margin-top: var(--space-md);">
+                            <a href="{{ mailto_link }}" class="btn btn-primary">Ouvrir dans mon application mail</a>
+                            <a href="{{ url_for('admin.send_email') }}" class="btn btn-secondary">Nouveau mail</a>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <form method="POST" class="form">
+                    <div class="form-section">
+                        <h3>Destinataires</h3>
+                        <div class="form-group">
+                            <label>Groupes *</label>
+                            <div style="margin-bottom: var(--space-xs);">
+                                <button type="button" id="select-all-btn" class="btn btn-outline btn-sm" onclick="toggleSelectAll()">Tout selectionner</button>
+                            </div>
+                            <select name="group_ids" id="group-select" multiple required style="min-height: 120px;">
+                                {% for group in groups %}
+                                    <option value="{{ group.id }}">{{ group.name }} ({{ group.members|length }} membres)</option>
+                                {% endfor %}
+                            </select>
+                            <small style="color: var(--text-muted); display: block; margin-top: var(--space-xs);">
+                                Maintenez Ctrl (ou Cmd sur Mac) pour selectionner plusieurs groupes. Les parents des patineurs des groupes selectionnes recevront aussi le mail.
+                            </small>
+                        </div>
+                        <div id="recipients-preview" style="display: none; margin-top: var(--space-sm);">
+                            <strong>Groupes selectionnes :</strong> <span id="recipients-count">0</span>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Message</h3>
+                        <div class="form-group">
+                            <label>Objet *</label>
+                            <input type="text" name="subject" placeholder="Objet du mail..." required>
+                        </div>
+                        <div class="form-group">
+                            <label>Corps du message *</label>
+                            <small style="color: var(--text-muted); display: block; margin-bottom: var(--space-xs);">
+                                Le message commencera automatiquement par "Concerne : Groupe &lt;nom du groupe&gt;"
+                            </small>
+                            <textarea name="body" rows="10" placeholder="Votre message..." required style="min-height: 200px;"></textarea>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: var(--space-sm); margin-top: var(--space-lg);">
+                        <button type="submit" class="btn btn-primary">Preparer le mail</button>
+                        <a href="{{ url_for('admin.dashboard') }}" class="btn btn-secondary">Annuler</a>
+                    </div>
+                </form>
+            {% endif %}
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section footer-brand">
+                    <h4>Axel Club</h4>
+                    <p>Club de patinage artistique depuis 2010.<br>Passion, elegance et performance.</p>
+                    <div class="footer-sparkle"></div>
+                </div>
+                <div class="footer-section">
+                    <h4>Navigation</h4>
+                    <ul>
+                        <li><a href="{{ url_for('public.home') }}">Accueil</a></li>
+                        <li><a href="{{ url_for('public.groups') }}">Groupes</a></li>
+                        <li><a href="{{ url_for('public.about') }}">A Propos</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <ul class="contact-list">
+                        <li>
+                            <span class="contact-icon">&#9993;</span>
+                            <a href="mailto:axelclubtournai@federe.com">axelclubtournai@federe.com</a>
+                        </li>
+                        <li>
+                            <span class="contact-icon">&#128222;</span>
+                            <a href="tel:+32491365328">+32 491 36 53 28</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Horaires</h4>
+                    <p>Entrainements selon le groupe<br>Consultez la page Groupes pour plus d'infos</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="footer-bottom-content">
+                    <p>&copy; 2026 Axel Club - Club de Patinage Artistique. Tous droits reserves.</p>
+                    <p class="footer-credit">Site realise avec &#10084; par Sarah Tordeur</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleSelectAll() {
+            const select = document.getElementById('group-select');
+            const btn = document.getElementById('select-all-btn');
+            const allSelected = Array.from(select.options).every(opt => opt.selected);
+
+            Array.from(select.options).forEach(opt => {
+                opt.selected = !allSelected;
+            });
+
+            btn.textContent = allSelected ? 'Tout selectionner' : 'Tout deselectionner';
+            updatePreview();
+        }
+
+        const groupSelect = document.getElementById('group-select');
+        if (groupSelect) {
+            groupSelect.addEventListener('change', function() {
+                updatePreview();
+                const allSelected = Array.from(this.options).every(opt => opt.selected);
+                document.getElementById('select-all-btn').textContent = allSelected ? 'Tout deselectionner' : 'Tout selectionner';
+            });
+        }
+
+        function updatePreview() {
+            const select = document.getElementById('group-select');
+            const preview = document.getElementById('recipients-preview');
+            const count = document.getElementById('recipients-count');
+            const selected = Array.from(select.selectedOptions);
+
+            if (selected.length > 0) {
+                preview.style.display = 'block';
+                const names = selected.map(opt => opt.text).join(', ');
+                count.textContent = names;
+            } else {
+                preview.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>

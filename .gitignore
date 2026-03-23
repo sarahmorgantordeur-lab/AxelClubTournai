@@ -1,0 +1,30 @@
+# Environnement virtuel
+.venv/
+venv/
+env/
+
+# Variables d'environnement (contient des secrets)
+.env
+
+# Base de données
+instance/
+*.db
+*.sqlite3
+
+# Cache Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Sauvegardes
+backups/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db

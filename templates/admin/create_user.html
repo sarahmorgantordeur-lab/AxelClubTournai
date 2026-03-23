@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Créer un Membre - Axel Club</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .role-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            background: var(--ice-light);
+            border-radius: var(--radius-sm);
+            margin-bottom: 0.5rem;
+        }
+        .role-checkbox input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--ice-deep);
+        }
+        .children-select {
+            min-height: 120px;
+        }
+        .group-section {
+            transition: opacity 0.3s ease;
+        }
+        .group-section.disabled {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+        .info-note {
+            background: var(--warning-light);
+            border-left: 3px solid var(--warning);
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.9rem;
+            color: var(--text-medium);
+            margin-top: 0.5rem;
+        }
+    </style>
+</head>
+<body class="admin-layout">
+    <nav class="navbar">
+        <div class="container">
+            <h1 class="logo">Axel Club</h1>
+            <ul class="nav-links">
+                <li><a href="{{ url_for('admin.dashboard') }}">Tableau de Bord</a></li>
+                <li><a href="{{ url_for('admin.users') }}">Membres</a></li>
+                <li><a href="{{ url_for('admin.groups') }}">Groupes</a></li>
+                <li><a href="{{ url_for('admin.registrations') }}">Réinscriptions</a></li>
+                <li><a href="{{ url_for('admin.attendance') }}" class="active">Présences</a></li>
+                <li><a href="{{ url_for('admin.payments') }}">Paiements</a></li>
+                <li><a href="{{ url_for('admin.reports') }}">Rapports</a></li>
+                <li><a href="{{ url_for('admin.send_email') }}">Email</a></li>
+                <li><a href="{{ url_for('main.dashboard') }}" class="btn btn-outline btn-sm">← Retour</a></li>
+                <li><a href="{{ url_for('auth.logout') }}" class="active">Déconnexion</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container admin-container">
+        <div class="form-container">
+            <h2>Ajouter un Nouveau Membre</h2>
+
+            <form method="POST" class="form" id="createUserForm">
+                <div class="form-section">
+                    <h3>Informations personnelles</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Prénom *</label>
+                            <input type="text" name="first_name" placeholder="Prénom" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Nom *</label>
+                            <input type="text" name="last_name" placeholder="Nom" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Email *</label>
+                        <input type="email" name="email" placeholder="email@exemple.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Téléphone</label>
+                        <input type="tel" name="phone" placeholder="+32 XXX XX XX XX">
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Compte utilisateur</h3>
+                    <div class="form-group">
+                        <label>Mot de passe</label>
+                        <input type="password" name="password" placeholder="Laisser vide pour mot de passe par défaut">
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Rôles</h3>
+                    <div class="form-group">
+                        <label class="role-checkbox">
+                            <input type="checkbox" name="roles" value="patineur" checked onchange="updateFormState()">
+                            Patineur
+                        </label>
+                        <label class="role-checkbox">
+                            <input type="checkbox" name="roles" value="parent" onchange="updateFormState()">
+                            Parent
+                        </label>
+                        <label class="role-checkbox">
+                            <input type="checkbox" name="roles" value="admin" onchange="updateFormState()">
+                            Administrateur
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-section group-section" id="groupSection">
+                    <h3>Informations club (Patineur)</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Groupe</label>
+                            <select name="group_id" id="groupSelect">
+                                <option value="">Aucun groupe</option>
+                                {% for group in groups %}
+                                    <option value="{{ group.id }}">{{ group.name }}</option>
+                                {% endfor %}
+                            </select>
+                            <div class="info-note" id="groupNote" style="display: none;">
+                                Le groupe est réservé aux patineurs. Les membres uniquement parent ou admin n'ont pas de groupe.
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Numéro de Licence</label>
+                            <input type="text" name="license_number" placeholder="Numéro de licence">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section" id="childrenSection" style="display: none;">
+                    <h3>Enfants rattachés (Parent)</h3>
+                    <div class="form-group">
+                        <label>Sélectionner les enfants</label>
+                        <select name="children" multiple class="children-select">
+                            {% for patineur in patineurs %}
+                            <option value="{{ patineur.id }}">
+                                {{ patineur.first_name }} {{ patineur.last_name }}
+                                {% if patineur.group %}({{ patineur.group.name }}){% endif %}
+                            </option>
+                            {% endfor %}
+                        </select>
+                        <p style="font-size: 0.85rem; color: var(--text-light); margin-top: 0.5rem;">
+                            Maintenez Ctrl (ou Cmd) pour sélectionner plusieurs enfants
+                        </p>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: var(--space-sm); margin-top: var(--space-lg);">
+                    <button type="submit" class="btn btn-primary">Créer le membre</button>
+                    <a href="{{ url_for('admin.users') }}" class="btn btn-secondary">Annuler</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function updateFormState() {
+            const roles = document.querySelectorAll('input[name="roles"]:checked');
+            const roleValues = Array.from(roles).map(r => r.value);
+
+            const isPatineur = roleValues.includes('patineur');
+            const isParent = roleValues.includes('parent');
+
+            // Afficher/masquer la section groupe
+            const groupSection = document.getElementById('groupSection');
+            const groupNote = document.getElementById('groupNote');
+            const groupSelect = document.getElementById('groupSelect');
+
+            if (isPatineur) {
+                groupSection.classList.remove('disabled');
+                groupNote.style.display = 'none';
+            } else {
+                groupSection.classList.add('disabled');
+                groupNote.style.display = 'block';
+                groupSelect.value = '';
+            }
+
+            // Afficher/masquer la section enfants
+            const childrenSection = document.getElementById('childrenSection');
+            if (isParent) {
+                childrenSection.style.display = 'block';
+            } else {
+                childrenSection.style.display = 'none';
+            }
+        }
+
+        // Initialiser au chargement
+        document.addEventListener('DOMContentLoaded', updateFormState);
+    </script>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section footer-brand">
+                    <h4>⛸ Axel Club</h4>
+                    <p>Club de patinage artistique depuis 2010.<br>Passion, élégance et performance.</p>
+                    <div class="footer-sparkle"></div>
+                </div>
+                <div class="footer-section">
+                    <h4>Navigation</h4>
+                    <ul>
+                        <li><a href="{{ url_for('public.home') }}">Accueil</a></li>
+                        <li><a href="{{ url_for('public.groups') }}">Groupes</a></li>
+                        <li><a href="{{ url_for('public.about') }}">À Propos</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <ul class="contact-list">
+                        <li>
+                            <span class="contact-icon">✉</span>
+                            <a href="mailto:axelclubtournai@federe.com">axelclubtournai@federe.com</a>
+                        </li>
+                        <li>
+                            <span class="contact-icon">📞</span>
+                            <a href="tel:+32491365328">+32 491 36 53 28</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Horaires</h4>
+                    <p>Entraînements selon le groupe<br>Consultez la page Groupes pour plus d'infos</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="footer-bottom-content">
+                    <p>&copy; 2026 Axel Club - Club de Patinage Artistique. Tous droits réservés.</p>
+                    <p class="footer-credit">Site réalisé avec ❤ par Sarah Tordeur</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

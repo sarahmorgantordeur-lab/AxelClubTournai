@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rapports - Axel Club</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="admin-layout">
+    <nav class="navbar">
+        <div class="container">
+            <h1 class="logo">Axel Club</h1>
+            <ul class="nav-links">
+                <li><a href="{{ url_for('admin.dashboard') }}">Tableau de Bord</a></li>
+                <li><a href="{{ url_for('admin.users') }}">Membres</a></li>
+                <li><a href="{{ url_for('admin.groups') }}">Groupes</a></li>
+                <li><a href="{{ url_for('admin.registrations') }}">Réinscriptions</a></li>
+                <li><a href="{{ url_for('admin.attendance') }}">Présences</a></li>
+                <li><a href="{{ url_for('admin.payments') }}">Paiements</a></li>
+                <li><a href="{{ url_for('admin.reports') }}">Rapports</a></li>
+                <li><a href="{{ url_for('admin.send_email') }}">Email</a></li>
+                <li><a href="{{ url_for('main.dashboard') }}" class="btn btn-outline btn-sm">← Retour</a></li>
+                <li><a href="{{ url_for('auth.logout') }}" class="active">Déconnexion</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container admin-container">
+        <h2>Rapports & Statistiques</h2>
+
+        <div class="report-tabs">
+            <a href="{{ url_for('admin.reports', type='attendance') }}"
+               class="tab {% if report_type == 'attendance' %}active{% endif %}">📊 Présences</a>
+            <a href="{{ url_for('admin.reports', type='financial') }}"
+               class="tab {% if report_type == 'financial' %}active{% endif %}">💰 Finances</a>
+        </div>
+
+        {% if report_type == 'attendance' %}
+            <section class="admin-section">
+                <h3>Rapport de Présences</h3>
+                <div class="admin-section-body">
+                    {% if data.user %}
+                        <div class="table-container">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Membre</th>
+                                        <th>Taux de Présence</th>
+                                        <th>Total Sessions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for member in data.user %}
+                                        <tr>
+                                            <td><strong>{{ member.name }}</strong></td>
+                                            <td>
+                                                <span class="badge {% if member.attendance_rate >= 80 %}badge-success{% elif member.attendance_rate >= 50 %}badge-warning{% else %}badge-danger{% endif %}">
+                                                    {{ member.attendance_rate }}%
+                                                </span>
+                                            </td>
+                                            <td>{{ member.total_sessions }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="empty-state">
+                            <p>Aucune donnée de présence disponible.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </section>
+
+        {% elif report_type == 'financial' %}
+            <div class="report-summary">
+                <div class="report-card">
+                    <h4>Total Payé</h4>
+                    <div class="value" style="color: var(--success);">{{ "%.2f"|format(data.total_paid) }}€</div>
+                </div>
+                <div class="report-card">
+                    <h4>En Attente</h4>
+                    <div class="value" style="color: var(--warning);">{{ "%.2f"|format(data.total_pending) }}€</div>
+                </div>
+                <div class="report-card">
+                    <h4>Revenu Total</h4>
+                    <div class="value">{{ "%.2f"|format(data.total_revenue) }}€</div>
+                </div>
+            </div>
+
+        {% endif %}
+    </div>
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section footer-brand">
+                    <h4>⛸ Axel Club</h4>
+                    <p>Club de patinage artistique depuis 2010.<br>Passion, élégance et performance.</p>
+                    <div class="footer-sparkle"></div>
+                </div>
+                <div class="footer-section">
+                    <h4>Navigation</h4>
+                    <ul>
+                        <li><a href="{{ url_for('public.home') }}">Accueil</a></li>
+                        <li><a href="{{ url_for('public.groups') }}">Groupes</a></li>
+                        <li><a href="{{ url_for('public.about') }}">À Propos</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <ul class="contact-list">
+                        <li>
+                            <span class="contact-icon">✉</span>
+                            <a href="mailto:axelclubtournai@federe.com">axelclubtournai@federe.com</a>
+                        </li>
+                        <li>
+                            <span class="contact-icon">📞</span>
+                            <a href="tel:+32491365328">+32 491 36 53 28</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Horaires</h4>
+                    <p>Entraînements selon le groupe<br>Consultez la page Groupes pour plus d'infos</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="footer-bottom-content">
+                    <p>&copy; 2026 Axel Club - Club de Patinage Artistique. Tous droits réservés.</p>
+                    <p class="footer-credit">Site réalisé avec ❤ par Sarah Tordeur</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

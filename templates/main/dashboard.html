@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tableau de Bord - Axel Club</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="dashboard-container">
+    <nav class="navbar" style="background: var(--crystal-white); border-bottom: 1px solid var(--silver-light);">
+        <div class="container">
+            <h1 class="logo">Axel Club</h1>
+            <ul class="nav-links">
+                <li><a href="{{ url_for('main.dashboard') }}" class="active">Tableau de Bord</a></li>
+                <li><a href="{{ url_for('main.my_attendance') }}">Mes Présences</a></li>
+                <li><a href="{{ url_for('auth.profile') }}">Mon Profil</a></li>
+                {% if user.is_staff() %}
+                <li><a href="{{ url_for('admin.dashboard') }}">Administration</a></li>
+                {% endif %}
+                <li><a href="{{ url_for('auth.logout') }}" class="btn btn-secondary btn-sm">Déconnexion</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="dashboard-content">
+        <div class="dashboard-header">
+            <div>
+                <h1>Bonjour, {{ user.first_name }} !</h1>
+                <p class="welcome-message">Bienvenue sur votre espace personnel</p>
+            </div>
+            <span class="badge badge-info">{{ user.get_role_display() }}</span>
+        </div>
+
+        {% if user %}
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-icon">👥</div>
+                    <h4>Mon Groupe</h4>
+                    <p class="stat-number">{{ user.group.name if user.group else '-' }}</p>
+                </div>
+                <div class="stat-card accent">
+                    <div class="stat-icon">📊</div>
+                    <h4>Taux de Présence</h4>
+                    <p class="stat-number">{{ user.attendance_rate() }}%</p>
+                </div>
+                <div class="stat-card success">
+                    <div class="stat-icon">🎯</div>
+                    <h4>Total Séances</h4>
+                    <p class="stat-number">{{ user.attendances|length }}</p>
+                </div>
+                <div class="stat-card warning">
+                    <div class="stat-icon">✨</div>
+                    <h4>Statut</h4>
+                    <p class="stat-number" style="font-size: 1.5rem;">{{ (user.status or 'actif')|capitalize }}</p>
+                </div>
+                {% if payment %}
+                {% if payment.balance() <= 0 %}
+                <div class="stat-card success">
+                    <div class="stat-icon">💰</div>
+                    <h4>Solde à payer</h4>
+                    <p class="stat-number" style="font-size: 1.5rem;">{{ '%.2f'|format(payment.balance()) }} €</p>
+                </div>
+                {% else %}
+                <div class="stat-card" style="border-left-color: var(--danger);">
+                    <div class="stat-icon">💰</div>
+                    <h4>Solde à payer</h4>
+                    <p class="stat-number" style="font-size: 1.5rem; color: var(--danger);">{{ '%.2f'|format(payment.balance()) }} €</p>
+                </div>
+                {% endif %}
+                {% endif %}
+            </div>
+
+            <div class="dashboard-grid">
+                <div class="info-card">
+                    <div class="info-card-header">
+                        <h3>Mes Informations</h3>
+                        <a href="{{ url_for('auth.profile') }}" class="btn btn-secondary btn-sm">Modifier</a>
+                    </div>
+                    <div class="info-card-body">
+                        <div class="member-info-grid">
+                            <div class="info-item">
+                                <label>Nom complet</label>
+                                <span>{{ user.first_name }} {{ user.last_name }}</span>
+                            </div>
+                            <div class="info-item">
+                                <label>Email</label>
+                                <span>{{ user.email }}</span>
+                            </div>
+                            <div class="info-item">
+                                <label>Téléphone</label>
+                                <span>{{ user.phone or 'Non renseigné' }}</span>
+                            </div>
+                            <div class="info-item">
+                                <label>Groupe</label>
+                                <span>{{ user.group.name if user.group else 'Non assigné' }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <div class="info-card-header">
+                        <h3>Actions rapides</h3>
+                    </div>
+                    <div class="info-card-body">
+                        <div class="quick-actions">
+                            <a href="{{ url_for('main.my_attendance') }}" class="quick-action-btn">
+                                <span>📅</span>
+                                <span>Mes présences</span>
+                            </a>
+                            <a href="{{ url_for('auth.profile') }}" class="quick-action-btn">
+                                <span>👤</span>
+                                <span>Mon profil</span>
+                            </a>
+                            <a href="{{ url_for('public.groups') }}" class="quick-action-btn">
+                                <span>👥</span>
+                                <span>Voir les groupes</span>
+                            </a>
+                            {% if user.is_staff() %}
+                            <a href="{{ url_for('admin.dashboard') }}" class="quick-action-btn">
+                                <span>⚙️</span>
+                                <span>Administration</span>
+                            </a>
+                            {% else %}
+                            <a href="{{ url_for('public.about') }}" class="quick-action-btn">
+                                <span>ℹ️</span>
+                                <span>À propos</span>
+                            </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% if user.group %}
+                <div class="info-card" style="margin-top: var(--space-lg);">
+                    <div class="info-card-header">
+                        <h3>Informations du Groupe</h3>
+                    </div>
+                    <div class="info-card-body">
+                        <div class="member-info-grid">
+                            <div class="info-item">
+                                <label>Nom du groupe</label>
+                                <span>{{ user.group.name }}</span>
+                            </div>
+                            <div class="info-item">
+                                <label>Horaires</label>
+                                <span>{{ user.group.schedule or 'À confirmer' }}</span>
+                            </div>
+                            <div class="info-item">
+                                <label>Tarif par saison</label>
+                                <span>{% if user.group.price_per_season %}{{ "%.2f"|format(user.group.price_per_season) }}€{% else %}-{% endif %}</span>
+                            </div>
+                            <div class="info-item">
+                                <label>Membres</label>
+                                <span>{{ user.group.member_count() }} membres</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        {% else %}
+            <div class="info-card">
+                <div class="info-card-body" style="text-align: center; padding: 60px;">
+                    <div style="font-size: 4rem; margin-bottom: 20px;">👤</div>
+                    <h3>Profil non trouvé</h3>
+                    <p style="color: var(--text-light);">Veuillez contacter un administrateur.</p>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section footer-brand">
+                    <h4>⛸ Axel Club</h4>
+                    <p>Club de patinage artistique depuis 2010.<br>Passion, élégance et performance.</p>
+                    <div class="footer-sparkle"></div>
+                </div>
+                <div class="footer-section">
+                    <h4>Navigation</h4>
+                    <ul>
+                        <li><a href="{{ url_for('public.home') }}">Accueil</a></li>
+                        <li><a href="{{ url_for('public.groups') }}">Groupes</a></li>
+                        <li><a href="{{ url_for('public.about') }}">À Propos</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <ul class="contact-list">
+                        <li>
+                            <span class="contact-icon">✉</span>
+                            <a href="mailto:axelclubtournai@federe.com">axelclubtournai@federe.com</a>
+                        </li>
+                        <li>
+                            <span class="contact-icon">📞</span>
+                            <a href="tel:+32491365328">+32 491 36 53 28</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Horaires</h4>
+                    <p>Entraînements selon le groupe<br>Consultez la page Groupes pour plus d'infos</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="footer-bottom-content">
+                    <p>&copy; 2026 Axel Club - Club de Patinage Artistique. Tous droits réservés.</p>
+                    <p class="footer-credit">Site réalisé avec ❤ par Sarah Tordeur</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

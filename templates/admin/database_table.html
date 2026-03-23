@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }} - Base de Données - Axel Club</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="admin-layout">
+    <nav class="navbar">
+        <div class="container">
+            <h1 class="logo">Axel Club</h1>
+            <ul class="nav-links">
+                <li><a href="{{ url_for('admin.dashboard') }}">Tableau de Bord</a></li>
+                <li><a href="{{ url_for('admin.users') }}">Membres</a></li>
+                <li><a href="{{ url_for('admin.groups') }}">Groupes</a></li>
+                <li><a href="{{ url_for('admin.registrations') }}">Réinscriptions</a></li>
+                <li><a href="{{ url_for('admin.attendance') }}">Présences</a></li>
+                <li><a href="{{ url_for('admin.payments') }}">Paiements</a></li>
+                <li><a href="{{ url_for('admin.reports') }}">Rapports</a></li>
+                <li><a href="{{ url_for('admin.send_email') }}">Email</a></li>
+                <li><a href="{{ url_for('admin.database_table') }}" class="active">Base de données</a></li>
+                <li><a href="{{ url_for('main.dashboard') }}" class="btn btn-outline btn-sm">← Retour</a></li>
+                <li><a href="{{ url_for('auth.logout') }}" class="active">Déconnexion</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container admin-container">
+        <div class="admin-header">
+            <div>
+                <a href="{{ url_for('admin.database_explorer') }}" class="back-link">← Retour aux tables</a>
+                <h2>{{ title }}</h2>
+                <p style="color: var(--text-light);">{{ pagination.total }} enregistrements au total</p>
+            </div>
+        </div>
+
+        {% if rows %}
+        <div class="table-container">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        {% for col in columns %}
+                        <th>{{ col }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in rows %}
+                    <tr>
+                        {% for col in columns %}
+                        <td>
+                            {% if row[col] is none %}
+                                <span class="null-value">NULL</span>
+                            {% elif row[col] == true %}
+                                <span class="badge badge-success">Oui</span>
+                            {% elif row[col] == false %}
+                                <span class="badge badge-warning">Non</span>
+                            {% else %}
+                                {{ row[col] }}
+                            {% endif %}
+                        </td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        {% if pagination.pages > 1 %}
+        <div class="pagination">
+            {% if pagination.has_prev %}
+            <a href="{{ url_for('admin.database_table', table_name=table_name, page=pagination.prev_num) }}" class="btn btn-secondary btn-sm">← Précédent</a>
+            {% endif %}
+
+            <span class="pagination-info">
+                Page {{ pagination.page }} sur {{ pagination.pages }}
+            </span>
+
+            {% if pagination.has_next %}
+            <a href="{{ url_for('admin.database_table', table_name=table_name, page=pagination.next_num) }}" class="btn btn-secondary btn-sm">Suivant →</a>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        {% else %}
+        <div class="empty-state">
+            <div class="empty-icon">📭</div>
+            <h3>Aucune donnée</h3>
+            <p>Cette table est vide.</p>
+        </div>
+        {% endif %}
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section footer-brand">
+                    <h4>⛸ Axel Club</h4>
+                    <p>Club de patinage artistique depuis 2010.<br>Passion, élégance et performance.</p>
+                    <div class="footer-sparkle"></div>
+                </div>
+                <div class="footer-section">
+                    <h4>Navigation</h4>
+                    <ul>
+                        <li><a href="{{ url_for('public.home') }}">Accueil</a></li>
+                        <li><a href="{{ url_for('public.groups') }}">Groupes</a></li>
+                        <li><a href="{{ url_for('public.about') }}">À Propos</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <ul class="contact-list">
+                        <li>
+                            <span class="contact-icon">✉</span>
+                            <a href="mailto:axelclubtournai@federe.com">axelclubtournai@federe.com</a>
+                        </li>
+                        <li>
+                            <span class="contact-icon">📞</span>
+                            <a href="tel:+32491365328">+32 491 36 53 28</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Horaires</h4>
+                    <p>Entraînements selon le groupe<br>Consultez la page Groupes pour plus d'infos</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="footer-bottom-content">
+                    <p>&copy; 2026 Axel Club - Club de Patinage Artistique. Tous droits réservés.</p>
+                    <p class="footer-credit">Site réalisé avec ❤ par Sarah Tordeur</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <style>
+        .back-link {
+            display: inline-block;
+            color: var(--ice-deep);
+            text-decoration: none;
+            margin-bottom: var(--space-sm);
+            font-size: 0.9rem;
+        }
+
+        .back-link:hover {
+            color: var(--rose-gold);
+        }
+
+        .table-container {
+            background: var(--crystal-white);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-soft);
+            overflow-x: auto;
+            margin-bottom: var(--space-lg);
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        .data-table th {
+            background: var(--ice-light);
+            padding: var(--space-sm) var(--space-md);
+            text-align: left;
+            font-weight: 600;
+            color: var(--ice-deep);
+            white-space: nowrap;
+            border-bottom: 2px solid var(--ice-medium);
+        }
+
+        .data-table td {
+            padding: var(--space-sm) var(--space-md);
+            border-bottom: 1px solid var(--silver-light);
+            max-width: 300px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .data-table tbody tr:hover {
+            background: var(--ice-light);
+        }
+
+        .data-table tbody tr:nth-child(even) {
+            background: rgba(168, 212, 230, 0.05);
+        }
+
+        .null-value {
+            color: var(--text-light);
+            font-style: italic;
+            font-size: 0.85rem;
+        }
+
+        .pagination {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-md);
+        }
+
+        .pagination-info {
+            color: var(--text-medium);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: var(--space-xxl);
+            background: var(--crystal-white);
+            border-radius: var(--radius-lg);
+        }
+
+        .empty-icon {
+            font-size: 4rem;
+            margin-bottom: var(--space-md);
+        }
+
+        .empty-state h3 {
+            color: var(--ice-deep);
+            margin-bottom: var(--space-sm);
+        }
+
+        .empty-state p {
+            color: var(--text-light);
+        }
+    </style>
+</body>
+</html>

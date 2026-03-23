@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mes Présences - Axel Club</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="dashboard-container">
+    <nav class="navbar" style="background: var(--crystal-white); border-bottom: 1px solid var(--silver-light);">
+        <div class="container">
+            <h1 class="logo">Axel Club</h1>
+            <ul class="nav-links">
+                <li><a href="{{ url_for('main.dashboard') }}">Tableau de Bord</a></li>
+                <li><a href="{{ url_for('main.my_attendance') }}" class="active">Mes Présences</a></li>
+                <li><a href="{{ url_for('auth.profile') }}">Mon Profil</a></li>
+                {% if current_user.is_authenticated and current_user.has_role('admin') %}
+                <li><a href="{{ url_for('admin.dashboard') }}">Administration</a></li>
+                {% endif %}
+                <li><a href="{{ url_for('auth.logout') }}" class="btn btn-secondary btn-sm">Déconnexion</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="dashboard-content">
+        <div class="dashboard-header">
+            <div>
+                <h1>Mes Présences</h1>
+                <p class="welcome-message">Historique de vos présences aux entraînements</p>
+            </div>
+        </div>
+
+        {% if attendances %}
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-icon">📅</div>
+                    <h4>Total Sessions</h4>
+                    <p class="stat-number">{{ attendances|length }}</p>
+                </div>
+                <div class="stat-card success">
+                    <div class="stat-icon">✅</div>
+                    <h4>Présent</h4>
+                    <p class="stat-number">{{ attendances|selectattr('status', 'equalto', 'present')|list|length }}</p>
+                </div>
+                <div class="stat-card" style="border-left-color: var(--danger);">
+                    <div class="stat-icon">❌</div>
+                    <h4>Absent</h4>
+                    <p class="stat-number">{{ attendances|selectattr('status', 'equalto', 'absent')|list|length }}</p>
+                </div>
+                <div class="stat-card warning">
+                    <div class="stat-icon">⏰</div>
+                    <h4>En Retard</h4>
+                    <p class="stat-number">{{ attendances|selectattr('status', 'equalto', 'late')|list|length }}</p>
+                </div>
+            </div>
+
+            <div class="info-card">
+                <div class="info-card-header">
+                    <h3>📋 Historique des présences</h3>
+                </div>
+                <div class="info-card-body">
+                    <div class="table-container" style="overflow-x: auto;">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Statut</th>
+                                    <th>Notes</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for attendance in attendances|reverse %}
+                                    <tr>
+                                        <td>{{ attendance.session_date.strftime('%d/%m/%Y à %H:%M') }}</td>
+                                        <td>
+                                            <span class="badge {% if attendance.status == 'present' %}badge-success{% elif attendance.status == 'absent' %}badge-danger{% elif attendance.status == 'late' %}badge-warning{% else %}badge-silver{% endif %}">
+                                                {% if attendance.status == 'present' %}Présent
+                                                {% elif attendance.status == 'absent' %}Absent
+                                                {% elif attendance.status == 'late' %}En retard
+                                                {% elif attendance.status == 'excused' %}Excusé
+                                                {% else %}{{ attendance.status }}{% endif %}
+                                            </span>
+                                        </td>
+                                        <td>{{ attendance.notes or '-' }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="info-card">
+                <div class="info-card-body" style="text-align: center; padding: 60px;">
+                    <div style="font-size: 4rem; margin-bottom: 20px;">📋</div>
+                    <h3>Aucune présence enregistrée</h3>
+                    <p style="color: var(--text-light);">Vos présences apparaîtront ici après vos premiers entraînements.</p>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section footer-brand">
+                    <h4>⛸ Axel Club</h4>
+                    <p>Club de patinage artistique depuis 2010.<br>Passion, élégance et performance.</p>
+                    <div class="footer-sparkle"></div>
+                </div>
+                <div class="footer-section">
+                    <h4>Navigation</h4>
+                    <ul>
+                        <li><a href="{{ url_for('public.home') }}">Accueil</a></li>
+                        <li><a href="{{ url_for('public.groups') }}">Groupes</a></li>
+                        <li><a href="{{ url_for('public.about') }}">À Propos</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <ul class="contact-list">
+                        <li>
+                            <span class="contact-icon">✉</span>
+                            <a href="mailto:axelclubtournai@federe.com">axelclubtournai@federe.com</a>
+                        </li>
+                        <li>
+                            <span class="contact-icon">📞</span>
+                            <a href="tel:+32491365328">+32 491 36 53 28</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Horaires</h4>
+                    <p>Entraînements selon le groupe<br>Consultez la page Groupes pour plus d'infos</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="footer-bottom-content">
+                    <p>&copy; 2026 Axel Club - Club de Patinage Artistique. Tous droits réservés.</p>
+                    <p class="footer-credit">Site réalisé avec ❤ par Sarah Tordeur</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

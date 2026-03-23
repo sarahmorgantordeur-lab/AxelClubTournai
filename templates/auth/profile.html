@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Profil - Axel Club</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+    
+    <style>
+        .payment-view-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: var(--space-md);
+        }
+        .payment-view-table th, .payment-view-table td {
+            padding: 10px 14px;
+            text-align: center;
+            border-bottom: 1px solid var(--silver-light);
+            font-size: 0.9rem;
+        }
+        .payment-view-table th {
+            background: var(--ice-light);
+            color: var(--ice-deep);
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+        }
+        .payment-view-table th:first-child, .payment-view-table td:first-child {
+            text-align: left;
+        }
+        .payment-view-table .total-row {
+            background: var(--ice-light);
+            font-weight: 700;
+        }
+        .payment-view-table .total-row td {
+            border-top: 2px solid var(--ice-deep);
+        }
+        .reste-positif { color: var(--danger); font-weight: 600; }
+        .reste-zero { color: var(--success); font-weight: 600; }
+        .child-section { margin-bottom: var(--space-lg); }
+        .child-section h4 {
+            color: var(--ice-deep);
+            margin-bottom: var(--space-sm);
+            padding-bottom: var(--space-xs);
+            border-bottom: 2px solid var(--ice-light);
+        }
+    </style>
+</head>
+<body style="background: linear-gradient(180deg, var(--ice-light) 0%, var(--pearl) 100%); min-height: 100vh;">
+    <nav class="navbar">
+        <div class="container">
+            <h1 class="logo">Axel Club</h1>
+            <div class="menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="{{ url_for('public.home') }}">Accueil</a></li>
+                <li><a href="{{ url_for('public.groups') }}">Groupes</a></li>
+                <li><a href="{{ url_for('public.about') }}">À Propos</a></li>
+                {% if current_user.is_authenticated %}
+                    <li><a href="{{ url_for('main.dashboard') }}">Tableau de Bord</a></li>
+                    <li><a href="{{ url_for('auth.profile') }}" class="active">Profil</a></li>
+                    {% if current_user.has_role('admin') %}
+                        <li><a href="{{ url_for('admin.dashboard') }}" class="btn btn-outline btn-sm">Administration</a></li>
+                    {% endif %}
+                    <li><a href="{{ url_for('auth.logout') }}">Déconnexion</a></li>
+                {% else %}
+                    <li><a href="{{ url_for('auth.login') }}" class="active">Connexion</a></li>
+                    <li><a href="{{ url_for('auth.register') }}">Inscription</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    <div class="profile-container">
+        <h2 style="color: var(--ice-deep); margin-bottom: var(--space-lg);">Mon Profil</h2>
+
+        {% if user %}
+            <div class="profile-header">
+                <div class="profile-avatar">
+                    {{ user.first_name[0] }}{{ user.last_name[0] }}
+                </div>
+                <div class="profile-info">
+                    <h1>{{ user.first_name }} {{ user.last_name }}</h1>
+                    <span class="badge badge-success">{{ (user.status or 'actif')|capitalize }}</span>
+                    <span class="badge badge-info">{{ user.get_role_display() }}</span>
+                    <p>Membre depuis {{ user.joined_date.strftime('%B %Y') if user.joined_date else 'récemment' }}</p>
+                </div>
+            </div>
+
+            {% if user.is_patineur() %}
+            <div class="profile-card">
+                <h3>Statistiques</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: var(--space-md); margin-top: var(--space-md);">
+                    <div style="text-align: center; padding: var(--space-md); background: var(--ice-light); border-radius: var(--radius-sm);">
+                        <div style="font-size: 2rem; font-weight: 700; color: var(--ice-deep);">{{ user.attendance_rate() }}%</div>
+                        <div style="font-size: 0.85rem; color: var(--text-light);">Taux de présence</div>
+                    </div>
+                    <div style="text-align: center; padding: var(--space-md); background: var(--ice-light); border-radius: var(--radius-sm);">
+                        <div style="font-size: 2rem; font-weight: 700; color: var(--ice-deep);">{{ user.attendances|length }}</div>
+                        <div style="font-size: 0.85rem; color: var(--text-light);">Séances</div>
+                    </div>
+                    <div style="text-align: center; padding: var(--space-md); background: var(--ice-light); border-radius: var(--radius-sm);">
+                        <div style="font-size: 1.2rem; font-weight: 600; color: var(--ice-deep);">{{ user.group.name if user.group else 'Aucun' }}</div>
+                        <div style="font-size: 0.85rem; color: var(--text-light);">Groupe</div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <div class="profile-card">
+                <h3>Modifier mes informations</h3>
+                <form method="POST" action="{{ url_for('auth.edit_profile') }}" class="form" style="margin-top: var(--space-md);">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Prénom</label>
+                            <input type="text" name="first_name" value="{{ user.first_name }}" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Nom</label>
+                            <input type="text" name="last_name" value="{{ user.last_name }}" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Téléphone</label>
+                            <input type="tel" name="phone" value="{{ user.phone or '' }}" placeholder="+32 XXX XX XX XX">
+                        </div>
+                        <div class="form-group">
+                            <label>Date de naissance</label>
+                            <input type="date" name="date_of_birth" value="{{ user.date_of_birth.strftime('%Y-%m-%d') if user.date_of_birth else '' }}">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" name="email" value="{{ user.email }}" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label style="font-weight: bold; display: block; margin-bottom: var(--space-sm);">Numéros d'urgence</label>
+                        <div style="display: flex; flex-direction: column; gap: var(--space-sm);">
+                            {% if user.get_emergency_contacts_list() %}
+                                {% for contact in user.get_emergency_contacts_list() %}
+                                    <div style="display: flex; gap: var(--space-sm); align-items: center;">
+                                        <input type="tel" name="emergency_contacts" value="{{ contact }}" placeholder="+32 XXX XX XX XX" style="flex: 1;">
+                                        <button type="button" class="btn btn-danger btn-sm" onclick="removeContact(this)">×</button>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                            <div style="display: flex; gap: var(--space-sm); align-items: center;">
+                                <input type="tel" name="emergency_contacts" placeholder="+32 XXX XX XX XX" style="flex: 1;">
+                                <button type="button" class="btn btn-outline btn-sm" onclick="addContactField()">+</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; gap: var(--space-sm); margin-top: var(--space-md);">
+                        <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
+                        <a href="{{ url_for('main.dashboard') }}" class="btn btn-secondary">Annuler</a>
+                    </div>
+                </form>
+
+                <script>
+                function addContactField() {
+                    const div = document.createElement('div');
+                    div.style.cssText = 'display: flex; gap: var(--space-sm); align-items: center;';
+                    div.innerHTML = `
+                        <input type="tel" name="emergency_contacts" placeholder="+32 XXX XX XX XX" style="flex: 1;">
+                        <button type="button" class="btn btn-danger btn-sm" onclick="removeContact(this)">×</button>
+                    `;
+                    const inputs = document.querySelectorAll('input[name="emergency_contacts"]');
+                    inputs[inputs.length - 1].parentNode.insertBefore(div, inputs[inputs.length - 1].parentNode.lastChild);
+                }
+
+                function removeContact(button) {
+                    button.parentNode.remove();
+                }
+                </script>
+            </div>
+
+            {% if user.is_patineur() and payment %}
+            <div class="profile-card">
+                <h3>Mes Paiements — Saison {{ current_year }}</h3>
+                <div style="overflow-x: auto;">
+                    <table class="payment-view-table">
+                        <thead>
+                            <tr>
+                                <th>Catégorie</th>
+                                <th>Montant dû</th>
+                                <th>Montant payé</th>
+                                <th>Reste à payer</th>
+                                <th>Statut</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% set categories = [
+                                ('Licence et assurance', payment.licence_due, payment.licence_paid),
+                                ('Saison Tournai', payment.saison_tournai_due, payment.saison_tournai_paid),
+                                ('Wasquehal P1', payment.wasquehal_p1_due, payment.wasquehal_p1_paid),
+                                ('Wasquehal P2', payment.wasquehal_p2_due, payment.wasquehal_p2_paid),
+                                ('Compétitions', payment.competitions_due, payment.competitions_paid)
+                            ] %}
+                            {% for name, due, paid in categories %}
+                            {% set due_val = due or 0 %}
+                            {% set paid_val = paid or 0 %}
+                            {% set reste = due_val - paid_val %}
+                            <tr>
+                                <td><strong>{{ name }}</strong></td>
+                                <td>{{ '%.2f'|format(due_val) }} €</td>
+                                <td>{{ '%.2f'|format(paid_val) }} €</td>
+                                <td class="{% if reste > 0 %}reste-positif{% else %}reste-zero{% endif %}">{{ '%.2f'|format(reste) }} €</td>
+                                <td>
+                                    <span class="badge {% if reste <= 0 %}badge-success{% elif paid_val > 0 %}badge-warning{% else %}badge-danger{% endif %}">
+                                        {% if reste <= 0 %}Payé{% elif paid_val > 0 %}Partiel{% else %}Non payé{% endif %}
+                                    </span>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            <tr class="total-row">
+                                <td><strong>TOTAL</strong></td>
+                                <td><strong>{{ '%.2f'|format(payment.total_due()) }} €</strong></td>
+                                <td><strong>{{ '%.2f'|format(payment.total_paid()) }} €</strong></td>
+                                <td class="{% if payment.balance() > 0 %}reste-positif{% else %}reste-zero{% endif %}">
+                                    <strong>{{ '%.2f'|format(payment.balance()) }} €</strong>
+                                </td>
+                                <td>
+                                    <span class="badge {% if payment.is_fully_paid() %}badge-success{% elif payment.total_paid() > 0 %}badge-warning{% else %}badge-danger{% endif %}">
+                                        {% if payment.is_fully_paid() %}Tout payé{% elif payment.total_paid() > 0 %}En cours{% else %}Non payé{% endif %}
+                                    </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            {% endif %}
+
+            {% if children_payments %}
+            <div class="profile-card">
+                <h3>Paiements de mes enfants — Saison {{ current_year }}</h3>
+                {% for item in children_payments %}
+                <div class="child-section">
+                    <h4>{{ item.child.first_name }} {{ item.child.last_name }}
+                        {% if item.child.group %}<span style="font-weight: 400; font-size: 0.85rem; color: var(--text-light);"> — {{ item.child.group.name }}</span>{% endif %}
+                    </h4>
+                    {% if item.payment %}
+                    <div style="overflow-x: auto;">
+                        <table class="payment-view-table">
+                            <thead>
+                                <tr>
+                                    <th>Catégorie</th>
+                                    <th>Montant dû</th>
+                                    <th>Montant payé</th>
+                                    <th>Reste à payer</th>
+                                    <th>Statut</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% set cp = item.payment %}
+                                {% set categories = [
+                                    ('Licence et assurance', cp.licence_due, cp.licence_paid),
+                                    ('Saison Tournai', cp.saison_tournai_due, cp.saison_tournai_paid),
+                                    ('Wasquehal P1', cp.wasquehal_p1_due, cp.wasquehal_p1_paid),
+                                    ('Wasquehal P2', cp.wasquehal_p2_due, cp.wasquehal_p2_paid),
+                                    ('Compétitions', cp.competitions_due, cp.competitions_paid)
+                                ] %}
+                                {% for name, due, paid in categories %}
+                                {% set due_val = due or 0 %}
+                                {% set paid_val = paid or 0 %}
+                                {% set reste = due_val - paid_val %}
+                                <tr>
+                                    <td><strong>{{ name }}</strong></td>
+                                    <td>{{ '%.2f'|format(due_val) }} €</td>
+                                    <td>{{ '%.2f'|format(paid_val) }} €</td>
+                                    <td class="{% if reste > 0 %}reste-positif{% else %}reste-zero{% endif %}">{{ '%.2f'|format(reste) }} €</td>
+                                    <td>
+                                        <span class="badge {% if reste <= 0 %}badge-success{% elif paid_val > 0 %}badge-warning{% else %}badge-danger{% endif %}">
+                                            {% if reste <= 0 %}Payé{% elif paid_val > 0 %}Partiel{% else %}Non payé{% endif %}
+                                        </span>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                                <tr class="total-row">
+                                    <td><strong>TOTAL</strong></td>
+                                    <td><strong>{{ '%.2f'|format(cp.total_due()) }} €</strong></td>
+                                    <td><strong>{{ '%.2f'|format(cp.total_paid()) }} €</strong></td>
+                                    <td class="{% if cp.balance() > 0 %}reste-positif{% else %}reste-zero{% endif %}">
+                                        <strong>{{ '%.2f'|format(cp.balance()) }} €</strong>
+                                    </td>
+                                    <td>
+                                        <span class="badge {% if cp.is_fully_paid() %}badge-success{% elif cp.total_paid() > 0 %}badge-warning{% else %}badge-danger{% endif %}">
+                                            {% if cp.is_fully_paid() %}Tout payé{% elif cp.total_paid() > 0 %}En cours{% else %}Non payé{% endif %}
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <p style="color: var(--text-light); padding: var(--space-md) 0;">Aucun paiement enregistré pour cette saison.</p>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+        {% else %}
+            <div class="profile-card" style="text-align: center; padding: 60px;">
+                <div style="font-size: 4rem; margin-bottom: 20px;">👤</div>
+                <h3>Profil non trouvé</h3>
+                <p style="color: var(--text-light);">Veuillez contacter un administrateur.</p>
+            </div>
+        {% endif %}
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section footer-brand">
+                    <h4>⛸ Axel Club</h4>
+                    <p>Club de patinage artistique depuis 2010.<br>Passion, élégance et performance.</p>
+                    <div class="footer-sparkle"></div>
+                </div>
+                <div class="footer-section">
+                    <h4>Navigation</h4>
+                    <ul>
+                        <li><a href="{{ url_for('public.home') }}">Accueil</a></li>
+                        <li><a href="{{ url_for('public.groups') }}">Groupes</a></li>
+                        <li><a href="{{ url_for('public.about') }}">À Propos</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <ul class="contact-list">
+                        <li>
+                            <span class="contact-icon">✉</span>
+                            <a href="mailto:axelclubtournai@federe.com">axelclubtournai@federe.com</a>
+                        </li>
+                        <li>
+                            <span class="contact-icon">📞</span>
+                            <a href="tel:+32491365328">+32 491 36 53 28</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Horaires</h4>
+                    <p>Entraînements selon le groupe<br>Consultez la page Groupes pour plus d'infos</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="footer-bottom-content">
+                    <p>&copy; 2026 Axel Club - Club de Patinage Artistique. Tous droits réservés.</p>
+                    <p class="footer-credit">Site réalisé avec ❤ par Sarah Tordeur</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion des Groupes - Axel Club</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="admin-layout">
+    <nav class="navbar">
+        <div class="container">
+            <h1 class="logo">Axel Club</h1>
+            <ul class="nav-links">
+                <li><a href="{{ url_for('admin.dashboard') }}">Tableau de Bord</a></li>
+                <li><a href="{{ url_for('admin.users') }}">Membres</a></li>
+                <li><a href="{{ url_for('admin.groups') }}" class="active">Groupes</a></li>
+                <li><a href="{{ url_for('admin.registrations') }}">Réinscriptions</a></li>
+                <li><a href="{{ url_for('admin.attendance') }}">Présences</a></li>
+                <li><a href="{{ url_for('admin.payments') }}">Paiements</a></li>
+                <li><a href="{{ url_for('admin.reports') }}">Rapports</a></li>
+                <li><a href="{{ url_for('admin.send_email') }}">Email</a></li>
+                <li><a href="{{ url_for('main.dashboard') }}" class="btn btn-outline btn-sm">← Retour</a></li>
+                <li><a href="{{ url_for('auth.logout') }}" class="active">Déconnexion</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container admin-container">
+        <div class="page-header">
+            <h2>Gestion des Groupes</h2>
+            <a href="{{ url_for('admin.create_group') }}" class="btn btn-primary">+ Créer un groupe</a>
+        </div>
+
+        {% if groups %}
+            <div class="cards-grid">
+                {% for group in groups %}
+                    <div class="group-card">
+                        <h4>⛸ {{ group.name }}</h4>
+                        <p>� Membres : {{ group.member_count() }}</p>
+                        <p>💰 Tarif :
+                            {% if group.price_per_season %}
+                                {{ "%.0f"|format(group.price_per_season) }}€/saison
+                            {% else %}
+                                -
+                            {% endif %}
+                        </p>
+
+                        <p>🕐 Horaires : {{ group.schedule or 'À définir' }}</p>
+
+                        {% if group.members %}
+                            <div class="members-list" style="margin: 15px 0; padding: 10px; background: rgba(0, 0, 0, 0.02); border-radius: 6px;">
+                                <p style="font-weight: bold; margin-top: 0; margin-bottom: 8px;">Membres du groupe :</p>
+                                <ul style="margin: 0; padding-left: 20px; font-size: 0.9em;">
+                                    {% for member in group.members %}
+                                        <li style="margin-bottom: 4px;">
+                                            {{ member.first_name }} {{ member.last_name }}
+                                            <span style="color: #666; font-size: 0.85em;">({{ member.username }})</span>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% else %}
+                            <div style="margin: 15px 0; padding: 10px; background: rgba(0, 0, 0, 0.02); border-radius: 6px; text-align: center; color: #999;">
+                                <em>Aucun membre assigné</em>
+                            </div>
+                        {% endif %}
+
+                        <div class="actions">
+                            <a href="{{ url_for('admin.edit_group', group_id=group.id) }}" class="btn btn-sm">Modifier</a>
+                            <form method="POST" action="{{ url_for('admin.delete_group', group_id=group.id) }}" style="display:inline;">
+                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce groupe ?')">Supprimer</button>
+                            </form>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state" style="background: var(--crystal-white); padding: 60px; border-radius: var(--radius-lg); text-align: center;">
+                <div class="empty-state-icon">👥</div>
+                <h3>Aucun groupe</h3>
+                <p>Créez votre premier groupe d'entraînement.</p>
+                <a href="{{ url_for('admin.create_group') }}" class="btn btn-primary">Créer un groupe</a>
+            </div>
+        {% endif %}
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section footer-brand">
+                    <h4>⛸ Axel Club</h4>
+                    <p>Club de patinage artistique depuis 2010.<br>Passion, élégance et performance.</p>
+                    <div class="footer-sparkle"></div>
+                </div>
+                <div class="footer-section">
+                    <h4>Navigation</h4>
+                    <ul>
+                        <li><a href="{{ url_for('public.home') }}">Accueil</a></li>
+                        <li><a href="{{ url_for('public.groups') }}">Groupes</a></li>
+                        <li><a href="{{ url_for('public.about') }}">À Propos</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <ul class="contact-list">
+                        <li>
+                            <span class="contact-icon">✉</span>
+                            <a href="mailto:axelclubtournai@federe.com">axelclubtournai@federe.com</a>
+                        </li>
+                        <li>
+                            <span class="contact-icon">📞</span>
+                            <a href="tel:+32491365328">+32 491 36 53 28</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Horaires</h4>
+                    <p>Entraînements selon le groupe<br>Consultez la page Groupes pour plus d'infos</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="footer-bottom-content">
+                    <p>&copy; 2026 Axel Club - Club de Patinage Artistique. Tous droits réservés.</p>
+                    <p class="footer-credit">Site réalisé avec ❤ par Sarah Tordeur</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

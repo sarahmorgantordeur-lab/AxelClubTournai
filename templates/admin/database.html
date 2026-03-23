@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explorateur Base de Données - Axel Club</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="admin-layout">
+    <nav class="navbar">
+        <div class="container">
+            <h1 class="logo">Axel Club</h1>
+            <ul class="nav-links">
+                <li><a href="{{ url_for('admin.dashboard') }}">Tableau de Bord</a></li>
+                <li><a href="{{ url_for('admin.users') }}">Membres</a></li>
+                <li><a href="{{ url_for('admin.groups') }}">Groupes</a></li>
+                <li><a href="{{ url_for('admin.registrations') }}">Réinscriptions</a></li>
+                <li><a href="{{ url_for('admin.attendance') }}">Présences</a></li>
+                <li><a href="{{ url_for('admin.payments') }}">Paiements</a></li>
+                <li><a href="{{ url_for('admin.reports') }}">Rapports</a></li>
+                <li><a href="{{ url_for('admin.send_email') }}">Email</a></li>
+                <li><a href="{{ url_for('admin.database_table') }}" class="active">Base de données</a></li>
+                <li><a href="{{ url_for('main.dashboard') }}" class="btn btn-outline btn-sm">← Retour</a></li>
+                <li><a href="{{ url_for('auth.logout') }}" class="active">Déconnexion</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container admin-container">
+        <div class="admin-header">
+            <h2>Explorateur Base de Données</h2>
+            <p style="color: var(--text-light);">Visualisez toutes les données de l'application</p>
+        </div>
+
+        <div class="database-grid">
+            {% for key, table in tables.items() %}
+            <a href="{{ url_for('admin.database_table', table_name=key) }}" class="database-card">
+                <div class="database-card-icon">{{ table.icon }}</div>
+                <div class="database-card-info">
+                    <h3>{{ table.name }}</h3>
+                    <span class="database-count">{{ table.count }} enregistrements</span>
+                </div>
+                <div class="database-card-arrow">→</div>
+            </a>
+            {% endfor %}
+        </div>
+
+        <div class="database-info-box">
+            <h3>Informations</h3>
+            <p>Cette interface vous permet de visualiser les données stockées dans la base de données SQLite de l'application.</p>
+            <ul>
+                <li>Cliquez sur une table pour voir son contenu</li>
+                <li>Les données sont en lecture seule</li>
+                <li>Utilisez les pages d'administration pour modifier les données</li>
+            </ul>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section footer-brand">
+                    <h4>⛸ Axel Club</h4>
+                    <p>Club de patinage artistique depuis 2010.<br>Passion, élégance et performance.</p>
+                    <div class="footer-sparkle"></div>
+                </div>
+                <div class="footer-section">
+                    <h4>Navigation</h4>
+                    <ul>
+                        <li><a href="{{ url_for('public.home') }}">Accueil</a></li>
+                        <li><a href="{{ url_for('public.groups') }}">Groupes</a></li>
+                        <li><a href="{{ url_for('public.about') }}">À Propos</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <ul class="contact-list">
+                        <li>
+                            <span class="contact-icon">✉</span>
+                            <a href="mailto:axelclubtournai@federe.com">axelclubtournai@federe.com</a>
+                        </li>
+                        <li>
+                            <span class="contact-icon">📞</span>
+                            <a href="tel:+32491365328">+32 491 36 53 28</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Horaires</h4>
+                    <p>Entraînements selon le groupe<br>Consultez la page Groupes pour plus d'infos</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="footer-bottom-content">
+                    <p>&copy; 2026 Axel Club - Club de Patinage Artistique. Tous droits réservés.</p>
+                    <p class="footer-credit">Site réalisé avec ❤ par Sarah Tordeur</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <style>
+        .database-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: var(--space-md);
+            margin-bottom: var(--space-xl);
+        }
+
+        .database-card {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            padding: var(--space-lg);
+            background: var(--crystal-white);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-soft);
+            text-decoration: none;
+            color: inherit;
+            transition: var(--transition-smooth);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .database-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--gold), var(--rose-gold), var(--silver));
+            background-size: 200% 100%;
+            animation: shimmerWave 3s linear infinite;
+        }
+
+        .database-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-strong), var(--shadow-sparkle);
+        }
+
+        .database-card-icon {
+            font-size: 2.5rem;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--ice-light);
+            border-radius: var(--radius-md);
+        }
+
+        .database-card-info {
+            flex: 1;
+        }
+
+        .database-card-info h3 {
+            margin: 0 0 var(--space-xs) 0;
+            color: var(--ice-deep);
+            font-size: 1.1rem;
+        }
+
+        .database-count {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .database-card-arrow {
+            font-size: 1.5rem;
+            color: var(--ice-medium);
+            transition: var(--transition-fast);
+        }
+
+        .database-card:hover .database-card-arrow {
+            color: var(--ice-deep);
+            transform: translateX(5px);
+        }
+
+        .database-info-box {
+            background: var(--ice-light);
+            border-radius: var(--radius-lg);
+            padding: var(--space-lg);
+            border-left: 4px solid var(--ice-deep);
+        }
+
+        .database-info-box h3 {
+            color: var(--ice-deep);
+            margin-bottom: var(--space-sm);
+        }
+
+        .database-info-box ul {
+            margin: var(--space-sm) 0 0 var(--space-md);
+            color: var(--text-medium);
+        }
+
+        .database-info-box li {
+            margin-bottom: var(--space-xs);
+        }
+    </style>
+</body>
+</html>
