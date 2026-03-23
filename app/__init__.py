@@ -19,10 +19,11 @@ def create_app(config_class=Config):
     login_manager.init_app(app)
     login_manager.login_view = 'auth.login'
     
+    from app import models  # noqa: F401 — doit être importé avant create_all()
+
     with app.app_context():
-        # Créer les tables seulement si elles n'existent pas
         db.create_all()
-    
+
     from app.models import User
     
     @login_manager.user_loader
