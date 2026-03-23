@@ -28,7 +28,7 @@ class UserService:
 
     @staticmethod
     def get_patineurs():
-        return User.query.filter(User.roles.contains('patineur')).all()
+        return User.query_by_role('patineur').all()
 
     @staticmethod
     def get_user(user_id):

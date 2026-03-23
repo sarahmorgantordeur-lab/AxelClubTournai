@@ -189,6 +189,12 @@ class User(UserMixin, db.Model):
             year = datetime.utcnow().year
         return SeasonPayment.query.filter_by(user_id=self.id, season_year=year).first()
 
+    @classmethod
+    def query_by_role(cls, role):
+        """Filtre compatible SQLite et PostgreSQL pour les colonnes JSON roles"""
+        from sqlalchemy import cast, String
+        return cls.query.filter(cast(cls.roles, String).contains(f'"{role}"'))
+
     def __repr__(self):
         return f'<User {self.username}>'
 

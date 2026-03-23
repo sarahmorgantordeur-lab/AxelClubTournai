@@ -23,12 +23,12 @@ def admin_required(f):
 @admin_required
 def dashboard():
     stats = {
-        'total_members': User.query.filter(User.roles.contains('patineur')).count(),
+        'total_members': User.query_by_role('patineur').count(),
         'total_groups': Group.query.count(),
         'total_users': User.query.count(),
         'total_revenue': sum([p.amount for p in PaymentRecord.query.filter_by(status='paid').all()]) or 0
     }
-    recent_members = User.query.filter(User.roles.contains('patineur')).order_by(User.created_at.desc()).limit(5).all()
+    recent_members = User.query_by_role('patineur').order_by(User.created_at.desc()).limit(5).all()
     return render_template('admin/dashboard.html', stats=stats, recent_members=recent_members)
 
 # ===== GESTION DES UTILISATEURS =====
@@ -43,7 +43,7 @@ def users():
 
     query = User.query
     if roles_filter:
-        query = query.filter(User.roles.contains(roles_filter))
+        query = query.filter(db.cast(User.roles, db.String).contains(f'"{roles_filter}"'))
 
     users = query.order_by(User.created_at.desc()).paginate(page=page, per_page=10)
     return render_template('admin/users.html', users=users, current_role=roles_filter)
@@ -54,7 +54,7 @@ def users():
 def create_user():
     groups = Group.query.all()
     # Récupérer tous les patineurs pour la sélection des enfants
-    patineurs = User.query.filter(User.roles.contains('patineur')).all()
+    patineurs = User.query_by_role('patineur').all()
 
     if request.method == 'POST':
         username = request.form.get('username')
@@ -122,7 +122,7 @@ def edit_user(user_id):
     user = User.query.get_or_404(user_id)
     groups = Group.query.all()
     # Récupérer tous les patineurs pour la sélection des enfants
-    patineurs = User.query.filter(User.roles.contains('patineur')).all()
+    patineurs = User.query_by_role('patineur').all()
 
     if request.method == 'POST':
         user.first_name = request.form.get('first_name')
@@ -295,7 +295,7 @@ def payments():
 @admin_required
 def add_payment():
     # Afficher tous les utilisateurs pour le paiement
-    users = User.query.filter(User.roles.contains('patineur')).all()
+    users = User.query_by_role('patineur').all()
 
     if request.method == 'POST':
         user_id = int(request.form.get('user_id'))
@@ -394,7 +394,7 @@ def registrations():
     current_year = datetime.now().year
 
     # Récupérer tous les patineurs
-    all_patineurs = User.query.filter(User.roles.contains('patineur')).all()
+    all_patineurs = User.query_by_role('patineur').all()
 
     # Séparer en deux listes
     registered_this_year = [u for u in all_patineurs if u.registration_year == current_year]
@@ -437,7 +437,7 @@ def unregister_user(user_id):
 def profile():
     """Affiche le profil de l'administrateur connecté"""
     current_year = datetime.now().year
-    all_patineurs = User.query.filter(User.roles.contains('patineur')).all()
+    all_patineurs = User.query_by_role('patineur').all()
     registered_count = len([u for u in all_patineurs if u.registration_year == current_year])
     not_registered_count = len([u for u in all_patineurs if u.registration_year != current_year])
 
@@ -493,7 +493,7 @@ def reports():
     return render_template('admin/reports.html', report_type=report_type, data=data)
 
 def generate_attendance_report():
-    users = User.query.filter(User.roles.contains('patineur')).all()
+    users = User.query_by_role('patineur').all()
     report_data = []
     for user in users:
         attendance_rate = user.attendance_rate()

@@ -31,7 +31,7 @@ def my_attendance():
 @login_required
 def get_users():
     """API pour récupérer la liste des patineurs"""
-    users = User.query.filter(User.roles.contains('patineur')).all()
+    users = User.query_by_role('patineur').all()
     return jsonify([{
         'id': u.id,
         'first_name': u.first_name,
