@@ -4,6 +4,7 @@ from functools import wraps
 from app import db
 from app.models import User, Group, Attendance, PaymentRecord, TrainingSession, Report, SeasonPayment
 from datetime import datetime, timedelta
+from sqlalchemy import cast, String
 import json
 
 bp = Blueprint('admin', __name__, url_prefix='/admin')
@@ -43,7 +44,7 @@ def users():
 
     query = User.query
     if roles_filter:
-        query = query.filter(db.cast(User.roles, db.String).contains(f'"{roles_filter}"'))
+        query = query.filter(cast(User.roles, String).contains(f'"{roles_filter}"'))
 
     users = query.order_by(User.created_at.desc()).paginate(page=page, per_page=10)
     return render_template('admin/users.html', users=users, current_role=roles_filter)
