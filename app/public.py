@@ -1,4 +1,6 @@
-from flask import Blueprint, render_template, request, make_response
+from flask import Blueprint, render_template, request, make_response, flash, redirect, url_for
+from flask_mail import Message
+from app import mail
 
 bp = Blueprint('public', __name__)
 
@@ -18,6 +20,40 @@ def groups():
     from app.models import Group
     groups = Group.query.all()
     return render_template('public/groups.html', groups=groups)
+
+
+@bp.route('/contact', methods=['GET', 'POST'])
+def contact():
+    if request.method == 'POST':
+        # Honeypot anti-spam
+        if request.form.get('website'):
+            return redirect(url_for('public.contact'))
+
+        name = request.form.get('name', '').strip()
+        email = request.form.get('email', '').strip()
+        phone = request.form.get('phone', '').strip()
+        subject = request.form.get('subject', '').strip()
+        message = request.form.get('message', '').strip()
+
+        if not all([name, email, subject, message]):
+            flash('Veuillez remplir tous les champs obligatoires.', 'error')
+            return redirect(url_for('public.contact'))
+
+        try:
+            msg = Message(
+                subject=f'[Axel Club] {subject}',
+                recipients=['axelclubtournai@federe.com'],
+                reply_to=email,
+                body=f'Nom : {name}\nEmail : {email}\nTéléphone : {phone or "Non renseigné"}\n\nMessage :\n{message}'
+            )
+            mail.send(msg)
+            flash('Votre message a bien été envoyé. Nous vous répondrons dans les plus brefs délais.', 'success')
+        except Exception:
+            flash('Une erreur est survenue lors de l\'envoi. Contactez-nous directement par email.', 'error')
+
+        return redirect(url_for('public.contact'))
+
+    return render_template('public/contact.html')
 
 
 @bp.route('/robots.txt')

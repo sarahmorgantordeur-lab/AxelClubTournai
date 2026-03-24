@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - Axel Club Tournai</title>
+    <meta name="description" content="Contactez l'Axel Club Tournai pour toute question sur nos groupes, tarifs ou pour planifier un essai gratuit.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="{{ request.url }}">
+
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="fr_BE">
+    <meta property="og:title" content="Contact - Axel Club Tournai">
+    <meta property="og:description" content="Contactez l'Axel Club Tournai pour toute question.">
+    <meta property="og:image" content="{{ url_for('static', filename='images/logo.png', _external=True) }}">
+    <meta property="og:site_name" content="Axel Club Tournai">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/groups.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .contact-section {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: var(--space-xl) var(--space-md);
+            display: grid;
+            grid-template-columns: 1fr 1.6fr;
+            gap: var(--space-xl);
+            align-items: start;
+        }
+        @media (max-width: 700px) {
+            .contact-section { grid-template-columns: 1fr; }
+        }
+        .contact-info h2 {
+            color: var(--ice-deep);
+            margin-bottom: var(--space-md);
+        }
+        .contact-info p {
+            color: var(--text-light);
+            margin-bottom: var(--space-lg);
+            line-height: 1.7;
+        }
+        .contact-detail {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            margin-bottom: var(--space-md);
+            color: var(--text-main);
+        }
+        .contact-detail-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--ice-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+        .contact-detail a {
+            color: var(--ice-deep);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .contact-detail a:hover { text-decoration: underline; }
+
+        .contact-form-card {
+            background: var(--crystal-white);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-card);
+            padding: var(--space-xl);
+        }
+        .contact-form-card h2 {
+            color: var(--ice-deep);
+            margin-bottom: var(--space-lg);
+        }
+        .honeypot { display: none; }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="{{ url_for('public.home') }}"><img src="{{ url_for('static', filename='images/logo.png') }}" alt="Axel Club" class="logo-img"></a>
+            <div class="menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="{{ url_for('public.home') }}">Accueil</a></li>
+                <li><a href="{{ url_for('public.groups') }}">Groupes</a></li>
+                <li><a href="{{ url_for('public.about') }}">À Propos</a></li>
+                <li><a href="{{ url_for('public.contact') }}" class="active">Contact</a></li>
+                {% if current_user.is_authenticated %}
+                    <li><a href="{{ url_for('main.dashboard') }}">Tableau de Bord</a></li>
+                    <li><a href="{{ url_for('auth.profile') }}">Profil</a></li>
+                    {% if current_user.has_role('admin') %}
+                        <li><a href="{{ url_for('admin.dashboard') }}" class="btn btn-outline btn-sm">Administration</a></li>
+                    {% endif %}
+                    <li><a href="{{ url_for('auth.logout') }}">Déconnexion</a></li>
+                {% else %}
+                    <li><a href="{{ url_for('auth.login') }}">S'identifier</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    <section class="groups-hero">
+        <h1>Contactez-nous</h1>
+        <p>Une question, une demande d'essai gratuit ? Nous vous répondons dans les plus brefs délais.</p>
+    </section>
+
+    <div class="contact-section">
+        <div class="contact-info">
+            <h2>Nos coordonnées</h2>
+            <p>N'hésitez pas à nous contacter pour toute question sur nos groupes, les tarifs ou pour planifier votre essai gratuit.</p>
+
+            <div class="contact-detail">
+                <div class="contact-detail-icon">✉</div>
+                <div>
+                    <div style="font-size: 0.8rem; color: var(--text-light); margin-bottom: 2px;">Email</div>
+                    <a href="mailto:axelclubtournai@federe.com">axelclubtournai@federe.com</a>
+                </div>
+            </div>
+            <div class="contact-detail">
+                <div class="contact-detail-icon">📞</div>
+                <div>
+                    <div style="font-size: 0.8rem; color: var(--text-light); margin-bottom: 2px;">Téléphone</div>
+                    <a href="tel:+32491365328">+32 491 36 53 28</a>
+                </div>
+            </div>
+            <div class="contact-detail">
+                <div class="contact-detail-icon">📍</div>
+                <div>
+                    <div style="font-size: 0.8rem; color: var(--text-light); margin-bottom: 2px;">Localisation</div>
+                    <span>Tournai, Hainaut, Belgique</span>
+                </div>
+            </div>
+
+            <div style="margin-top: var(--space-lg); padding: var(--space-md); background: var(--ice-light); border-radius: var(--radius-sm);">
+                <strong style="color: var(--ice-deep);">Essai gratuit</strong>
+                <p style="margin: var(--space-xs) 0 0; font-size: 0.9rem; color: var(--text-light);">Tout nouveau membre a droit à une séance d'essai gratuite. Contactez-nous pour en savoir plus !</p>
+            </div>
+        </div>
+
+        <div class="contact-form-card">
+            <h2>Envoyer un message</h2>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}" style="margin-bottom: var(--space-md);">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <form method="POST" class="form">
+                <!-- Honeypot anti-spam -->
+                <div class="honeypot">
+                    <input type="text" name="website" tabindex="-1" autocomplete="off">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Nom et prénom <span style="color: var(--danger);">*</span></label>
+                        <input type="text" name="name" placeholder="Votre nom complet" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email <span style="color: var(--danger);">*</span></label>
+                        <input type="email" name="email" placeholder="votre@email.com" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Téléphone</label>
+                        <input type="tel" name="phone" placeholder="+32 XXX XX XX XX">
+                    </div>
+                    <div class="form-group">
+                        <label>Sujet <span style="color: var(--danger);">*</span></label>
+                        <select name="subject" required style="width: 100%; padding: 10px 14px; border: 1px solid var(--silver-light); border-radius: var(--radius-sm); background: var(--crystal-white); color: var(--text-main); font-size: 0.95rem;">
+                            <option value="">-- Choisissez un sujet --</option>
+                            <option value="Demande d'essai gratuit">Demande d'essai gratuit</option>
+                            <option value="Informations sur les groupes">Informations sur les groupes</option>
+                            <option value="Tarifs et inscriptions">Tarifs et inscriptions</option>
+                            <option value="Horaires">Horaires</option>
+                            <option value="Autre">Autre</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Message <span style="color: var(--danger);">*</span></label>
+                    <textarea name="message" rows="6" placeholder="Votre message..." required style="width: 100%; padding: 10px 14px; border: 1px solid var(--silver-light); border-radius: var(--radius-sm); background: var(--crystal-white); color: var(--text-main); font-size: 0.95rem; resize: vertical; font-family: inherit;"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Envoyer le message</button>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section footer-brand">
+                    <h4>⛸ Axel Club</h4>
+                    <p>Club de patinage artistique depuis 2010.<br>Passion, élégance et performance.</p>
+                    <div class="footer-sparkle"></div>
+                </div>
+                <div class="footer-section">
+                    <h4>Navigation</h4>
+                    <ul>
+                        <li><a href="{{ url_for('public.home') }}">Accueil</a></li>
+                        <li><a href="{{ url_for('public.groups') }}">Groupes</a></li>
+                        <li><a href="{{ url_for('public.about') }}">À Propos</a></li>
+                        <li><a href="{{ url_for('public.contact') }}">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <ul class="contact-list">
+                        <li>
+                            <span class="contact-icon">✉</span>
+                            <a href="mailto:axelclubtournai@federe.com">axelclubtournai@federe.com</a>
+                        </li>
+                        <li>
+                            <span class="contact-icon">📞</span>
+                            <a href="tel:+32491365328">+32 491 36 53 28</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Horaires</h4>
+                    <p>Entraînements selon le groupe<br>Consultez la page Groupes pour plus d'infos</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="footer-bottom-content">
+                    <p>&copy; 2026 Axel Club - Club de Patinage Artistique. Tous droits réservés.</p>
+                    <p class="footer-credit">Site réalisé avec ❤ par Sarah Tordeur</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/nav.js') }}"></script>
+</body>
+</html>

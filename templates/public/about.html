@@ -39,6 +39,7 @@
                 <li><a href="{{ url_for('public.home') }}">Accueil</a></li>
                 <li><a href="{{ url_for('public.groups') }}">Groupes</a></li>
                 <li><a href="{{ url_for('public.about') }}">À Propos</a></li>
+                <li><a href="{{ url_for('public.contact') }}">Contact</a></li>
                 {% if current_user.is_authenticated %}
                     <li><a href="{{ url_for('main.dashboard') }}">Tableau de Bord</a></li>
                     <li><a href="{{ url_for('auth.profile') }}">Profil</a></li>
@@ -101,6 +102,7 @@
                         <li><a href="{{ url_for('public.home') }}">Accueil</a></li>
                         <li><a href="{{ url_for('public.groups') }}">Groupes</a></li>
                         <li><a href="{{ url_for('public.about') }}">À Propos</a></li>
+                        <li><a href="{{ url_for('public.contact') }}">Contact</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">

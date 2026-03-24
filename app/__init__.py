@@ -1,11 +1,13 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+from flask_mail import Mail
 from config import Config
 import os
 
 db = SQLAlchemy()
 login_manager = LoginManager()
+mail = Mail()
 
 def create_app(config_class=Config):
     # Obtenir le chemin du répertoire racine du projet
@@ -17,6 +19,7 @@ def create_app(config_class=Config):
     
     db.init_app(app)
     login_manager.init_app(app)
+    mail.init_app(app)
     login_manager.login_view = 'auth.login'
     
     from app import models  # noqa: F401 — doit être importé avant create_all()
