@@ -30,8 +30,8 @@
                     {% endif %}
                     <li><a href="{{ url_for('auth.logout') }}">Déconnexion</a></li>
                 {% else %}
-                    <li><a href="{{ url_for('auth.login') }}">Connexion</a></li>
-                    <li><a href="{{ url_for('auth.register') }}">Inscription</a></li>
+                    <li><a href="{{ url_for('auth.login') }}">S'identifier</a></li>
+                    <li><a href="{{ url_for('auth.register') }}" class="nav-link-subtle">Pas de compte ?</a></li>
                 {% endif %}
             </ul>
         </div>
@@ -82,7 +82,7 @@
             </form>
 
             <p class="auth-footer">
-                Déjà inscrit ? <a href="{{ url_for('auth.login') }}">Se connecter</a>
+                Déjà un compte ? <a href="{{ url_for('auth.login') }}">S'identifier</a>
             </p>
         </div>
     </div>

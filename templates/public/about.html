@@ -31,8 +31,8 @@
                     {% endif %}
                     <li><a href="{{ url_for('auth.logout') }}">Déconnexion</a></li>
                 {% else %}
-                    <li><a href="{{ url_for('auth.login') }}">Connexion</a></li>
-                    <li><a href="{{ url_for('auth.register') }}">Inscription</a></li>
+                    <li><a href="{{ url_for('auth.login') }}">S'identifier</a></li>
+                    <li><a href="{{ url_for('auth.register') }}" class="nav-link-subtle">Pas de compte ?</a></li>
                 {% endif %}
             </ul>
         </div>
