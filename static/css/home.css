@@ -11,17 +11,10 @@
     left: 0;
     right: 0;
     z-index: 1000;
-    background: var(--frost);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(168, 212, 230, 0.3);
+    background: linear-gradient(135deg, var(--ice-dark) 0%, var(--ice-deep) 100%);
     padding: var(--space-sm) 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     transition: var(--transition-smooth);
-}
-
-.navbar.scrolled {
-    background: var(--crystal-white);
-    box-shadow: var(--shadow-soft);
 }
 
 .navbar .container {

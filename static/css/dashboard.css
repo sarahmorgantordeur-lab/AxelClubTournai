@@ -788,14 +788,12 @@
 
 /* ===== Navbar for Dashboard ===== */
 .navbar {
-    background: var(--crystal-white);
-    backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(168, 212, 230, 0.3);
+    background: linear-gradient(135deg, var(--ice-dark) 0%, var(--ice-deep) 100%);
     padding: var(--space-sm) 0;
     position: sticky;
     top: 0;
     z-index: 100;
-    box-shadow: var(--shadow-soft);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 .navbar .container {
@@ -865,7 +863,7 @@
     display: block;
     padding: 8px 12px;
     border-radius: var(--radius-full);
-    color: var(--text-medium);
+    color: rgba(255, 255, 255, 0.85);
     font-weight: 500;
     font-size: 0.85rem;
     transition: var(--transition-smooth);
@@ -881,8 +879,8 @@
 
 .navbar .nav-links a:hover,
 .navbar .nav-links a.active {
-    background: var(--ice-light);
-    color: var(--ice-deep);
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
 }
 
 /* Mobile menu toggle */
