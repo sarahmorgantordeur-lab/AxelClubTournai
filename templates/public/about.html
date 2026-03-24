@@ -4,7 +4,23 @@
     <meta charset="UTF-8">
     <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>À Propos - Axel Club</title>
+    <title>À Propos - Axel Club Tournai | Histoire et Mission</title>
+    <meta name="description" content="Découvrez l'Axel Tournai Fédéré : notre histoire depuis 2010, notre mission, notre coach Elisabeth Piers et nos valeurs autour du patinage artistique.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="{{ request.url }}">
+
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="fr_BE">
+    <meta property="og:url" content="{{ request.url }}">
+    <meta property="og:title" content="À Propos - Axel Club Tournai">
+    <meta property="og:description" content="L'Axel Tournai Fédéré, club de patinage artistique depuis 2010. Découvrez notre histoire, notre mission et notre équipe.">
+    <meta property="og:image" content="{{ url_for('static', filename='images/logo.png', _external=True) }}">
+    <meta property="og:site_name" content="Axel Club Tournai">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="À Propos - Axel Club Tournai">
+    <meta name="twitter:description" content="L'Axel Tournai Fédéré, club de patinage artistique depuis 2010.">
+
     <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/about.css') }}">
@@ -66,7 +82,7 @@
         <section>
             <h2>Notre Coach</h2>
             <p>
-                Notre coach expérimeentée Elisabeth Piers accompagne chaque patineur à son rythme et s'adapte à ses objectifs.
+                Notre coach expérimentée Elisabeth Piers accompagne chaque patineur à son rythme et s'adapte à ses objectifs.
             </p>
         </section>
     </div>

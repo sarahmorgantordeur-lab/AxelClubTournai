@@ -4,7 +4,46 @@
     <meta charset="UTF-8">
     <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Accueil - Axel Club</title>
+    <title>Axel Club Tournai - Club de Patinage Artistique en Belgique</title>
+    <meta name="description" content="Axel Club Tournai, club de patinage artistique affilié à la FFPA. Cours pour tous les âges dès 3 ans, groupes par niveau, compétitions. Essai gratuit !">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="{{ request.url }}">
+
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="fr_BE">
+    <meta property="og:url" content="{{ request.url }}">
+    <meta property="og:title" content="Axel Club Tournai - Club de Patinage Artistique">
+    <meta property="og:description" content="Club de patinage artistique à Tournai, Belgique. Cours pour tous les âges dès 3 ans, groupes par niveau et compétitions. Essai gratuit !">
+    <meta property="og:image" content="{{ url_for('static', filename='images/logo.png', _external=True) }}">
+    <meta property="og:site_name" content="Axel Club Tournai">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Axel Club Tournai - Club de Patinage Artistique">
+    <meta name="twitter:description" content="Club de patinage artistique à Tournai, Belgique. Cours pour tous les âges dès 3 ans.">
+    <meta name="twitter:image" content="{{ url_for('static', filename='images/logo.png', _external=True) }}">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SportsClub",
+      "name": "Axel Club Tournai",
+      "alternateName": "Axel Tournai Fédéré",
+      "description": "Club de patinage artistique affilié à la Fédération Francophone de Patinage Artistique, situé à Tournai, Belgique.",
+      "url": "{{ request.host_url }}",
+      "logo": "{{ url_for('static', filename='images/logo.png', _external=True) }}",
+      "email": "axelclubtournai@federe.com",
+      "telephone": "+32491365328",
+      "foundingDate": "2010",
+      "sport": "Patinage artistique",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Tournai",
+        "addressRegion": "Hainaut",
+        "addressCountry": "BE"
+      }
+    }
+    </script>
+
     <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">

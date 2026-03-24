@@ -1,264 +1,176 @@
-# Axel Club - Système de Gestion de Club de Patinage
+# Axel Club Tournai — Application de Gestion
 
-Un système ERP complet pour gérer un club de patinage artistique avec Flask et SQLAlchemy.
+Application web de gestion pour le club de patinage artistique **Axel Tournai Fédéré**, développée avec Flask et déployée sur Render.
 
-## 🎯 Fonctionnalités
+**Site en production :** https://axelclubtournai.onrender.com
 
-### Authentification & Rôles
-- ✅ Inscription et connexion des utilisateurs
-- ✅ Gestion multi-rôles: Patineur, Coach, Comité, Parents, Admin
-- ✅ Profils utilisateurs personnalisables
+---
 
-### Gestion des Membres
-- ✅ Création/Modification/Suppression de membres
-- ✅ Suivi des profils (nom, email, téléphone, groupe, statut)
-- ✅ Statuts: Actif, Inactif, Suspendu
-- ✅ Informations d'urgence et numéro de licence
+## Fonctionnalités
 
-### Gestion des Groupes
-- ✅ Création de groupes par niveau (Débutant, Intermédiaire, Avancé, Compétition)
-- ✅ Gestion des coachs
-- ✅ Définition des horaires et tarifs
-- ✅ Suivi de la capacité des groupes
+**Pages publiques**
+- Accueil avec présentation du club
+- Page Groupes avec tarifs et horaires
+- Page À propos (histoire, mission, coach)
+- SEO : meta descriptions, Open Graph, JSON-LD SportsClub, sitemap.xml, robots.txt
 
-### Suivi des Entraînements
-- ✅ Enregistrement des séances d'entraînement
-- ✅ Gestion des présences (Présent, Absent, Retard, Justifié)
-- ✅ Notes des coachs sur les séances
-- ✅ Taux de présence automatique
+**Espace membre**
+- Inscription et connexion
+- Tableau de bord personnel (groupe, taux de présence, paiements)
+- Profil modifiable (coordonnées, numéros d'urgence, date de naissance)
+- Consultation des paiements de la saison
 
-### Gestion Financière
-- ✅ Enregistrement des paiements
-- ✅ Suivi du statut des paiements (Payé, En attente, En retard)
-- ✅ Différents types de paiement (Mensuel, Annuel, Leçons, etc.)
-- ✅ Rapports financiers
+**Panneau d'administration (admin uniquement)**
+- Gestion des membres (création, modification, suppression, statuts)
+- Gestion des groupes (niveau, horaires, tarifs, capacité)
+- Suivi des présences par séance
+- Gestion financière par saison (licence, saison Tournai, Wasquehal P1/P2, compétitions)
+- Rapports : présences, finances, membres par groupe
 
-### Rapports & Analytics
-- ✅ Rapport de présences (taux d'assiduité par membre)
-- ✅ Rapport financier (revenu, montants en attente)
-- ✅ Rapport de membres par groupe
-- ✅ Statistiques générales du club
+---
 
-### Interfaces
-- ✅ Pages publiques (Accueil, Groupes, À propos)
-- ✅ Tableau de bord personnel pour chaque membre
-- ✅ Panneau d'administration complet pour les admins
-- ✅ Responsive design pour mobile/tablet
+## Stack technique
 
-## 📁 Structure du Projet
+| Composant | Technologie |
+|-----------|-------------|
+| Backend | Python 3.11 / Flask 3.0 |
+| ORM | SQLAlchemy 2.0 + Flask-SQLAlchemy |
+| Auth | Flask-Login |
+| Base de données | PostgreSQL (prod) / SQLite (dev) |
+| Serveur WSGI | Gunicorn |
+| Déploiement | Docker + Render |
+
+---
+
+## Structure du projet
 
 ```
 patinage_club/
 ├── app/
-│   ├── __init__.py           # Initialisation Flask & Blueprint
-│   ├── models.py             # Modèles SQLAlchemy (User, Member, Group, etc.)
-│   ├── services.py           # Logique métier
-│   ├── routes.py             # Routes principales
-│   ├── auth.py               # Routes authentification
-│   ├── admin.py              # Routes administration
-│   └── public.py             # Routes publiques
+│   ├── __init__.py       # Application factory, enregistrement des blueprints
+│   ├── models.py         # Modèles SQLAlchemy (User, Group, Attendance, SeasonPayment)
+│   ├── services.py       # Logique métier
+│   ├── routes.py         # Blueprint `main` (dashboard, présences, API)
+│   ├── auth.py           # Blueprint `auth` (inscription, connexion, profil)
+│   ├── admin.py          # Blueprint `admin` (gestion complète)
+│   ├── public.py         # Blueprint `public` (pages publiques, sitemap, robots)
+│   └── schema.sql        # Schéma SQL de référence
 ├── templates/
-│   ├── auth/                 # Templates authentification
-│   ├── admin/                # Templates administration
-│   ├── public/               # Templates publics
-│   └── *.html                # Templates utilisateur
+│   ├── auth/             # Connexion, inscription, profil
+│   ├── admin/            # Dashboard et pages d'administration
+│   ├── main/             # Dashboard membre, présences
+│   └── public/           # Accueil, groupes, à propos, sitemap, robots
 ├── static/
-│   ├── css/style.css         # Styles globaux
-│   └── js/admin.js           # Scripts JavaScript
-├── config.py                 # Configuration (dev, prod, test)
-├── run.py                    # Point d'entrée de l'application
-├── requirements.txt          # Dépendances Python
-├── .env                      # Variables d'environnement
-└── README.md                 # Ce fichier
+│   ├── css/              # Feuilles de style (base, home, admin, auth…)
+│   ├── js/               # nav.js (menu burger)
+│   └── images/           # logo.png (fond transparent)
+├── scripts/              # Utilitaires CLI (init_db, add_group, check_groups)
+├── config.py             # Configurations (Dev, Prod, Test)
+├── run.py                # Point d'entrée
+├── Dockerfile
+└── requirements.txt
 ```
 
-## 🚀 Installation & Démarrage
+---
+
+## Installation locale
 
 ### Prérequis
-- Python 3.8+
-- pip (gestionnaire de paquets Python)
 
-### Étapes d'installation
+- Python 3.11+
+- pip
 
-1. **Installer les dépendances**
+### Démarrage
+
 ```bash
-cd patinage_club
+# 1. Créer et activer l'environnement virtuel
+python3 -m venv .venv
+source .venv/bin/activate      # macOS/Linux
+.venv\Scripts\activate         # Windows
+
+# 2. Installer les dépendances
 pip install -r requirements.txt
-```
 
-2. **Configurer les variables d'environnement**
-```bash
-# Éditer .env avec vos paramètres
-nano .env
-```
+# 3. Configurer les variables d'environnement
+cp .env.example .env           # puis éditer .env
 
-3. **Lancer le serveur**
-```bash
+# 4. Lancer le serveur
 python run.py
 ```
 
-Le serveur démarre sur `http://127.0.0.1:5000/`
+L'application est accessible sur `http://127.0.0.1:5000`.
 
-## 📊 Modèles de Données
+### Variables d'environnement
 
-### User
+| Variable | Description | Exemple |
+|----------|-------------|---------|
+| `SECRET_KEY` | Clé secrète Flask (obligatoire en prod) | `une-clé-aléatoire-longue` |
+| `DATABASE_URL` | URL de connexion PostgreSQL (optionnel en dev) | `postgresql://user:pass@host/db` |
+
+En développement, sans `DATABASE_URL`, l'application utilise SQLite (`instance/patinage_club.db`).
+
+---
+
+## Déploiement sur Render
+
+Le projet se déploie via Docker sur Render.
+
+1. Créer un **Web Service** sur Render en pointant sur ce dépôt (Runtime : Docker)
+2. Créer une **base de données PostgreSQL** sur Render
+3. Ajouter les variables d'environnement dans Render :
+   - `SECRET_KEY` — générer une valeur aléatoire sécurisée
+   - `DATABASE_URL` — copier l'**Internal Database URL** fournie par Render PostgreSQL
+4. Déployer — les tables sont créées automatiquement au démarrage (`db.create_all()`)
+
+Pour créer le premier compte administrateur via le shell Render :
+
 ```python
-- id (PK)
-- username (unique)
-- email (unique)
-- password_hash
-- role: admin, coach, parent, patineur
-- is_active
-- created_at
+from app import create_app, db
+from app.models import User
+app = create_app()
+with app.app_context():
+    u = User.query.filter_by(username='votre_username').first()
+    u.roles = ['admin']
+    db.session.commit()
 ```
 
-### Member
-```python
-- id (PK)
-- user_id (FK)
-- first_name, last_name
-- date_of_birth
-- phone
-- emergency_contact
-- license_number (unique)
-- group_id (FK)
-- status: active, inactive, suspended
-- joined_date
-```
+---
 
-### Group
-```python
-- id (PK)
-- name (unique)
-- level: Débutant, Intermédiaire, Avancé, Compétition
-- coach_id (FK)
-- max_members
-- schedule
-- price_per_month
-- description
-```
+## Rôles utilisateurs
 
-### Attendance
-```python
-- id (PK)
-- member_id (FK)
-- session_id (FK)
-- session_date
-- status: present, absent, late, excused
-- notes
-- recorded_by_id (FK)
-```
+| Rôle | Accès |
+|------|-------|
+| `patineur` | Tableau de bord, profil, présences, paiements personnels |
+| `parent` | Tableau de bord, profil, paiements de ses enfants |
+| `admin` | Tout ce qui précède + panneau d'administration complet |
 
-### PaymentRecord
-```python
-- id (PK)
-- member_id (FK)
-- amount
-- payment_type: monthly, annual, lessons
-- payment_method: cash, card, transfer, check
-- payment_date
-- status: paid, pending, overdue, cancelled
-```
+L'assignation à un groupe est réservée aux administrateurs.
 
-## 🔑 Comptes de Démonstration
+---
 
-Après la première exécution, créez des comptes via l'interface d'inscription.
+## Routes principales
 
-## 📱 Pages Disponibles
+| Route | Description |
+|-------|-------------|
+| `/` | Accueil public |
+| `/groups` | Groupes disponibles |
+| `/about` | À propos du club |
+| `/robots.txt` | Fichier robots |
+| `/sitemap.xml` | Sitemap XML |
+| `/auth/login` | Connexion |
+| `/auth/register` | Inscription |
+| `/auth/profile` | Mon profil |
+| `/dashboard` | Tableau de bord membre |
+| `/my-attendance` | Mes présences |
+| `/admin/` | Dashboard administrateur |
+| `/admin/members` | Gestion des membres |
+| `/admin/groups` | Gestion des groupes |
+| `/admin/attendance` | Suivi des présences |
+| `/admin/payments` | Gestion financière |
+| `/admin/reports` | Rapports |
 
-### Publiques
-- `/` - Accueil
-- `/about` - À propos
-- `/groups` - Voir les groupes
+---
 
-### Authentification
-- `/auth/login` - Connexion
-- `/auth/register` - Inscription
-- `/auth/profile` - Mon profil
-- `/auth/logout` - Déconnexion
+## Auteur
 
-### Tableau de Bord Personnel
-- `/dashboard` - Tableau de bord
-- `/my-attendance` - Mes présences
-
-### Administration (Admin uniquement)
-- `/admin/` - Dashboard admin
-- `/admin/members` - Gestion des membres
-- `/admin/members/create` - Ajouter un membre
-- `/admin/members/<id>/edit` - Modifier un membre
-- `/admin/groups` - Gestion des groupes
-- `/admin/groups/create` - Créer un groupe
-- `/admin/attendance` - Gestion des présences
-- `/admin/payments` - Gestion des paiements
-- `/admin/reports` - Rapports et statistics
-
-## 🔐 Sécurité
-
-- ✅ Hashage des mots de passe avec Werkzeug
-- ✅ Sessions Flask-Login pour gérer les utilisateurs connectés
-- ✅ Décorateurs pour contrôler l'accès par rôle
-- ✅ CSRF protection avec Flask-WTF
-
-## 🎨 Design
-
-- Responsive design (mobile, tablet, desktop)
-- Palette de couleurs professionnelle
-- Interface intuitive et facile à utiliser
-- Dark/Light themes compatibles
-
-## 📈 Déploiement
-
-### En Local
-```bash
-python3 run.py
-```
-
-### En Production (avec Gunicorn)
-```bash
-pip install gunicorn
-gunicorn -w 4 -b 0.0.0.0:5000 run:app
-```
-
-### Avec Docker
-```dockerfile
-FROM python:3.9
-WORKDIR /app
-COPY . .
-RUN pip install -r requirements.txt
-CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:5000", "run:app"]
-```
-
-## 🔧 Configuration
-
-Fichier `config.py`:
-```python
-class DevelopmentConfig:
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///patinage_club.db'
-    DEBUG = True
-    
-class ProductionConfig:
-    SQLALCHEMY_DATABASE_URI = 'mysql://user:pass@localhost/patinage'
-    DEBUG = False
-```
-
-## 📚 Dépendances
-
-- Flask 3.0.0
-- Flask-SQLAlchemy 3.1.1
-- Flask-Login 0.6.3
-- Flask-WTF 1.2.1
-- Werkzeug 3.0.1
-- python-dotenv 1.0.0
-
-## 🤝 Contribution
-
-N'hésitez pas à améliorer ce projet!
-
-## 📝 Licence
-
-MIT License
-
-## 👥 Auteur
-
-Créé pour le Axel Club de Patinage Artistique
-# AxelClubTournai
+Développé par **Sarah Tordeur** pour l'Axel Club Tournai.

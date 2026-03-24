@@ -1,5 +1,4 @@
-from flask import Blueprint, render_template
-from flask_login import login_required, current_user
+from flask import Blueprint, render_template, request, make_response
 
 bp = Blueprint('public', __name__)
 
@@ -19,3 +18,19 @@ def groups():
     from app.models import Group
     groups = Group.query.all()
     return render_template('public/groups.html', groups=groups)
+
+
+@bp.route('/robots.txt')
+def robots():
+    sitemap_url = request.host_url.rstrip('/') + '/sitemap.xml'
+    response = make_response(render_template('public/robots.txt', sitemap_url=sitemap_url))
+    response.headers['Content-Type'] = 'text/plain'
+    return response
+
+
+@bp.route('/sitemap.xml')
+def sitemap():
+    base_url = request.host_url
+    response = make_response(render_template('public/sitemap.xml', base_url=base_url))
+    response.headers['Content-Type'] = 'application/xml'
+    return response
