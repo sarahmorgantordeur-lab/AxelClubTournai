@@ -225,6 +225,19 @@ body {
     opacity: 0.8;
 }
 
+.nav-links a.btn {
+    background: rgba(255, 255, 255, 0.15);
+    color: white;
+    border-color: rgba(255, 255, 255, 0.4);
+    opacity: 1;
+}
+
+.nav-links a.btn:hover {
+    background: rgba(255, 255, 255, 0.28);
+    color: white;
+    opacity: 1;
+}
+
 /* Stats */
 .stats {
     display: grid;

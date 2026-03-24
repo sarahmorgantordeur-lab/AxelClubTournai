@@ -870,6 +870,17 @@
     text-align: center;
 }
 
+.navbar .nav-links a.btn {
+    background: rgba(255, 255, 255, 0.15);
+    color: white;
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+.navbar .nav-links a.btn:hover {
+    background: rgba(255, 255, 255, 0.28);
+    color: white;
+}
+
 @media (min-width: 768px) {
     .navbar .nav-links a {
         padding: 10px 16px;
