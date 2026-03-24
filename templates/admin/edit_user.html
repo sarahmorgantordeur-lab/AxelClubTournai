@@ -64,6 +64,11 @@
     <nav class="navbar">
         <div class="container">
             <a href="{{ url_for('public.home') }}"><img src="{{ url_for('static', filename='images/logo.png') }}" alt="Axel Club" class="logo-img"></a>
+            <div class="menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
             <ul class="nav-links">
                 <li><a href="{{ url_for('admin.dashboard') }}">Tableau de Bord</a></li>
                 <li><a href="{{ url_for('admin.users') }}">Membres</a></li>
