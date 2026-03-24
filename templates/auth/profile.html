@@ -72,8 +72,7 @@
                     {% endif %}
                     <li><a href="{{ url_for('auth.logout') }}">Déconnexion</a></li>
                 {% else %}
-                    <li><a href="{{ url_for('auth.login') }}" class="active">Connexion</a></li>
-                    <li><a href="{{ url_for('auth.register') }}">Inscription</a></li>
+                    <li><a href="{{ url_for('auth.login') }}">S'identifier</a></li>
                 {% endif %}
             </ul>
         </div>
