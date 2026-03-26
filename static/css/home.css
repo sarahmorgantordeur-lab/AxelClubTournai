@@ -363,7 +363,6 @@
     font-size: clamp(2rem, 6vw, 3.5rem);
     margin-bottom: var(--space-md);
     color: var(--ice-deep);
-    animation: fadeIn 1s ease-out;
 }
 
 .hero h1 span {
@@ -374,33 +373,15 @@
     margin-top: var(--space-xs);
 }
 
-/* Glitter effect on main title */
+/* Glitter effect on main title - animation désactivée */
 .hero h1 .glitter {
-    background: linear-gradient(
-        90deg,
-        var(--ice-deep) 0%,
-        var(--gold) 20%,
-        var(--rose-gold) 40%,
-        var(--gold) 60%,
-        var(--ice-deep) 80%,
-        var(--gold) 100%
-    );
-    background-size: 200% auto;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    animation: shimmerWave 3s linear infinite;
+    color: var(--ice-deep);
 }
 
 .hero p {
     font-size: clamp(1rem, 2.5vw, 1.25rem);
     color: var(--text-medium);
     margin-bottom: var(--space-lg);
-    animation: fadeIn 1s ease-out 0.2s backwards;
-}
-
-.hero .btn {
-    animation: fadeIn 1s ease-out 0.4s backwards;
 }
 
 .hero-buttons {
@@ -429,7 +410,6 @@
     justify-content: center;
     font-size: 2rem;
     box-shadow: var(--shadow-glow), 0 0 30px rgba(212, 175, 55, 0.2);
-    animation: float 3s ease-in-out infinite;
     position: relative;
 }
 
@@ -448,23 +428,8 @@
     inset: -4px;
     border-radius: 50%;
     background: linear-gradient(45deg, var(--gold), var(--silver), var(--rose-gold), var(--gold));
-    background-size: 200% 200%;
-    animation: shimmerWave 2s linear infinite;
     z-index: -1;
     opacity: 0.8;
-}
-
-.hero-icon::after {
-    content: '';
-    position: absolute;
-    top: -8px;
-    right: -8px;
-    width: 12px;
-    height: 12px;
-    background: var(--gold);
-    border-radius: 50%;
-    box-shadow: 0 0 15px var(--gold);
-    animation: twinkle 1.5s ease-in-out infinite;
 }
 
 /* ===== Features Section ===== */
