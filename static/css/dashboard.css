@@ -800,8 +800,6 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    flex-wrap: wrap;
-    gap: var(--space-sm);
 }
 
 .navbar .logo {
@@ -903,6 +901,7 @@
     padding: 8px;
     background: none;
     border: none;
+    margin-left: auto;
 }
 
 @media (min-width: 768px) {

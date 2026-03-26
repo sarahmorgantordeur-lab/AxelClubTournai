@@ -24,8 +24,6 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    flex-wrap: wrap;
-    gap: var(--space-sm);
 }
 
 .logo {
@@ -68,6 +66,7 @@
     padding: 8px;
     background: none;
     border: none;
+    margin-left: auto;
 }
 
 @media (min-width: 992px) {
