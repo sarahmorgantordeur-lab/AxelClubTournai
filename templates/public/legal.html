@@ -4,30 +4,48 @@
     <meta charset="UTF-8">
     <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>À Propos - Axel Club Tournai | Histoire et Mission</title>
-    <meta name="description" content="Découvrez l'Axel Tournai Fédéré : notre histoire depuis 2010, notre mission, notre coach Elisabeth Piers et nos valeurs autour du patinage artistique.">
-    <meta name="robots" content="index, follow">
-    <link rel="canonical" href="{{ request.url }}">
-
-    <meta property="og:type" content="website">
-    <meta property="og:locale" content="fr_BE">
-    <meta property="og:url" content="{{ request.url }}">
-    <meta property="og:title" content="À Propos - Axel Club Tournai">
-    <meta property="og:description" content="L'Axel Tournai Fédéré, club de patinage artistique depuis 2010. Découvrez notre histoire, notre mission et notre équipe.">
-    <meta property="og:image" content="{{ url_for('static', filename='images/logo.png', _external=True) }}">
-    <meta property="og:site_name" content="Axel Club Tournai">
-
-    <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="À Propos - Axel Club Tournai">
-    <meta name="twitter:description" content="L'Axel Tournai Fédéré, club de patinage artistique depuis 2010.">
-
+    <title>Mentions Légales - Axel Club Tournai</title>
+    <meta name="robots" content="noindex, follow">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/about.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .legal-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: calc(80px + var(--space-xl)) var(--space-md) var(--space-xl);
+        }
+        .legal-container h1 {
+            color: var(--ice-deep);
+            margin-bottom: var(--space-lg);
+            font-size: clamp(1.6rem, 4vw, 2.2rem);
+        }
+        .legal-container h2 {
+            color: var(--ice-dark);
+            margin-top: var(--space-lg);
+            margin-bottom: var(--space-sm);
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .legal-container p, .legal-container li {
+            color: var(--text-medium);
+            line-height: 1.8;
+            font-size: 0.95rem;
+        }
+        .legal-container ul {
+            padding-left: var(--space-md);
+            margin-bottom: var(--space-sm);
+        }
+        .legal-divider {
+            border: none;
+            border-top: 1px solid var(--silver-light);
+            margin: var(--space-lg) 0;
+        }
+    </style>
 </head>
 <body>
-     <nav class="navbar">
+    <nav class="navbar">
         <div class="container">
             <a href="{{ url_for('public.home') }}"><img src="{{ url_for('static', filename='images/logo.png') }}" alt="Axel Club" class="logo-img"></a>
             <div class="menu-toggle">
@@ -54,41 +72,76 @@
         </div>
     </nav>
 
-    <div class="container">
-        <h1>À Propos de Nous</h1>
-        
-        <section>
-            <h2>Notre Histoire</h2>
-            <p>
-                L'Axel Tournai Fédéré est un club de patinage artistique affilié à la Fédération Francophone de Patinage Artistique et à la Fédération Nationale.<br>
-                <br>
-                Son objectif est de promouvoir ce sport dans la région du Tournaisis et dans le Hainaut Occidental.<br>
-                <br>
-                Nous acceptons les enfants dès l'âge de 3 ans et les laissons progresser à leur rythme. Le but du club est d'apprendre tout en s'amusant. Suivant l'évolution de l'enfant, il peut faire de la compétition s'il le désire mais ce n'est pas obligatoire.<br>
-                <br>
-                Le patinage artistique est un sport qui permet de valoriser l'équilibre, le rythme et le schéma corporel. Celui-ci n'est pas facile car les élèves vont progresser et parfois stagner tant que l'élément n'est pas atteint.<br>
-                <br>
-                Tout nouveau membre qui rejoint l'axel a droit à un essai gratuit.
-            </p>
-        </section>
+    <div class="legal-container">
+        <h1>Mentions Légales</h1>
+        <p>Conformément aux dispositions légales en vigueur, voici les informations relatives à l'éditeur et à l'hébergement de ce site.</p>
 
-        <section>
-            <h2>Notre Mission</h2>
-            <p>
-                Promouvoir la pratique du patinage artistique dans un environnement 
-                sain, sécurisé et bienveillant.
-            </p>
-        </section>
+        <hr class="legal-divider">
 
-        <section>
-            <h2>Notre Coach</h2>
-            <p>
-                Notre coach expérimentée Elisabeth Piers accompagne chaque patineur à son rythme et s'adapte à ses objectifs.
-            </p>
-        </section>
+        <h2>1. Éditeur du site</h2>
+        <p>
+            <strong>Axel Tournai Fédéré</strong><br>
+            Club de patinage artistique affilié à la Fédération Francophone de Patinage Artistique (FFPA)<br>
+            et à la Fédération Nationale de Patinage.<br>
+            Tournai, Hainaut, Belgique<br>
+            Email : <a href="mailto:axelclubtournai@federe.com">axelclubtournai@federe.com</a><br>
+            Téléphone : <a href="tel:+32491365328">+32 491 36 53 28</a>
+        </p>
+
+        <hr class="legal-divider">
+
+        <h2>2. Hébergement</h2>
+        <p>
+            Ce site est hébergé par <strong>Render</strong><br>
+            Render Services, Inc.<br>
+            San Francisco, CA, États-Unis<br>
+            <a href="https://render.com" target="_blank" rel="noopener noreferrer">https://render.com</a>
+        </p>
+
+        <hr class="legal-divider">
+
+        <h2>3. Propriété intellectuelle</h2>
+        <p>
+            L'ensemble du contenu de ce site (textes, images, logos) est la propriété exclusive de l'Axel Tournai Fédéré.
+            Toute reproduction, même partielle, est interdite sans autorisation préalable.
+        </p>
+
+        <hr class="legal-divider">
+
+        <h2>4. Données personnelles</h2>
+        <p>
+            Les données personnelles collectées via ce site (nom, prénom, email, téléphone) sont utilisées
+            exclusivement dans le cadre de la gestion du club et ne sont en aucun cas cédées à des tiers.
+        </p>
+        <p>
+            Conformément au Règlement Général sur la Protection des Données (RGPD), vous disposez d'un droit
+            d'accès, de rectification et de suppression de vos données. Pour exercer ce droit, contactez-nous à :
+            <a href="mailto:axelclubtournai@federe.com">axelclubtournai@federe.com</a>.
+        </p>
+
+        <hr class="legal-divider">
+
+        <h2>5. Cookies</h2>
+        <p>
+            Ce site utilise uniquement des cookies techniques nécessaires au fonctionnement de la session
+            (authentification). Aucun cookie publicitaire ou de suivi n'est utilisé.
+        </p>
+
+        <hr class="legal-divider">
+
+        <h2>6. Responsabilité</h2>
+        <p>
+            L'Axel Tournai Fédéré s'efforce de maintenir les informations de ce site à jour et exactes.
+            Toutefois, il ne peut être tenu responsable des erreurs ou omissions, ni de l'utilisation
+            qui pourrait en être faite.
+        </p>
+
+        <hr class="legal-divider">
+
+        <p style="font-size: 0.85rem; color: var(--text-light);">Dernière mise à jour : mars 2026</p>
     </div>
 
-   <footer>
+    <footer>
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section footer-brand">

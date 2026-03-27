@@ -56,6 +56,11 @@ def contact():
     return render_template('public/contact.html')
 
 
+@bp.route('/mentions-legales')
+def legal():
+    return render_template('public/legal.html')
+
+
 @bp.route('/robots.txt')
 def robots():
     sitemap_url = request.host_url.rstrip('/') + '/sitemap.xml'
