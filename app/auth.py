@@ -63,11 +63,10 @@ def login():
         return redirect(url_for('main.dashboard'))
 
     if request.method == 'POST':
-        username = request.form.get('username')
+        email = request.form.get('email')
         password = request.form.get('password')
 
-        # Recherche insensible à la casse pour le username
-        user = User.query.filter(User.username.ilike(username)).first()
+        user = User.query.filter(User.email.ilike(email)).first()
 
         if user and user.check_password(password) and user.is_active:
             login_user(user)
