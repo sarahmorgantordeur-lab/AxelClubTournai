@@ -27,6 +27,15 @@ def create_app(config_class=Config):
     with app.app_context():
         db.create_all()
         from app.models import Site
+        from sqlalchemy import text
+        # Ajoute site_id sur attendances si elle n'existe pas (migration sans Flask-Migrate)
+        try:
+            db.session.execute(text(
+                'ALTER TABLE attendances ADD COLUMN IF NOT EXISTS site_id INTEGER REFERENCES sites(id)'
+            ))
+            db.session.commit()
+        except Exception:
+            db.session.rollback()
         if not Site.query.first():
             db.session.add_all([Site(name='Tournai'), Site(name='Wasquehal')])
             db.session.commit()
