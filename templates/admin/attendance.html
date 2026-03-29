@@ -56,7 +56,7 @@
                             <tbody>
                                 {% for attendance in attendances %}
                                     <tr>
-                                        <td><strong>{{ attendance.member.first_name }} {{ attendance.member.last_name }}</strong></td>
+                                        <td><strong>{{ attendance.user.first_name }} {{ attendance.user.last_name }}</strong></td>
                                         <td>{{ attendance.session_date.strftime('%d/%m/%Y à %H:%M') }}</td>
                                         <td>
                                             <span class="badge {% if attendance.status == 'present' %}badge-success{% elif attendance.status == 'absent' %}badge-danger{% elif attendance.status == 'late' %}badge-warning{% else %}badge-silver{% endif %}">
