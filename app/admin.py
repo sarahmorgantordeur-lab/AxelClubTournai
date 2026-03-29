@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request, redirect, url_for, flash,
 from flask_login import login_required, current_user
 from functools import wraps
 from app import db
-from app.models import User, Group, Attendance, PaymentRecord, TrainingSession, Report, SeasonPayment
+from app.models import User, Group, Attendance, PaymentRecord, TrainingSession, Report, SeasonPayment, Site
 from datetime import datetime, timedelta
 from sqlalchemy import cast, String
 import json
@@ -54,7 +54,7 @@ def users():
 @admin_required
 def create_user():
     groups = Group.query.all()
-    # Récupérer tous les patineurs pour la sélection des enfants
+    sites = Site.query.all()
     patineurs = User.query_by_role('patineur').all()
 
     if request.method == 'POST':
@@ -100,7 +100,14 @@ def create_user():
         )
         user.set_password(request.form.get('password', 'default123'))
         db.session.add(user)
-        db.session.commit()
+        db.session.flush()  # obtenir l'id avant commit
+
+        # Gérer les sites
+        site_ids = request.form.getlist('site_ids')
+        for sid in site_ids:
+            s = Site.query.get(int(sid))
+            if s:
+                user.sites.append(s)
 
         # Gérer les relations parent-enfant
         if 'parent' in roles:
@@ -109,12 +116,12 @@ def create_user():
                 child = User.query.get(int(child_id))
                 if child:
                     user.children.append(child)
-            db.session.commit()
 
+        db.session.commit()
         flash('Utilisateur créé avec succès', 'success')
         return redirect(url_for('admin.users'))
 
-    return render_template('admin/create_user.html', groups=groups, patineurs=patineurs)
+    return render_template('admin/create_user.html', groups=groups, sites=sites, patineurs=patineurs)
 
 @bp.route('/users/<int:user_id>/edit', methods=['GET', 'POST'])
 @login_required
@@ -122,7 +129,7 @@ def create_user():
 def edit_user(user_id):
     user = User.query.get_or_404(user_id)
     groups = Group.query.all()
-    # Récupérer tous les patineurs pour la sélection des enfants
+    sites = Site.query.all()
     patineurs = User.query_by_role('patineur').all()
 
     if request.method == 'POST':
@@ -164,15 +171,22 @@ def edit_user(user_id):
                 if child:
                     user.children.append(child)
         else:
-            # Si plus parent, supprimer tous les enfants
             for child in user.get_children_list():
                 user.children.remove(child)
+
+        # Gérer les sites
+        site_ids = request.form.getlist('site_ids')
+        user.sites.clear()
+        for sid in site_ids:
+            s = Site.query.get(int(sid))
+            if s:
+                user.sites.append(s)
 
         db.session.commit()
         flash('Utilisateur mis à jour', 'success')
         return redirect(url_for('admin.users'))
 
-    return render_template('admin/edit_user.html', user=user, groups=groups, patineurs=patineurs)
+    return render_template('admin/edit_user.html', user=user, groups=groups, sites=sites, patineurs=patineurs)
 
 @bp.route('/users/<int:user_id>/delete', methods=['POST'])
 @login_required
@@ -257,10 +271,14 @@ def attendance():
 @admin_required
 def record_attendance():
     groups = Group.query.all()
+    sites = Site.query.all()
 
     if request.method == 'POST':
         group_id = request.form.get('group_id')
         session_date = datetime.fromisoformat(request.form.get('session_date'))
+        site_id = request.form.get('site_id') or None
+        if site_id:
+            site_id = int(site_id)
 
         for user_id in request.form.getlist('user_ids'):
             status = request.form.get(f'status_{user_id}', 'present')
@@ -271,6 +289,7 @@ def record_attendance():
                 session_date=session_date,
                 status=status,
                 notes=notes,
+                site_id=site_id,
                 recorded_by_id=current_user.id
             )
             db.session.add(attendance)
@@ -279,7 +298,7 @@ def record_attendance():
         flash('Présences enregistrées', 'success')
         return redirect(url_for('admin.attendance'))
 
-    return render_template('admin/record_attendance.html', groups=groups)
+    return render_template('admin/record_attendance.html', groups=groups, sites=sites)
 
 # ===== GESTION DES PAIEMENTS =====
 

@@ -48,9 +48,16 @@
                 </div>
                 <div class="stat-card accent">
                     <div class="stat-icon">📊</div>
-                    <h4>Taux de Présence</h4>
+                    <h4>Présence (saison)</h4>
                     <p class="stat-number">{{ user.attendance_rate() }}%</p>
                 </div>
+                {% for site in user.sites %}
+                <div class="stat-card">
+                    <div class="stat-icon">📍</div>
+                    <h4>{{ site.name }}</h4>
+                    <p class="stat-number">{{ user.attendance_rate(site.id) }}%</p>
+                </div>
+                {% endfor %}
                 <div class="stat-card success">
                     <div class="stat-icon">🎯</div>
                     <h4>Total Séances</h4>

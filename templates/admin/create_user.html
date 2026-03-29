@@ -132,6 +132,18 @@
                 </div>
 
                 <div class="form-section">
+                    <h3>Sites d'entraînement</h3>
+                    <div class="form-group">
+                        {% for site in sites %}
+                        <label class="role-checkbox">
+                            <input type="checkbox" name="site_ids" value="{{ site.id }}">
+                            {{ site.name }}
+                        </label>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="form-section">
                     <h3>Rôles</h3>
                     <div class="form-group">
                         <label class="role-checkbox">

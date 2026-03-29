@@ -26,6 +26,10 @@ def create_app(config_class=Config):
 
     with app.app_context():
         db.create_all()
+        from app.models import Site
+        if not Site.query.first():
+            db.session.add_all([Site(name='Tournai'), Site(name='Wasquehal')])
+            db.session.commit()
 
     from app.models import User
     

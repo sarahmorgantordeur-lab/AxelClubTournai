@@ -1,8 +1,24 @@
 from app import db
-from datetime import datetime
+from datetime import datetime, date
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from sqlalchemy.orm import attributes
+
+
+def get_current_season():
+    """Retourne (date_debut, date_fin) de la saison en cours (septembre–juin)."""
+    today = date.today()
+    if today.month >= 9:
+        return date(today.year, 9, 1), date(today.year + 1, 6, 30)
+    else:
+        return date(today.year - 1, 9, 1), date(today.year, 6, 30)
+
+
+# Table d'association utilisateur ↔ site
+user_sites = db.Table('user_sites',
+    db.Column('user_id', db.Integer, db.ForeignKey('users.id'), primary_key=True),
+    db.Column('site_id', db.Integer, db.ForeignKey('sites.id'), primary_key=True)
+)
 
 # Table d'association pour la relation parent-enfant (many-to-many)
 parent_child = db.Table('parent_child',
@@ -46,6 +62,7 @@ class User(UserMixin, db.Model):
     # Relations
     group = db.relationship('Group', backref='members', foreign_keys=[group_id])
     attendances = db.relationship('Attendance', backref='user', cascade='all, delete-orphan', foreign_keys='Attendance.user_id')
+    sites = db.relationship('Site', secondary=user_sites, backref=db.backref('members', lazy='dynamic'))
     payment_records = db.relationship('PaymentRecord', backref='user', cascade='all, delete-orphan', foreign_keys='PaymentRecord.user_id')
     season_payments = db.relationship('SeasonPayment', backref='user', cascade='all, delete-orphan')
 
@@ -164,13 +181,18 @@ class User(UserMixin, db.Model):
         user_roles = self.get_roles_list()
         return ', '.join([roles_display.get(role, role.capitalize()) for role in user_roles])
 
-    def attendance_rate(self):
-        """Calcule le taux de présence"""
-        if not self.attendances:
-            return 0
-        total = len(self.attendances)
-        present = len([a for a in self.attendances if a.status == 'present'])
-        return round((present / total) * 100, 2) if total > 0 else 0
+    def attendance_rate(self, site_id=None):
+        """Calcule le taux de présence pour la saison en cours, optionnellement par site."""
+        start, end = get_current_season()
+        season_att = [
+            a for a in self.attendances
+            if a.session_date.date() >= start and a.session_date.date() <= end
+        ]
+        if site_id is not None:
+            season_att = [a for a in season_att if a.site_id == site_id]
+        total = len(season_att)
+        present = len([a for a in season_att if a.status == 'present'])
+        return round((present / total) * 100, 1) if total > 0 else 0
 
     def is_registered_this_year(self):
         """Vérifie si l'utilisateur est inscrit/réinscrit pour l'année en cours"""
@@ -197,6 +219,16 @@ class User(UserMixin, db.Model):
 
     def __repr__(self):
         return f'<User {self.username}>'
+
+
+class Site(db.Model):
+    __tablename__ = 'sites'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False, unique=True)
+
+    def __repr__(self):
+        return f'<Site {self.name}>'
 
 
 class Group(db.Model):
@@ -244,6 +276,8 @@ class Attendance(db.Model):
     notes = db.Column(db.Text)
     recorded_at = db.Column(db.DateTime, default=datetime.utcnow)
     recorded_by_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    site_id = db.Column(db.Integer, db.ForeignKey('sites.id'))
+    site = db.relationship('Site', backref='attendances')
 
     recorded_by = db.relationship('User', foreign_keys=[recorded_by_id], backref='recorded_attendances')
 
