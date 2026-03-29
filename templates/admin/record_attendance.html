@@ -58,8 +58,8 @@
                     </div>
                     <div class="form-row">
                         <div class="form-group">
-                            <label>Groupe</label>
-                            <select name="group_id" id="groupSelect" onchange="updateMembers()">
+                            <label>Filtrer par groupe</label>
+                            <select id="groupFilter" onchange="filterMembers()">
                                 <option value="">Tous les membres</option>
                                 {% for group in groups %}
                                     <option value="{{ group.id }}">{{ group.name }}</option>
@@ -69,13 +69,34 @@
                     </div>
                 </div>
 
-                <div id="membersContainer" style="display:none;">
-                    <div class="form-section">
-                        <h3>👥 Membres du Groupe</h3>
-                        <p style="color: var(--text-light); margin-bottom: var(--space-md);">Cliquez sur les boutons pour marquer la présence de chaque membre.</p>
-                        <div id="membersList" class="attendance-grid">
-                            <!-- Les membres seront chargés dynamiquement -->
+                <div class="form-section">
+                    <h3>Membres</h3>
+                    <p style="color: var(--text-light); margin-bottom: var(--space-md);">
+                        Cochez les membres présents et indiquez le statut.
+                    </p>
+                    <div style="margin-bottom: var(--space-sm);">
+                        <button type="button" class="btn btn-secondary btn-sm" onclick="selectAll(true)">Tous présents</button>
+                        <button type="button" class="btn btn-secondary btn-sm" onclick="selectAll(false)">Tout décocher</button>
+                    </div>
+                    <div id="membersList">
+                        {% for patineur in patineurs %}
+                        <div class="member-row" data-group="{{ patineur.group_id or '' }}" style="display:flex; align-items:center; gap:var(--space-sm); padding:0.6rem 0; border-bottom:1px solid var(--silver-light);">
+                            <input type="checkbox" name="user_ids" value="{{ patineur.id }}" id="user_{{ patineur.id }}" style="width:18px;height:18px;accent-color:var(--ice-deep);">
+                            <label for="user_{{ patineur.id }}" style="flex:1; cursor:pointer; font-weight:500;">
+                                {{ patineur.last_name }} {{ patineur.first_name }}
+                                {% if patineur.group %}<span style="font-size:0.8rem;color:var(--text-light);">({{ patineur.group.name }})</span>{% endif %}
+                            </label>
+                            <select name="status_{{ patineur.id }}" style="width:130px; font-size:0.85rem;">
+                                <option value="present">Présent</option>
+                                <option value="absent">Absent</option>
+                                <option value="late">En retard</option>
+                                <option value="excused">Excusé</option>
+                            </select>
+                            <input type="text" name="notes_{{ patineur.id }}" placeholder="Note" style="width:150px; font-size:0.85rem;">
                         </div>
+                        {% else %}
+                        <p style="color:var(--text-light);">Aucun patineur actif trouvé.</p>
+                        {% endfor %}
                     </div>
                 </div>
 
@@ -88,17 +109,23 @@
     </div>
 
     <script>
-        function updateMembers() {
-            const groupId = document.getElementById('groupSelect').value;
-            const container = document.getElementById('membersContainer');
+        function filterMembers() {
+            const groupId = document.getElementById('groupFilter').value;
+            document.querySelectorAll('.member-row').forEach(function(row) {
+                if (!groupId || row.dataset.group === groupId) {
+                    row.style.display = 'flex';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
 
-            if (!groupId) {
-                container.style.display = 'none';
-                return;
-            }
-
-            // Afficher le conteneur
-            container.style.display = 'block';
+        function selectAll(checked) {
+            document.querySelectorAll('.member-row').forEach(function(row) {
+                if (row.style.display !== 'none') {
+                    row.querySelector('input[type="checkbox"]').checked = checked;
+                }
+            });
         }
     </script>
 

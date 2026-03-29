@@ -272,6 +272,7 @@ def attendance():
 def record_attendance():
     groups = Group.query.all()
     sites = Site.query.all()
+    patineurs = User.query_by_role('patineur').filter_by(is_active=True).order_by(User.last_name).all()
 
     if request.method == 'POST':
         group_id = request.form.get('group_id')
@@ -298,7 +299,7 @@ def record_attendance():
         flash('Présences enregistrées', 'success')
         return redirect(url_for('admin.attendance'))
 
-    return render_template('admin/record_attendance.html', groups=groups, sites=sites)
+    return render_template('admin/record_attendance.html', groups=groups, sites=sites, patineurs=patineurs)
 
 # ===== GESTION DES PAIEMENTS =====
 
