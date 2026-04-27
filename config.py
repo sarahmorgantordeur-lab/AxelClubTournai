@@ -6,6 +6,10 @@ class Config:
     # Render fournit des URLs "postgres://" que SQLAlchemy 2.x n'accepte pas
     SQLALCHEMY_DATABASE_URI = _db_url.replace('postgres://', 'postgresql://', 1)
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SQLALCHEMY_ENGINE_OPTIONS = {
+        'pool_pre_ping': True,
+        'pool_recycle': 280,
+    }
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'dev-secret-key-change-in-production'
 
     # Configuration Flask-Mail

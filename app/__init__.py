@@ -30,12 +30,25 @@ def create_app(config_class=Config):
         from sqlalchemy import text
         # Ajoute site_id sur attendances si elle n'existe pas (migration sans Flask-Migrate)
         try:
-            db.session.execute(text(
-                'ALTER TABLE attendances ADD COLUMN site_id INTEGER REFERENCES sites(id)'
-            ))
-            db.session.commit()
+            with db.engine.connect() as conn:
+                conn.execute(text(
+                    'ALTER TABLE attendances ADD COLUMN site_id INTEGER REFERENCES sites(id)'
+                ))
+                conn.commit()
         except Exception:
-            db.session.rollback()  # colonne déjà existante, on ignore
+            pass  # colonne déjà existante, on ignore
+        # Crée user_sites si elle n'existe pas encore
+        try:
+            with db.engine.connect() as conn:
+                conn.execute(text(
+                    'CREATE TABLE IF NOT EXISTS user_sites '
+                    '(user_id INTEGER REFERENCES users(id), '
+                    'site_id INTEGER REFERENCES sites(id), '
+                    'PRIMARY KEY (user_id, site_id))'
+                ))
+                conn.commit()
+        except Exception:
+            pass
         if not Site.query.first():
             db.session.add_all([Site(name='Tournai'), Site(name='Wasquehal')])
             db.session.commit()
@@ -44,7 +57,7 @@ def create_app(config_class=Config):
     
     @login_manager.user_loader
     def load_user(user_id):
-        return User.query.get(int(user_id))
+        return db.session.get(User, int(user_id))
     
     # Enregistrer les blueprints
     from app.routes import bp as main_bp
