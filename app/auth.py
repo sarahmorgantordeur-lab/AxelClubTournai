@@ -107,6 +107,31 @@ def profile():
                           children_payments=children_payments, current_year=current_year)
 
 
+@bp.route('/change-password', methods=['POST'])
+@login_required
+def change_password():
+    current_password = request.form.get('current_password')
+    new_password = request.form.get('new_password')
+    confirm_new = request.form.get('confirm_new_password')
+
+    if not current_user.check_password(current_password):
+        flash('Mot de passe actuel incorrect', 'error')
+        return redirect(url_for('auth.profile'))
+
+    if new_password != confirm_new:
+        flash('Les nouveaux mots de passe ne correspondent pas', 'error')
+        return redirect(url_for('auth.profile'))
+
+    if len(new_password) < 8:
+        flash('Le nouveau mot de passe doit contenir au moins 8 caractères', 'error')
+        return redirect(url_for('auth.profile'))
+
+    current_user.set_password(new_password)
+    db.session.commit()
+    flash('Mot de passe modifié avec succès', 'success')
+    return redirect(url_for('auth.profile'))
+
+
 @bp.route('/profile/edit', methods=['POST'])
 @login_required
 def edit_profile():

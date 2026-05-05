@@ -174,6 +174,55 @@
                     </div>
                 </div>
             {% endif %}
+
+            {% if children_data %}
+                <div class="info-card" style="margin-top: var(--space-lg);">
+                    <div class="info-card-header">
+                        <h3>Mes enfants</h3>
+                    </div>
+                    <div class="info-card-body">
+                        {% for item in children_data %}
+                        <div style="{% if not loop.last %}border-bottom: 1px solid var(--silver-light); padding-bottom: var(--space-md); margin-bottom: var(--space-md);{% endif %}">
+                            <h4 style="color: var(--ice-deep); margin-bottom: var(--space-sm);">
+                                {{ item.child.first_name }} {{ item.child.last_name }}
+                                {% if item.child.group %}
+                                <span style="font-weight: 400; font-size: 0.85rem; color: var(--text-light);"> — {{ item.child.group.name }}</span>
+                                {% endif %}
+                            </h4>
+                            <div class="member-info-grid">
+                                <div class="info-item">
+                                    <label>Taux de présence</label>
+                                    <span>{{ item.child.attendance_rate() }}%</span>
+                                </div>
+                                <div class="info-item">
+                                    <label>Séances</label>
+                                    <span>{{ item.child.attendances|length }}</span>
+                                </div>
+                                {% if item.payment %}
+                                <div class="info-item">
+                                    <label>Solde à payer</label>
+                                    <span style="{% if item.payment.balance() > 0 %}color: var(--danger); font-weight: 600;{% else %}color: var(--success); font-weight: 600;{% endif %}">
+                                        {{ '%.2f'|format(item.payment.balance()) }} €
+                                    </span>
+                                </div>
+                                <div class="info-item">
+                                    <label>Statut paiements</label>
+                                    <span class="badge {% if item.payment.is_fully_paid() %}badge-success{% elif item.payment.total_paid() > 0 %}badge-warning{% else %}badge-danger{% endif %}">
+                                        {% if item.payment.is_fully_paid() %}Tout payé{% elif item.payment.total_paid() > 0 %}En cours{% else %}Non payé{% endif %}
+                                    </span>
+                                </div>
+                                {% else %}
+                                <div class="info-item">
+                                    <label>Paiements</label>
+                                    <span style="color: var(--text-light);">Aucun enregistré</span>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
         {% else %}
             <div class="info-card">
                 <div class="info-card-body" style="text-align: center; padding: 60px;">

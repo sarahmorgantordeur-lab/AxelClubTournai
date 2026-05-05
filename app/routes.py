@@ -11,14 +11,24 @@ def dashboard():
     """Tableau de bord personnel de l'utilisateur"""
     user = current_user
     current_year = datetime.now().year
-    payment = SeasonPayment.query.filter_by(user_id=user.id, season_year=current_year).first()
+    payment = None
+    children_data = []
+
+    if user.has_role('patineur'):
+        payment = SeasonPayment.query.filter_by(user_id=user.id, season_year=current_year).first()
+
+    if user.has_role('parent'):
+        for child in user.get_children_list():
+            child_payment = SeasonPayment.query.filter_by(user_id=child.id, season_year=current_year).first()
+            children_data.append({'child': child, 'payment': child_payment})
+
     stats = {
         'group': user.group.name if user.group else 'Aucun groupe',
         'attendance_rate': user.attendance_rate(),
         'total_sessions': len(user.attendances),
         'next_training': 'À venir'
     }
-    return render_template('main/dashboard.html', stats=stats, user=user, payment=payment)
+    return render_template('main/dashboard.html', stats=stats, user=user, payment=payment, children_data=children_data)
 
 @bp.route('/my-attendance')
 @login_required
