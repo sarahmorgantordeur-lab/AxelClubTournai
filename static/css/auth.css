@@ -245,13 +245,13 @@
     position: relative;
 }
 
-.password-wrapper input {
-    padding-right: 45px;
+.auth-box .password-wrapper input {
+    padding-right: 45px !important;
 }
 
 @media (min-width: 576px) {
-    .password-wrapper input {
-        padding-right: 50px;
+    .auth-box .password-wrapper input {
+        padding-right: 50px !important;
     }
 }
 

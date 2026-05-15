@@ -1,25 +1,20 @@
-# Environnement virtuel
-.venv/
-venv/
-env/
-
-# Variables d'environnement (contient des secrets)
-.env
-
-# Base de données
-instance/
-*.db
+# Base de données (contient les données utilisateurs)
+*.sqlite
 *.sqlite3
+*.db
 
-# Cache Python
-__pycache__/
-*.py[cod]
-*.pyo
+# Config serveur (contient SECRET_KEY en SetEnv)
+.htaccess
 
-# Sauvegardes
-backups/
+# Variables d'environnement
+.env
+.env.*
 
-# IDE
+# Logs PHP
+*.log
+logs/
+
+# IDE / éditeurs
 .vscode/
 .idea/
 *.swp
@@ -28,3 +23,6 @@ backups/
 # OS
 .DS_Store
 Thumbs.db
+
+# Claude
+.claude/

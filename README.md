@@ -1,8 +1,8 @@
 # Axel Club Tournai — Application de Gestion
 
-Application web de gestion pour le club de patinage artistique **Axel Tournai Fédéré**, développée avec Flask et déployée sur Render.
+Application web de gestion pour le club de patinage artistique **Axel Tournai Fédéré**, développée en PHP et déployée sur OVH mutualisé.
 
-**Site en production :** https://axelclubtournai.onrender.com
+**Site en production :** https://axelclub.be
 
 ---
 
@@ -12,20 +12,27 @@ Application web de gestion pour le club de patinage artistique **Axel Tournai F�
 - Accueil avec présentation du club
 - Page Groupes avec tarifs et horaires
 - Page À propos (histoire, mission, coach)
-- SEO : meta descriptions, Open Graph, JSON-LD SportsClub, sitemap.xml, robots.txt
+- Formulaire de contact avec protection honeypot
+- SEO : sitemap.xml, robots.txt, mentions légales
 
 **Espace membre**
-- Inscription et connexion
+- Inscription et connexion avec toggle mot de passe
 - Tableau de bord personnel (groupe, taux de présence, paiements)
 - Profil modifiable (coordonnées, numéros d'urgence, date de naissance)
-- Consultation des paiements de la saison
+- Changement de mot de passe
+- Historique des présences
+- Dashboard parent avec suivi des paiements des enfants
 
-**Panneau d'administration (admin uniquement)**
-- Gestion des membres (création, modification, suppression, statuts)
-- Gestion des groupes (niveau, horaires, tarifs, capacité)
-- Suivi des présences par séance
+**Panneau d'administration**
+- Gestion des membres (création, modification, suppression, rôles, statuts)
+- Gestion des groupes (horaires, tarifs, description)
+- Inscription/désinscription aux groupes
+- Enregistrement des présences par séance
 - Gestion financière par saison (licence, saison Tournai, Wasquehal P1/P2, compétitions)
-- Rapports : présences, finances, membres par groupe
+- Historique des paiements
+- Rapports : présences, finances, répartition par groupe
+- Envoi d'emails groupés (tous, patineurs, parents, groupe spécifique)
+- Explorateur de base de données SQLite
 
 ---
 
@@ -33,12 +40,11 @@ Application web de gestion pour le club de patinage artistique **Axel Tournai F�
 
 | Composant | Technologie |
 |-----------|-------------|
-| Backend | Python 3.11 / Flask 3.0 |
-| ORM | SQLAlchemy 2.0 + Flask-SQLAlchemy |
-| Auth | Flask-Login |
-| Base de données | PostgreSQL (prod) / SQLite (dev) |
-| Serveur WSGI | Gunicorn |
-| Déploiement | Docker + Render |
+| Backend | PHP 8.2 |
+| Base de données | SQLite (PDO) |
+| Auth | Sessions PHP natives |
+| Hébergement | OVH mutualisé Perso |
+| Déploiement | FTP (lftp) |
 
 ---
 
@@ -46,93 +52,73 @@ Application web de gestion pour le club de patinage artistique **Axel Tournai F�
 
 ```
 patinage_club/
-├── app/
-│   ├── __init__.py       # Application factory, enregistrement des blueprints
-│   ├── models.py         # Modèles SQLAlchemy (User, Group, Attendance, SeasonPayment)
-│   ├── services.py       # Logique métier
-│   ├── routes.py         # Blueprint `main` (dashboard, présences, API)
-│   ├── auth.py           # Blueprint `auth` (inscription, connexion, profil)
-│   ├── admin.py          # Blueprint `admin` (gestion complète)
-│   ├── public.py         # Blueprint `public` (pages publiques, sitemap, robots)
-│   └── schema.sql        # Schéma SQL de référence
-├── templates/
-│   ├── auth/             # Connexion, inscription, profil
-│   ├── admin/            # Dashboard et pages d'administration
-│   ├── main/             # Dashboard membre, présences
-│   └── public/           # Accueil, groupes, à propos, sitemap, robots
-├── static/
-│   ├── css/              # Feuilles de style (base, home, admin, auth…)
-│   ├── js/               # nav.js (menu burger)
-│   └── images/           # logo.png (fond transparent)
-├── scripts/              # Utilitaires CLI (init_db, add_group, check_groups)
-├── config.py             # Configurations (Dev, Prod, Test)
-├── run.py                # Point d'entrée
-├── Dockerfile
-└── requirements.txt
+├── index.php               # Front controller — routage de toutes les requêtes
+├── config.php              # Constantes (DB_PATH, SECRET_KEY, SITE_EMAIL…)
+├── install.php             # Initialisation BDD + compte admin (à supprimer après usage)
+├── .htaccess               # Réécriture URL, protection des fichiers sensibles
+├── includes/
+│   ├── db.php              # Connexion PDO SQLite (singleton)
+│   ├── models.php          # Toutes les fonctions d'accès aux données
+│   ├── auth.php            # auth_user(), login_required(), admin_required()
+│   ├── utils.php           # flash(), redirect(), e(), csrf_token(), paginate()
+│   ├── header.php          # <head>, navbar, messages flash
+│   └── footer.php          # Footer HTML + chargement nav.js
+├── pages/
+│   ├── home.php / about.php / contact.php / legal.php / groups_public.php
+│   ├── robots.php / sitemap.php
+│   ├── auth/               # login, register, logout, profile, change_password
+│   ├── main/               # dashboard, attendance (espace membre)
+│   └── admin/              # dashboard, users, groups, attendance, payments,
+│                           # registrations, reports, send_email, database
+└── static/
+    ├── css/                # base.css, style.css, home.css, admin.css, auth.css…
+    ├── js/                 # nav.js (menu burger + toggle mot de passe)
+    └── images/             # logo.png, favicon.ico
 ```
 
 ---
 
-## Installation locale
+## Déploiement sur OVH
 
 ### Prérequis
+- Hébergement OVH mutualisé avec PHP 8.0+
+- Accès FTP
+- Extension PDO SQLite activée (activée par défaut sur OVH)
 
-- Python 3.11+
-- pip
-
-### Démarrage
+### Étapes
 
 ```bash
-# 1. Créer et activer l'environnement virtuel
-python3 -m venv .venv
-source .venv/bin/activate      # macOS/Linux
-.venv\Scripts\activate         # Windows
+# 1. Uploader les fichiers via FTP
+lftp -u USERNAME,PASSWORD ftp.cluster100.hosting.ovh.net <<'EOF'
+set ftp:passive-mode true
+put index.php -o /www/index.php
+put config.php -o /www/config.php
+put .htaccess -o /www/.htaccess
+put install.php -o /www/install.php
+mirror --reverse includes /www/includes
+mirror --reverse pages /www/pages
+mirror --reverse static /www/static
+quit
+EOF
 
-# 2. Installer les dépendances
-pip install -r requirements.txt
+# 2. Initialiser la base de données
+# Ouvrir https://axelclub.be/install.php dans le navigateur
 
-# 3. Configurer les variables d'environnement
-cp .env.example .env           # puis éditer .env
-
-# 4. Lancer le serveur
-python run.py
+# 3. Supprimer install.php du serveur
+lftp -u USERNAME,PASSWORD ftp.cluster100.hosting.ovh.net \
+  -e "set ftp:passive-mode true; rm /www/install.php; quit"
 ```
 
-L'application est accessible sur `http://127.0.0.1:5000`.
+### Variables de configuration
 
-### Variables d'environnement
+Modifier `config.php` avant le déploiement :
 
-| Variable | Description | Exemple |
-|----------|-------------|---------|
-| `SECRET_KEY` | Clé secrète Flask (obligatoire en prod) | `une-clé-aléatoire-longue` |
-| `DATABASE_URL` | URL de connexion PostgreSQL (optionnel en dev) | `postgresql://user:pass@host/db` |
-
-En développement, sans `DATABASE_URL`, l'application utilise SQLite (`instance/patinage_club.db`).
-
----
-
-## Déploiement sur Render
-
-Le projet se déploie via Docker sur Render.
-
-1. Créer un **Web Service** sur Render en pointant sur ce dépôt (Runtime : Docker)
-2. Créer une **base de données PostgreSQL** sur Render
-3. Ajouter les variables d'environnement dans Render :
-   - `SECRET_KEY` — générer une valeur aléatoire sécurisée
-   - `DATABASE_URL` — copier l'**Internal Database URL** fournie par Render PostgreSQL
-4. Déployer — les tables sont créées automatiquement au démarrage (`db.create_all()`)
-
-Pour créer le premier compte administrateur via le shell Render :
-
-```python
-from app import create_app, db
-from app.models import User
-app = create_app()
-with app.app_context():
-    u = User.query.filter_by(username='votre_username').first()
-    u.roles = ['admin']
-    db.session.commit()
-```
+| Constante | Description |
+|-----------|-------------|
+| `DB_PATH` | Chemin vers la base SQLite (par défaut : un niveau au-dessus de `www/`) |
+| `SECRET_KEY` | Clé secrète pour les tokens CSRF |
+| `SITE_EMAIL` | Email expéditeur pour les envois groupés |
+| `SITE_NAME` | Nom du club affiché dans les emails |
 
 ---
 
@@ -144,8 +130,6 @@ with app.app_context():
 | `parent` | Tableau de bord, profil, paiements de ses enfants |
 | `admin` | Tout ce qui précède + panneau d'administration complet |
 
-L'assignation à un groupe est réservée aux administrateurs.
-
 ---
 
 ## Routes principales
@@ -153,21 +137,23 @@ L'assignation à un groupe est réservée aux administrateurs.
 | Route | Description |
 |-------|-------------|
 | `/` | Accueil public |
-| `/groups` | Groupes disponibles |
-| `/about` | À propos du club |
-| `/robots.txt` | Fichier robots |
-| `/sitemap.xml` | Sitemap XML |
+| `/groupes` | Groupes disponibles |
+| `/a-propos` | À propos du club |
+| `/contact` | Formulaire de contact |
 | `/auth/login` | Connexion |
 | `/auth/register` | Inscription |
 | `/auth/profile` | Mon profil |
 | `/dashboard` | Tableau de bord membre |
 | `/my-attendance` | Mes présences |
-| `/admin/` | Dashboard administrateur |
-| `/admin/members` | Gestion des membres |
+| `/admin` | Dashboard administrateur |
+| `/admin/users` | Gestion des membres |
 | `/admin/groups` | Gestion des groupes |
+| `/admin/registrations` | Inscriptions aux groupes |
 | `/admin/attendance` | Suivi des présences |
 | `/admin/payments` | Gestion financière |
 | `/admin/reports` | Rapports |
+| `/admin/send-email` | Envoi d'emails groupés |
+| `/admin/database` | Explorateur SQLite |
 
 ---
 
