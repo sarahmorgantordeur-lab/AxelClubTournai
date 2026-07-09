@@ -4,11 +4,34 @@ $__meta_desc = t('groups.meta_desc');
 $__extra_css = ['home.css', 'groups.css'];
 $__active = 'groups';
 $groups = group_all();
+$__schedule_entries = [
+    ['day' => t('groups.schedule_table.day.monday'), 'time' => '18h30 – 20h30'],
+    ['day' => t('groups.schedule_table.day.tuesday'), 'time' => '18h00 – 22h00'],
+    ['day' => t('groups.schedule_table.day.wednesday'), 'time' => '18h00 – 21h00'],
+    ['day' => t('groups.schedule_table.day.saturday'), 'time' => '08h45 – 09h45', 'note' => 'PPG'],
+    ['day' => t('groups.schedule_table.day.saturday'), 'time' => '10h00 – 12h30', 'note' => 'Wasquehal'],
+];
 require __DIR__ . '/../includes/header.php';
 ?>
 <section class="groups-hero">
     <h1><?= e(t('groups.hero.title')) ?></h1>
     <p><?= e(t('groups.hero.subtitle')) ?></p>
+</section>
+
+<section class="container" style="padding:var(--space-lg) var(--space-md) 0;">
+    <div class="card" style="max-width:700px;margin:0 auto;">
+        <h2 style="color:var(--ice-deep);margin-bottom:var(--space-xs);"><?= e(t('groups.schedule_table.title')) ?></h2>
+        <p style="color:var(--danger);font-weight:600;font-size:.85rem;margin-bottom:var(--space-md);"><?= e(t('groups.schedule_table.notice')) ?></p>
+        <table style="width:100%;border-collapse:collapse;">
+            <?php foreach ($__schedule_entries as $__entry): ?>
+            <tr style="border-bottom:1px solid var(--silver-light);">
+                <td style="padding:8px 10px;font-weight:600;color:var(--ice-deep);"><?= e($__entry['day']) ?></td>
+                <td style="padding:8px 10px;"><?= e($__entry['time']) ?></td>
+                <td style="padding:8px 10px;color:var(--text-light);font-size:.85rem;"><?= !empty($__entry['note']) ? e($__entry['note']) : '' ?></td>
+            </tr>
+            <?php endforeach; ?>
+        </table>
+    </div>
 </section>
 
 <section class="groups-section">

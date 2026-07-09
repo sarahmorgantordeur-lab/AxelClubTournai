@@ -59,6 +59,12 @@ return [
     'groups.meta_desc' => 'Discover the training groups at Axel Club Tournai: beginners, intermediate, advanced and competition.',
     'groups.hero.title' => 'Our Training Groups',
     'groups.hero.subtitle' => 'Find the group that matches your level and ambitions on the ice.',
+    'groups.schedule_table.title' => 'General Schedule',
+    'groups.schedule_table.notice' => 'Provisional schedule, to be confirmed',
+    'groups.schedule_table.day.monday' => 'Monday',
+    'groups.schedule_table.day.tuesday' => 'Tuesday',
+    'groups.schedule_table.day.wednesday' => 'Wednesday',
+    'groups.schedule_table.day.saturday' => 'Saturday',
     'groups.schedule.label' => 'Schedule',
     'groups.schedule.tbd' => 'To be confirmed',
     'groups.members.label' => 'Members',
@@ -78,7 +84,8 @@ return [
     'events.hero.title' => 'Our Events',
     'events.hero.subtitle' => "Galas, competitions, training camps and club gatherings.",
     'events.empty.title' => 'No event scheduled at the moment',
-    'events.empty.text' => 'Check back soon or follow our Facebook page for upcoming announcements.',
+    'events.empty.text' => 'Check back soon or follow our {link} for upcoming announcements.',
+    'events.instagram_link_text' => 'Instagram account',
 
     // Contact
     'contact.meta_desc' => 'Contact Axel Club Tournai for any question about our groups, prices, or to schedule a free trial session.',

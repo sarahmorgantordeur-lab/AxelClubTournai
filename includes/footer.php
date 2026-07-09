@@ -27,6 +27,10 @@
                         <span class="contact-icon">📞</span>
                         <a href="tel:+32491365328">+32 491 36 53 28</a>
                     </li>
+                    <li>
+                        <span class="contact-icon">📷</span>
+                        <a href="https://www.instagram.com/axelclubtournai/" target="_blank" rel="noopener noreferrer">Instagram</a>
+                    </li>
                 </ul>
             </div>
             <div class="footer-section">

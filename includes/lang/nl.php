@@ -59,6 +59,12 @@ return [
     'groups.meta_desc' => 'Ontdek de trainingsgroepen van Axel Club Tournai: beginners, gevorderden, vergevorderden en wedstrijd.',
     'groups.hero.title' => 'Onze Trainingsgroepen',
     'groups.hero.subtitle' => 'Vind de groep die past bij uw niveau en ambities op het ijs.',
+    'groups.schedule_table.title' => 'Algemeen Uurrooster',
+    'groups.schedule_table.notice' => 'Voorlopig uurrooster, te bevestigen',
+    'groups.schedule_table.day.monday' => 'Maandag',
+    'groups.schedule_table.day.tuesday' => 'Dinsdag',
+    'groups.schedule_table.day.wednesday' => 'Woensdag',
+    'groups.schedule_table.day.saturday' => 'Zaterdag',
     'groups.schedule.label' => 'Uurrooster',
     'groups.schedule.tbd' => 'Te bevestigen',
     'groups.members.label' => 'Leden',
@@ -78,7 +84,8 @@ return [
     'events.hero.title' => 'Onze Evenementen',
     'events.hero.subtitle' => "Gala's, wedstrijden, stages en clubbijeenkomsten.",
     'events.empty.title' => 'Momenteel geen evenement gepland',
-    'events.empty.text' => 'Kom binnenkort terug of volg onze Facebook-pagina voor de volgende aankondigingen.',
+    'events.empty.text' => 'Kom binnenkort terug of volg onze {link} voor de volgende aankondigingen.',
+    'events.instagram_link_text' => 'Instagram-account',
 
     // Contact
     'contact.meta_desc' => 'Neem contact op met Axel Club Tournai voor vragen over onze groepen, tarieven of om een gratis proefles te plannen.',

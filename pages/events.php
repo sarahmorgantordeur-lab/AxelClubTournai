@@ -10,6 +10,7 @@ $__meta_desc = t('events.meta_desc');
 $__extra_css = ['home.css'];
 $__active = 'events';
 require __DIR__ . '/../includes/header.php';
+$__ig_link = '<a href="https://www.instagram.com/axelclubtournai/" target="_blank" rel="noopener noreferrer">' . e(t('events.instagram_link_text')) . '</a>';
 ?>
 <section class="groups-hero">
     <h1><?= e(t('events.hero.title')) ?></h1>
@@ -31,7 +32,7 @@ require __DIR__ . '/../includes/header.php';
     <div class="empty-state" style="text-align:center;padding:60px 20px;">
         <div style="font-size:4rem;margin-bottom:20px;">📅</div>
         <h3><?= e(t('events.empty.title')) ?></h3>
-        <p style="color:var(--text-light);"><?= e(t('events.empty.text')) ?></p>
+        <p style="color:var(--text-light);"><?= t('events.empty.text', ['link' => $__ig_link]) ?></p>
     </div>
     <?php endif; ?>
 </div>

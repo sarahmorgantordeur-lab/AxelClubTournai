@@ -59,6 +59,12 @@ return [
     'groups.meta_desc' => "Découvrez les groupes d'entraînement de l'Axel Club Tournai : débutants, intermédiaires, avancés et compétition.",
     'groups.hero.title' => "Nos Groupes d'Entraînement",
     'groups.hero.subtitle' => 'Trouvez le groupe qui correspond à votre niveau et à vos ambitions sur la glace.',
+    'groups.schedule_table.title' => 'Horaires Généraux',
+    'groups.schedule_table.notice' => 'Horaire provisoire, à confirmer',
+    'groups.schedule_table.day.monday' => 'Lundi',
+    'groups.schedule_table.day.tuesday' => 'Mardi',
+    'groups.schedule_table.day.wednesday' => 'Mercredi',
+    'groups.schedule_table.day.saturday' => 'Samedi',
     'groups.schedule.label' => 'Horaires',
     'groups.schedule.tbd' => 'À confirmer',
     'groups.members.label' => 'Membres',
@@ -78,7 +84,8 @@ return [
     'events.hero.title' => 'Nos Événements',
     'events.hero.subtitle' => 'Galas, compétitions, stages et rassemblements du club.',
     'events.empty.title' => 'Aucun événement prévu pour le moment',
-    'events.empty.text' => 'Revenez bientôt ou suivez notre page Facebook pour les prochaines annonces.',
+    'events.empty.text' => 'Revenez bientôt ou suivez notre {link} pour les prochaines annonces.',
+    'events.instagram_link_text' => 'compte Instagram',
 
     // Contact
     'contact.meta_desc' => "Contactez l'Axel Club Tournai pour toute question sur nos groupes, tarifs ou pour planifier un essai gratuit.",
