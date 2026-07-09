@@ -53,9 +53,9 @@ function user_create(array $data): int {
 
 function user_update(int $id, array $data): void {
     $pdo = get_db();
-    $pdo->prepare("UPDATE users SET first_name=?,last_name=?,phone=?,email=?,roles=?,group_id=?,license_number=?,status=?,emergency_contacts=?,date_of_birth=?,updated_at=datetime('now') WHERE id=?")
+    $pdo->prepare("UPDATE users SET first_name=?,last_name=?,phone=?,address=?,email=?,roles=?,group_id=?,license_number=?,status=?,emergency_contacts=?,date_of_birth=?,updated_at=datetime('now') WHERE id=?")
         ->execute([
-            $data['first_name'], $data['last_name'], $data['phone'] ?? null, $data['email'],
+            $data['first_name'], $data['last_name'], $data['phone'] ?? null, $data['address'] ?? null, $data['email'],
             json_encode($data['roles'] ?? ['patineur']),
             ($data['group_id'] ?? null) ?: null, ($data['license_number'] ?? null) ?: null, $data['status'] ?? 'active',
             json_encode($data['emergency_contacts'] ?? []),

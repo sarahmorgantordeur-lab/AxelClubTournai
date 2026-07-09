@@ -1,6 +1,6 @@
 <?php
 $__title = 'Contact - Axel Club Tournai';
-$__meta_desc = "Contactez l'Axel Club Tournai pour toute question sur nos groupes, tarifs ou pour planifier un essai gratuit.";
+$__meta_desc = t('contact.meta_desc');
 $__extra_css = ['home.css', 'groups.css'];
 $__active = 'contact';
 $__extra_head = '<style>
@@ -25,14 +25,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $subject = trim($_POST['subject'] ?? '');
     $message = trim($_POST['message'] ?? '');
     if (!$name || !$email || !$subject || !$message) {
-        flash('Veuillez remplir tous les champs obligatoires.', 'error');
+        flash(t('contact.flash.missing'), 'error');
     } else {
         $body = "Nom : $name\nEmail : $email\nTéléphone : " . ($phone ?: 'Non renseigné') . "\n\nMessage :\n$message";
         $headers = "From: noreply@axelclub.be\r\nReply-To: $email\r\nContent-Type: text/plain; charset=UTF-8";
         if (@mail(SITE_EMAIL, '[Axel Club] ' . $subject, $body, $headers)) {
-            flash('Votre message a bien été envoyé. Nous vous répondrons dans les plus brefs délais.', 'success');
+            flash(t('contact.flash.success'), 'success');
         } else {
-            flash("Une erreur est survenue. Contactez-nous directement par email.", 'error');
+            flash(t('contact.flash.error'), 'error');
         }
     }
     redirect('/contact');
@@ -40,46 +40,46 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 require __DIR__ . '/../includes/header.php';
 ?>
 <section class="groups-hero">
-    <h1>Contactez-nous</h1>
-    <p>Une question, une demande d'essai gratuit ? Nous vous répondons dans les plus brefs délais.</p>
+    <h1><?= e(t('contact.hero.title')) ?></h1>
+    <p><?= e(t('contact.hero.subtitle')) ?></p>
 </section>
 
 <div class="contact-section">
     <div class="contact-info">
-        <h2>Nos coordonnées</h2>
-        <p>N'hésitez pas à nous contacter pour toute question sur nos groupes, les tarifs ou pour planifier votre essai gratuit.</p>
-        <div class="contact-detail"><div class="contact-detail-icon">✉</div><div><div style="font-size:.8rem;color:var(--text-light);margin-bottom:2px;">Email</div><a href="mailto:axelclubtournai@federe.com">axelclubtournai@federe.com</a></div></div>
-        <div class="contact-detail"><div class="contact-detail-icon">📞</div><div><div style="font-size:.8rem;color:var(--text-light);margin-bottom:2px;">Téléphone</div><a href="tel:+32491365328">+32 491 36 53 28</a></div></div>
-        <div class="contact-detail"><div class="contact-detail-icon">📍</div><div><div style="font-size:.8rem;color:var(--text-light);margin-bottom:2px;">Localisation</div><span>Tournai, Hainaut, Belgique</span></div></div>
+        <h2><?= e(t('contact.info.title')) ?></h2>
+        <p><?= e(t('contact.info.text')) ?></p>
+        <div class="contact-detail"><div class="contact-detail-icon">✉</div><div><div style="font-size:.8rem;color:var(--text-light);margin-bottom:2px;"><?= e(t('contact.email.label')) ?></div><a href="mailto:axelclubtournai@federe.com">axelclubtournai@federe.com</a></div></div>
+        <div class="contact-detail"><div class="contact-detail-icon">📞</div><div><div style="font-size:.8rem;color:var(--text-light);margin-bottom:2px;"><?= e(t('contact.phone.label')) ?></div><a href="tel:+32491365328">+32 491 36 53 28</a></div></div>
+        <div class="contact-detail"><div class="contact-detail-icon">📍</div><div><div style="font-size:.8rem;color:var(--text-light);margin-bottom:2px;"><?= e(t('contact.location.label')) ?></div><span><?= e(t('contact.location.value')) ?></span></div></div>
         <div style="margin-top:var(--space-lg);padding:var(--space-md);background:var(--ice-light);border-radius:var(--radius-sm);">
-            <strong style="color:var(--ice-deep);">Essai gratuit</strong>
-            <p style="margin:var(--space-xs) 0 0;font-size:.9rem;color:var(--text-light);">Tout nouveau membre a droit à une séance d'essai gratuite.</p>
+            <strong style="color:var(--ice-deep);"><?= e(t('contact.trial.title')) ?></strong>
+            <p style="margin:var(--space-xs) 0 0;font-size:.9rem;color:var(--text-light);"><?= e(t('contact.trial.text')) ?></p>
         </div>
     </div>
     <div class="contact-form-card">
-        <h2>Envoyer un message</h2>
+        <h2><?= e(t('contact.form.title')) ?></h2>
         <form method="POST" class="form">
             <input type="hidden" name="_csrf" value="<?= e(csrf_token()) ?>">
             <div class="honeypot"><input type="text" name="website" tabindex="-1" autocomplete="off"></div>
             <div class="form-row">
-                <div class="form-group"><label>Nom et prénom <span style="color:var(--danger);">*</span></label><input type="text" name="name" required></div>
-                <div class="form-group"><label>Email <span style="color:var(--danger);">*</span></label><input type="email" name="email" required></div>
+                <div class="form-group"><label><?= e(t('contact.form.name')) ?> <span style="color:var(--danger);">*</span></label><input type="text" name="name" required></div>
+                <div class="form-group"><label><?= e(t('contact.form.email')) ?> <span style="color:var(--danger);">*</span></label><input type="email" name="email" required></div>
             </div>
             <div class="form-row">
-                <div class="form-group"><label>Téléphone</label><input type="tel" name="phone" placeholder="+32 XXX XX XX XX"></div>
-                <div class="form-group"><label>Sujet <span style="color:var(--danger);">*</span></label>
+                <div class="form-group"><label><?= e(t('contact.form.phone')) ?></label><input type="tel" name="phone" placeholder="+32 XXX XX XX XX"></div>
+                <div class="form-group"><label><?= e(t('contact.form.subject')) ?> <span style="color:var(--danger);">*</span></label>
                     <select name="subject" required style="width:100%;padding:10px 14px;border:1px solid var(--silver-light);border-radius:var(--radius-sm);background:var(--crystal-white);color:var(--text-main);font-size:.95rem;">
-                        <option value="">-- Choisissez un sujet --</option>
-                        <option>Demande d'essai gratuit</option>
-                        <option>Informations sur les groupes</option>
-                        <option>Tarifs et inscriptions</option>
-                        <option>Horaires</option>
-                        <option>Autre</option>
+                        <option value=""><?= e(t('contact.form.subject_placeholder')) ?></option>
+                        <option><?= e(t('contact.form.subject.trial')) ?></option>
+                        <option><?= e(t('contact.form.subject.groups')) ?></option>
+                        <option><?= e(t('contact.form.subject.pricing')) ?></option>
+                        <option><?= e(t('contact.form.subject.hours')) ?></option>
+                        <option><?= e(t('contact.form.subject.other')) ?></option>
                     </select>
                 </div>
             </div>
-            <div class="form-group"><label>Message <span style="color:var(--danger);">*</span></label><textarea name="message" rows="6" required style="width:100%;padding:10px 14px;border:1px solid var(--silver-light);border-radius:var(--radius-sm);background:var(--crystal-white);font-size:.95rem;resize:vertical;font-family:inherit;"></textarea></div>
-            <button type="submit" class="btn btn-primary" style="width:100%;">Envoyer le message</button>
+            <div class="form-group"><label><?= e(t('contact.form.message')) ?> <span style="color:var(--danger);">*</span></label><textarea name="message" rows="6" required style="width:100%;padding:10px 14px;border:1px solid var(--silver-light);border-radius:var(--radius-sm);background:var(--crystal-white);font-size:.95rem;resize:vertical;font-family:inherit;"></textarea></div>
+            <button type="submit" class="btn btn-primary" style="width:100%;"><?= e(t('contact.form.submit')) ?></button>
         </form>
     </div>
 </div>

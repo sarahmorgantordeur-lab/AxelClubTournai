@@ -75,6 +75,9 @@ require __DIR__ . '/../../includes/header.php';
             <div class="form-row">
                 <div class="form-group"><label>Email</label><input type="email" name="email" value="<?= e($user['email']) ?>" required></div>
             </div>
+            <div class="form-row">
+                <div class="form-group"><label>Adresse</label><input type="text" name="address" value="<?= e($user['address'] ?? '') ?>" placeholder="Rue, numéro, code postal, ville"></div>
+            </div>
             <div class="form-group">
                 <label style="font-weight:bold;display:block;margin-bottom:var(--space-sm);">Numéros d'urgence</label>
                 <div id="emergency-contacts" style="display:flex;flex-direction:column;gap:var(--space-sm);">

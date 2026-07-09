@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($lic) { $ex = get_db()->prepare("SELECT id FROM users WHERE license_number=? AND id!=?")->execute([$lic,$uid]); }
     user_update($uid, [
         'first_name'=>trim($_POST['first_name']??''), 'last_name'=>trim($_POST['last_name']??''),
-        'phone'=>trim($_POST['phone']??'')?:null, 'email'=>trim($_POST['email']??$user['email']),
+        'phone'=>trim($_POST['phone']??'')?:null, 'address'=>trim($_POST['address']??'')?:null, 'email'=>trim($_POST['email']??$user['email']),
         'roles'=>$roles, 'group_id'=>in_array('patineur',$roles)?($_POST['group_id']??null):null,
         'license_number'=>$lic, 'status'=>$_POST['status']??'active',
         'emergency_contacts'=>$user['emergency_contacts'], 'date_of_birth'=>$user['date_of_birth'],
@@ -41,6 +41,9 @@ require __DIR__ . '/../../includes/header.php';
         <div class="form-row">
             <div class="form-group"><label>Email</label><input type="email" name="email" value="<?= e($user['email']) ?>"></div>
             <div class="form-group"><label>Téléphone</label><input type="tel" name="phone" value="<?= e($user['phone']??'') ?>"></div>
+        </div>
+        <div class="form-row">
+            <div class="form-group"><label>Adresse</label><input type="text" name="address" value="<?= e($user['address']??'') ?>" placeholder="Rue, numéro, code postal, ville"></div>
         </div>
         <div class="form-row">
             <div class="form-group"><label>Numéro de licence</label><input type="text" name="license_number" value="<?= e($user['license_number']??'') ?>"></div>

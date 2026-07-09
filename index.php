@@ -5,6 +5,10 @@ require_once __DIR__ . '/includes/db.php';
 require_once __DIR__ . '/includes/utils.php';
 require_once __DIR__ . '/includes/auth.php';
 require_once __DIR__ . '/includes/models.php';
+require_once __DIR__ . '/includes/i18n.php';
+
+$__locale = detect_locale();
+$__translations = load_translations($__locale);
 
 $uri = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
 
@@ -13,8 +17,11 @@ $routes = [
     ''                      => 'pages/home.php',
     'a-propos'              => 'pages/about.php',
     'groupes'               => 'pages/groups_public.php',
+    'evenements'            => 'pages/events.php',
     'contact'               => 'pages/contact.php',
     'mentions-legales'      => 'pages/legal.php',
+    'reglement-interieur'   => 'pages/roi.php',
+    'politique-rgpd'        => 'pages/rgpd.php',
     'robots.txt'            => 'pages/robots.php',
     'sitemap.xml'           => 'pages/sitemap.php',
     'auth/login'            => 'pages/auth/login.php',

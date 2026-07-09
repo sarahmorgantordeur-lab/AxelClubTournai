@@ -1,13 +1,14 @@
 <?php
 $__title = "Groupes d'Entraînement - Axel Club Tournai";
-$__meta_desc = "Découvrez les groupes d'entraînement de l'Axel Club Tournai : débutants, intermédiaires, avancés et compétition.";
+$__meta_desc = t('groups.meta_desc');
 $__extra_css = ['home.css', 'groups.css'];
+$__active = 'groups';
 $groups = group_all();
 require __DIR__ . '/../includes/header.php';
 ?>
 <section class="groups-hero">
-    <h1>Nos Groupes d'Entraînement</h1>
-    <p>Trouvez le groupe qui correspond à votre niveau et à vos ambitions sur la glace.</p>
+    <h1><?= e(t('groups.hero.title')) ?></h1>
+    <p><?= e(t('groups.hero.subtitle')) ?></p>
 </section>
 
 <section class="groups-section">
@@ -23,27 +24,27 @@ require __DIR__ . '/../includes/header.php';
                 <div class="group-info-item">
                     <div class="group-info-icon">🕐</div>
                     <div class="group-info-text">
-                        <label>Horaires</label>
-                        <span><?= e($g['schedule'] ?: 'À confirmer') ?></span>
+                        <label><?= e(t('groups.schedule.label')) ?></label>
+                        <span><?= e($g['schedule'] ?: t('groups.schedule.tbd')) ?></span>
                     </div>
                 </div>
                 <div class="group-info-item">
                     <div class="group-info-icon">👥</div>
                     <div class="group-info-text">
-                        <label>Membres</label>
-                        <span><?= group_member_count($g['id']) ?> membres</span>
+                        <label><?= e(t('groups.members.label')) ?></label>
+                        <span><?= e(t('groups.members.count', ['count' => group_member_count($g['id'])])) ?></span>
                     </div>
                 </div>
                 <div class="group-info-item">
                     <div class="group-info-icon">💰</div>
                     <div class="group-info-text">
-                        <label>Tarif</label>
-                        <span><?= $g['price_per_season'] ? number_format($g['price_per_season'], 0) . '€ / saison' : 'Sur demande' ?></span>
+                        <label><?= e(t('groups.price.label')) ?></label>
+                        <span><?= $g['price_per_season'] ? e(t('groups.price.per_season', ['price' => number_format($g['price_per_season'], 0)])) : e(t('groups.price.on_request')) ?></span>
                     </div>
                 </div>
             </div>
             <div class="group-card-footer">
-                <a href="mailto:axelclubtournai@federe.com" class="btn btn-primary btn-sm">Nous contacter</a>
+                <a href="mailto:axelclubtournai@federe.com" class="btn btn-primary btn-sm"><?= e(t('groups.contact_button')) ?></a>
             </div>
         </div>
         <?php endforeach; ?>
@@ -51,15 +52,15 @@ require __DIR__ . '/../includes/header.php';
     <?php else: ?>
     <div class="empty-state" style="text-align:center;padding:60px 20px;">
         <div style="font-size:4rem;margin-bottom:20px;">⛸</div>
-        <h3>Aucun groupe disponible</h3>
-        <p style="color:var(--text-light);">Les groupes d'entraînement seront bientôt disponibles.</p>
+        <h3><?= e(t('groups.empty.title')) ?></h3>
+        <p style="color:var(--text-light);"><?= e(t('groups.empty.text')) ?></p>
     </div>
     <?php endif; ?>
 </section>
 
 <section class="groups-cta">
-    <h2>Prêt à nous rejoindre ?</h2>
-    <p>Inscrivez-vous dès maintenant et découvrez le plaisir du patinage artistique.</p>
-    <a href="/auth/register" class="btn btn-accent btn-lg">Créer un compte</a>
+    <h2><?= e(t('groups.cta.title')) ?></h2>
+    <p><?= e(t('groups.cta.text')) ?></p>
+    <a href="/auth/register" class="btn btn-accent btn-lg"><?= e(t('groups.cta.button')) ?></a>
 </section>
 <?php require __DIR__ . '/../includes/footer.php'; ?>

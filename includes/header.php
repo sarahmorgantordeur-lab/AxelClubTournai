@@ -7,7 +7,7 @@ $__extra_head = $__extra_head ?? '';
 $__body_class = $__body_class ?? '';
 ?>
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="<?= e($__locale ?? 'fr') ?>">
 <head>
     <meta charset="UTF-8">
     <link rel="icon" href="/static/favicon.ico" type="image/x-icon">
@@ -42,20 +42,26 @@ $__body_class = $__body_class ?? '';
                 <li><a href="/dashboard" class="btn btn-outline btn-sm">← Retour</a></li>
                 <li><a href="/auth/logout">Déconnexion</a></li>
             <?php else: ?>
-                <li><a href="/" <?= $__active==='home'?'class="active"':'' ?>>Accueil</a></li>
-                <li><a href="/groupes" <?= $__active==='groups'?'class="active"':'' ?>>Groupes</a></li>
-                <li><a href="/a-propos" <?= $__active==='about'?'class="active"':'' ?>>À Propos</a></li>
-                <li><a href="/contact" <?= $__active==='contact'?'class="active"':'' ?>>Contact</a></li>
+                <li><a href="/" <?= $__active==='home'?'class="active"':'' ?>><?= e(t('nav.home')) ?></a></li>
+                <li><a href="/groupes" <?= $__active==='groups'?'class="active"':'' ?>><?= e(t('nav.groups')) ?></a></li>
+                <li><a href="/evenements" <?= $__active==='events'?'class="active"':'' ?>><?= e(t('nav.events')) ?></a></li>
+                <li><a href="/a-propos" <?= $__active==='about'?'class="active"':'' ?>><?= e(t('nav.about')) ?></a></li>
+                <li><a href="/contact" <?= $__active==='contact'?'class="active"':'' ?>><?= e(t('nav.contact')) ?></a></li>
                 <?php if ($__user): ?>
-                    <li><a href="/dashboard" <?= $__active==='dashboard'?'class="active"':'' ?>>Tableau de Bord</a></li>
-                    <li><a href="/auth/profile" <?= $__active==='profile'?'class="active"':'' ?>>Profil</a></li>
+                    <li><a href="/dashboard" <?= $__active==='dashboard'?'class="active"':'' ?>><?= e(t('nav.dashboard')) ?></a></li>
+                    <li><a href="/auth/profile" <?= $__active==='profile'?'class="active"':'' ?>><?= e(t('nav.profile')) ?></a></li>
                     <?php if (user_has_role($__user, 'admin')): ?>
-                        <li><a href="/admin" class="btn btn-outline btn-sm">Administration</a></li>
+                        <li><a href="/admin" class="btn btn-outline btn-sm"><?= e(t('nav.admin')) ?></a></li>
                     <?php endif; ?>
-                    <li><a href="/auth/logout">Déconnexion</a></li>
+                    <li><a href="/auth/logout"><?= e(t('nav.logout')) ?></a></li>
                 <?php else: ?>
-                    <li><a href="/auth/login">S'identifier</a></li>
+                    <li><a href="/auth/login"><?= e(t('nav.login')) ?></a></li>
                 <?php endif; ?>
+                <li class="lang-switch" style="display:flex;gap:.35rem;align-items:center;">
+                    <?php $__lc = count(SUPPORTED_LOCALES); foreach (SUPPORTED_LOCALES as $__i => $__l): ?>
+                    <a href="<?= e(lang_switch_url($__l)) ?>" style="font-size:.75rem;font-weight:<?= ($__locale??'fr')===$__l?'700':'400'?>;opacity:<?= ($__locale??'fr')===$__l?'1':'.55'?>;text-transform:uppercase;"><?= e($__l) ?></a><?php if ($__i < $__lc - 1): ?><span style="opacity:.4;">|</span><?php endif; ?>
+                    <?php endforeach; ?>
+                </li>
             <?php endif; ?>
         </ul>
     </div>

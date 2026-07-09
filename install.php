@@ -31,6 +31,7 @@ $statements = [
     last_name VARCHAR(100) NOT NULL,
     date_of_birth DATE,
     phone VARCHAR(20),
+    address TEXT,
     emergency_contacts TEXT DEFAULT '[]',
     license_number VARCHAR(50) UNIQUE,
     group_id INTEGER REFERENCES groups(id) ON DELETE SET NULL,
