@@ -13,6 +13,7 @@ user_update($user['id'], [
     'first_name' => trim($_POST['first_name'] ?? $user['first_name']),
     'last_name'  => trim($_POST['last_name'] ?? $user['last_name']),
     'phone'      => trim($_POST['phone'] ?? '') ?: null,
+    'address'    => trim($_POST['address'] ?? '') ?: null,
     'email'      => $email,
     'roles'      => $user['roles'],
     'group_id'   => $user['group_id'],
