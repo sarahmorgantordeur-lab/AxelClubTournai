@@ -48,8 +48,7 @@ require __DIR__ . '/../includes/header.php';
     <div class="contact-info">
         <h2><?= e(t('contact.info.title')) ?></h2>
         <p><?= e(t('contact.info.text')) ?></p>
-        <div class="contact-detail"><div class="contact-detail-icon">✉</div><div><div style="font-size:.8rem;color:var(--text-light);margin-bottom:2px;"><?= e(t('contact.email.label')) ?></div><a href="mailto:axelclubtournai@federe.com">axelclubtournai@federe.com</a></div></div>
-        <div class="contact-detail"><div class="contact-detail-icon">📞</div><div><div style="font-size:.8rem;color:var(--text-light);margin-bottom:2px;"><?= e(t('contact.phone.label')) ?></div><a href="tel:+32491365328">+32 491 36 53 28</a></div></div>
+        <div class="contact-detail"><div class="contact-detail-icon">✉</div><div><div style="font-size:.8rem;color:var(--text-light);margin-bottom:2px;"><?= e(t('contact.email.label')) ?></div><a href="mailto:axelclubtournaifedere@gmail.com">axelclubtournaifedere@gmail.com</a></div></div>
         <div class="contact-detail"><div class="contact-detail-icon">📍</div><div><div style="font-size:.8rem;color:var(--text-light);margin-bottom:2px;"><?= e(t('contact.location.label')) ?></div><span><?= e(t('contact.location.value')) ?></span></div></div>
         <div style="margin-top:var(--space-lg);padding:var(--space-md);background:var(--ice-light);border-radius:var(--radius-sm);">
             <strong style="color:var(--ice-deep);"><?= e(t('contact.trial.title')) ?></strong>
