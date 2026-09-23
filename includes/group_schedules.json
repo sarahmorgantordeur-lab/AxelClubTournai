@@ -1,0 +1,466 @@
+[
+  {
+    "name": "Citron",
+    "periods": [
+      {
+        "key": "regular",
+        "slots": [
+          {
+            "day": "tuesday",
+            "time": "18h00 – 18h45",
+            "activity": "ice",
+            "place": "Tournai"
+          },
+          {
+            "day": "wednesday",
+            "time": "18h00 – 18h45",
+            "activity": "ice",
+            "place": "Tournai"
+          }
+        ]
+      },
+      {
+        "key": "holidays",
+        "slots": [
+          {
+            "day": "tuesday",
+            "time": "19h00 – 19h45",
+            "activity": "ice",
+            "place": "Tournai"
+          },
+          {
+            "day": "wednesday",
+            "time": "19h00 – 19h45",
+            "activity": "ice",
+            "place": "Tournai"
+          }
+        ]
+      },
+      {
+        "key": "season",
+        "slots": [
+          {
+            "day": "sunday",
+            "time": "",
+            "activity": "roller",
+            "place": "Tournai"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Cigogne",
+    "periods": [
+      {
+        "key": "regular",
+        "slots": [
+          {
+            "day": "tuesday",
+            "time": "18h00 – 19h00",
+            "activity": "ice",
+            "place": "Tournai"
+          },
+          {
+            "day": "wednesday",
+            "time": "18h00 – 19h00",
+            "activity": "ice",
+            "place": "Tournai"
+          }
+        ]
+      },
+      {
+        "key": "holidays",
+        "slots": [
+          {
+            "day": "tuesday",
+            "time": "19h00 – 20h00",
+            "activity": "ice",
+            "place": "Tournai"
+          },
+          {
+            "day": "wednesday",
+            "time": "19h00 – 20h00",
+            "activity": "ice",
+            "place": "Tournai"
+          }
+        ]
+      },
+      {
+        "key": "season",
+        "slots": [
+          {
+            "day": "sunday",
+            "time": "",
+            "activity": "roller",
+            "place": "Tournai"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Fente",
+    "periods": [
+      {
+        "key": "regular",
+        "slots": [
+          {
+            "day": "tuesday",
+            "time": "18h00 – 19h00",
+            "activity": "ice",
+            "place": "Tournai"
+          },
+          {
+            "day": "wednesday",
+            "time": "16h00 – 17h30",
+            "activity": "ppg",
+            "place": "Tournai"
+          },
+          {
+            "day": "wednesday",
+            "time": "18h00 – 19h00",
+            "activity": "ice",
+            "place": "Tournai"
+          }
+        ]
+      },
+      {
+        "key": "holidays",
+        "slots": [
+          {
+            "day": "tuesday",
+            "time": "19h00 – 20h00",
+            "activity": "ice",
+            "place": "Tournai"
+          },
+          {
+            "day": "wednesday",
+            "time": "17h00 – 18h30",
+            "activity": "ppg",
+            "place": "Tournai"
+          },
+          {
+            "day": "wednesday",
+            "time": "19h00 – 20h00",
+            "activity": "ice",
+            "place": "Tournai"
+          }
+        ]
+      },
+      {
+        "key": "season",
+        "slots": [
+          {
+            "day": "sunday",
+            "time": "",
+            "activity": "roller",
+            "place": "Tournai"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Pas de Géant",
+    "periods": [
+      {
+        "key": "regular",
+        "slots": [
+          {
+            "day": "tuesday",
+            "time": "18h00 – 19h00",
+            "activity": "ice",
+            "place": "Tournai"
+          },
+          {
+            "day": "wednesday",
+            "time": "16h00 – 17h30",
+            "activity": "ppg",
+            "place": "Tournai"
+          },
+          {
+            "day": "wednesday",
+            "time": "18h00 – 19h00",
+            "activity": "ice",
+            "place": "Tournai"
+          }
+        ]
+      },
+      {
+        "key": "holidays",
+        "slots": [
+          {
+            "day": "tuesday",
+            "time": "19h00 – 20h00",
+            "activity": "ice",
+            "place": "Tournai"
+          },
+          {
+            "day": "wednesday",
+            "time": "17h00 – 18h30",
+            "activity": "ppg",
+            "place": "Tournai"
+          },
+          {
+            "day": "wednesday",
+            "time": "19h00 – 20h00",
+            "activity": "ice",
+            "place": "Tournai"
+          }
+        ]
+      },
+      {
+        "key": "season",
+        "slots": [
+          {
+            "day": "saturday",
+            "time": "08h45 – 09h45",
+            "activity": "ppg",
+            "place": "Wasquehal"
+          },
+          {
+            "day": "saturday",
+            "time": "10h00 – 12h15",
+            "activity": "ice",
+            "place": "Wasquehal"
+          },
+          {
+            "day": "sunday",
+            "time": "",
+            "activity": "roller",
+            "place": "Tournai"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Pirouette",
+    "periods": [
+      {
+        "key": "regular",
+        "slots": [
+          {
+            "day": "tuesday",
+            "time": "18h00 – 20h00",
+            "activity": "ice",
+            "place": "Tournai"
+          },
+          {
+            "day": "wednesday",
+            "time": "16h00 – 17h30",
+            "activity": "ppg",
+            "place": "Tournai"
+          },
+          {
+            "day": "wednesday",
+            "time": "18h00 – 20h00",
+            "activity": "ice",
+            "place": "Tournai"
+          }
+        ]
+      },
+      {
+        "key": "holidays",
+        "slots": [
+          {
+            "day": "tuesday",
+            "time": "19h00 – 21h00",
+            "activity": "ice",
+            "place": "Tournai"
+          },
+          {
+            "day": "wednesday",
+            "time": "17h00 – 18h30",
+            "activity": "ppg",
+            "place": "Tournai"
+          },
+          {
+            "day": "wednesday",
+            "time": "19h00 – 21h00",
+            "activity": "ice",
+            "place": "Tournai"
+          }
+        ]
+      },
+      {
+        "key": "season",
+        "slots": [
+          {
+            "day": "saturday",
+            "time": "08h45 – 09h45",
+            "activity": "ppg",
+            "place": "Wasquehal"
+          },
+          {
+            "day": "saturday",
+            "time": "10h00 – 12h15",
+            "activity": "ice",
+            "place": "Wasquehal"
+          },
+          {
+            "day": "sunday",
+            "time": "",
+            "activity": "roller",
+            "place": "Tournai"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Axel",
+    "periods": [
+      {
+        "key": "regular",
+        "slots": [
+          {
+            "day": "monday",
+            "time": "18h30 – 20h30",
+            "activity": "ice",
+            "place": "Tournai"
+          },
+          {
+            "day": "wednesday",
+            "time": "19h00 – 21h00",
+            "activity": "ice",
+            "place": "Tournai"
+          }
+        ]
+      },
+      {
+        "key": "holidays",
+        "slots": [
+          {
+            "day": "monday",
+            "time": "19h00 – 21h00",
+            "activity": "ice",
+            "place": "Tournai"
+          },
+          {
+            "day": "wednesday",
+            "time": "19h00 – 21h00",
+            "activity": "ice",
+            "place": "Tournai"
+          }
+        ]
+      },
+      {
+        "key": "season",
+        "slots": [
+          {
+            "day": "saturday",
+            "time": "08h45 – 09h45",
+            "activity": "ppg",
+            "place": "Wasquehal"
+          },
+          {
+            "day": "saturday",
+            "time": "10h00 – 12h15",
+            "activity": "ice",
+            "place": "Wasquehal"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Adultes débutants",
+    "periods": [
+      {
+        "key": "regular",
+        "slots": [
+          {
+            "day": "tuesday",
+            "time": "20h00 – 21h00",
+            "activity": "ice",
+            "place": "Tournai"
+          }
+        ]
+      },
+      {
+        "key": "holidays",
+        "slots": [
+          {
+            "day": "tuesday",
+            "time": "21h00 – 22h00",
+            "activity": "ice",
+            "place": "Tournai"
+          }
+        ]
+      },
+      {
+        "key": "adult_saturday",
+        "slots": [
+          {
+            "day": "saturday",
+            "time": "10h00 – 12h15",
+            "activity": "ice",
+            "place": "Wasquehal"
+          }
+        ]
+      },
+      {
+        "key": "adult_sunday",
+        "slots": [
+          {
+            "day": "sunday",
+            "time": "10h00 – 12h15",
+            "activity": "ice",
+            "place": "Wasquehal"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Arabesque",
+    "periods": [
+      {
+        "key": "regular",
+        "slots": [
+          {
+            "day": "tuesday",
+            "time": "20h00 – 22h00",
+            "activity": "ice",
+            "place": "Tournai"
+          }
+        ]
+      },
+      {
+        "key": "holidays",
+        "slots": [
+          {
+            "day": "tuesday",
+            "time": "21h00 – 23h00",
+            "activity": "ice",
+            "place": "Tournai"
+          }
+        ]
+      },
+      {
+        "key": "adult_saturday",
+        "slots": [
+          {
+            "day": "saturday",
+            "time": "10h00 – 12h15",
+            "activity": "ice",
+            "place": "Wasquehal"
+          }
+        ]
+      },
+      {
+        "key": "adult_sunday",
+        "slots": [
+          {
+            "day": "sunday",
+            "time": "10h00 – 12h15",
+            "activity": "ice",
+            "place": "Wasquehal"
+          }
+        ]
+      }
+    ]
+  }
+]

@@ -1,5 +1,20 @@
 <?php
 return [
+    'groups.timetable.title' => 'Uurrooster per groep · 2026–2027',
+    'groups.timetable.intro' => 'Kies je groep om de trainingstijden en periodes te bekijken.',
+    'groups.timetable.regular' => '16/11/2026–04/03/2027 · buiten de schoolvakanties',
+    'groups.timetable.holidays' => 'Schoolvakanties: 21/12/2026–03/01/2027 en 22/02/2027–07/03/2027',
+    'groups.timetable.season' => 'Weekend: 05/09/2026–26/06/2027',
+    'groups.timetable.adult_saturday' => '05/09/2026–31/10/2026 en 01/05/2027–26/06/2027',
+    'groups.timetable.adult_sunday' => '08/11/2026–15/11/2026 en 14/03/2027–25/04/2027',
+    'groups.timetable.ice' => 'Schaatsen',
+    'groups.timetable.ppg' => 'PPG',
+    'groups.timetable.roller' => 'Rolschaatsen',
+    'groups.timetable.pending' => 'Tijdstip nog te bevestigen',
+    'groups.timetable.sunday' => 'Zondag',
+    'groups.timetable.ppg_help' => 'PPG: algemene fysieke voorbereiding.',
+    'groups.timetable.locations' => 'Tournai: Jungle City, Quai des Vicinaux 34. Wasquehal: Patinoire Serge Charles, 13 Rue du Molinel. Rolschaatsen: Rive Droite, Quai des Vicinaux 29, Tournai.',
+
     // Navbar
     'nav.home' => 'Home',
     'nav.groups' => "Groepen",

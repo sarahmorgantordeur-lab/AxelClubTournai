@@ -1,5 +1,20 @@
 <?php
 return [
+    'groups.timetable.title' => 'Group schedules · 2026–2027',
+    'groups.timetable.intro' => 'Choose your group to see session times and applicable dates.',
+    'groups.timetable.regular' => '16/11/2026–04/03/2027 · excluding school holidays',
+    'groups.timetable.holidays' => 'School holidays: 21/12/2026–03/01/2027 and 22/02/2027–07/03/2027',
+    'groups.timetable.season' => 'Weekends: 05/09/2026–26/06/2027',
+    'groups.timetable.adult_saturday' => '05/09/2026–31/10/2026 and 01/05/2027–26/06/2027',
+    'groups.timetable.adult_sunday' => '08/11/2026–15/11/2026 and 14/03/2027–25/04/2027',
+    'groups.timetable.ice' => 'Ice skating',
+    'groups.timetable.ppg' => 'PPG',
+    'groups.timetable.roller' => 'Roller skating',
+    'groups.timetable.pending' => 'Time to be confirmed',
+    'groups.timetable.sunday' => 'Sunday',
+    'groups.timetable.ppg_help' => 'PPG: general physical preparation.',
+    'groups.timetable.locations' => 'Tournai: Jungle City, Quai des Vicinaux 34. Wasquehal: Patinoire Serge Charles, 13 Rue du Molinel. Roller skating: Rive Droite, Quai des Vicinaux 29, Tournai.',
+
     // Navbar
     'nav.home' => 'Home',
     'nav.groups' => 'Groups',

@@ -1,5 +1,20 @@
 <?php
 return [
+    'groups.timetable.title' => 'Horaires par groupe · 2026–2027',
+    'groups.timetable.intro' => 'Choisissez votre groupe pour consulter les horaires et les périodes applicables.',
+    'groups.timetable.regular' => 'Du 16/11/2026 au 04/03/2027 · hors vacances scolaires',
+    'groups.timetable.holidays' => 'Vacances scolaires : 21/12/2026–03/01/2027 et 22/02/2027–07/03/2027',
+    'groups.timetable.season' => 'Week-end : du 05/09/2026 au 26/06/2027',
+    'groups.timetable.adult_saturday' => 'Du 05/09/2026 au 31/10/2026 et du 01/05/2027 au 26/06/2027',
+    'groups.timetable.adult_sunday' => 'Du 08/11/2026 au 15/11/2026 et du 14/03/2027 au 25/04/2027',
+    'groups.timetable.ice' => 'Glace',
+    'groups.timetable.ppg' => 'PPG',
+    'groups.timetable.roller' => 'Roller',
+    'groups.timetable.pending' => 'Horaire en discussion',
+    'groups.timetable.sunday' => 'Dimanche',
+    'groups.timetable.ppg_help' => 'PPG : préparation physique générale.',
+    'groups.timetable.locations' => 'Tournai : Jungle City, Quai des Vicinaux 34. Wasquehal : Patinoire Serge Charles, 13 Rue du Molinel. Roller : Rive Droite, Quai des Vicinaux 29, Tournai.',
+
     // Navbar
     'nav.home' => 'Accueil',
     'nav.groups' => 'Groupes',
