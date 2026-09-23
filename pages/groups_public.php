@@ -67,7 +67,7 @@ require __DIR__ . '/../includes/header.php';
                 </div>
             </div>
             <div class="group-card-footer">
-                <a href="mailto:axelclubtournai@federe.com" class="btn btn-primary btn-sm"><?= e(t('groups.contact_button')) ?></a>
+                <a href="mailto:axelclubtournaifedere@gmail.com" class="btn btn-primary btn-sm"><?= e(t('groups.contact_button')) ?></a>
             </div>
         </div>
         <?php endforeach; ?>
