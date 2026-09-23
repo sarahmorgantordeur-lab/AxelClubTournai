@@ -2,7 +2,7 @@
 $__title = t('home.meta_title');
 $__meta_desc = t('home.meta_desc');
 $__extra_css = ['home.css'];
-$__extra_head = '<script type="application/ld+json">{"@context":"https://schema.org","@type":"SportsClub","name":"Axel Club Tournai","description":"' . t('home.schema_desc') . '","url":"' . base_url() . '","email":"axelclubtournaifedere@gmail.com","telephone":"+32491365328","foundingDate":"2010","sport":"Patinage artistique","address":{"@type":"PostalAddress","addressLocality":"Tournai","addressRegion":"Hainaut","addressCountry":"BE"}}</script>';
+$__extra_head = '<script type="application/ld+json">{"@context":"https://schema.org","@type":"SportsClub","name":"Axel Club Tournai","description":"' . t('home.schema_desc') . '","url":"' . base_url() . '","email":"axelclubtournaifedere@gmail.com","foundingDate":"2010","sport":"Patinage artistique","address":{"@type":"PostalAddress","addressLocality":"Tournai","addressRegion":"Hainaut","addressCountry":"BE"}}</script>';
 require __DIR__ . '/../includes/header.php';
 ?>
 <section class="hero">
