@@ -16,6 +16,6 @@ require __DIR__ . '/../includes/header.php';
     <?php endfor; ?>
 
     <h2><?= e(t('roi.contact.title')) ?></h2>
-    <p><?= e(t('roi.contact.text')) ?> <a href="mailto:axelclubtournai@federe.com">axelclubtournai@federe.com</a></p>
+    <p><?= e(t('roi.contact.text')) ?> <a href="mailto:axelclubtournaifedere@gmail.com">axelclubtournaifedere@gmail.com</a></p>
 </div>
 <?php require __DIR__ . '/../includes/footer.php'; ?>

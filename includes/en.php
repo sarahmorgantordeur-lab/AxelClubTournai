@@ -129,7 +129,7 @@ return [
     'legal.ip.title' => 'Intellectual property',
     'legal.ip.text' => "All content on this site (text, images, logos) is the exclusive property of Axel Tournai Fédéré. Any reproduction without authorization is prohibited.",
     'legal.data.title' => 'Personal data',
-    'legal.data.text' => 'The data collected (name, email, phone) is used exclusively for club management purposes and is not shared with third parties. In accordance with the GDPR, you have the right to access, rectify and delete your data. Contact: axelclubtournaifedere@gmail.com',
+    'legal.data.text' => 'The data collected (name, email, phone) is used exclusively for club management purposes and is not shared with third parties. In accordance with the GDPR, you have the right to access, rectify and delete your data. Contact: axelclubtournaifedereprice_per_seasongmail.com',
     'legal.data.link' => 'For full details, see our {link}.',
     'legal.rgpd_link_text' => 'GDPR privacy policy',
     'legal.cookies.title' => 'Cookies',
