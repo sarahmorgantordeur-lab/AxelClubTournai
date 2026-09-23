@@ -1,9 +1,11 @@
 Options -Indexes
 
 RewriteEngine On
+# Le site est servi à la racine du domaine, même si le dossier FTP est www-git.
+RewriteBase /
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)$ index.php [QSA,L]
+RewriteRule ^(.*)$ /index.php [QSA,L]
 
 <FilesMatch "\.(sql|sqlite|sqlite3|db|py|pyc|sh|env)$">
     Order deny,allow
