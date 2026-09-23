@@ -21,11 +21,7 @@
                 <ul class="contact-list">
                     <li>
                         <span class="contact-icon">✉</span>
-                        <a href="mailto:axelclubtournai@federe.com">axelclubtournai@federe.com</a>
-                    </li>
-                    <li>
-                        <span class="contact-icon">📞</span>
-                        <a href="tel:+32491365328">+32 491 36 53 28</a>
+                        <a href="mailto:axelclubtournaifedere@gmail.com">axelclubtournaifedere@gmail.com</a>
                     </li>
                     <li>
                         <span class="contact-icon">📷</span>
