@@ -3,8 +3,8 @@
 *.sqlite3
 *.db
 
-# Config serveur (contient SECRET_KEY en SetEnv)
-.htaccess
+# Le fichier .htaccess contient les règles de routage et doit être versionné.
+# Conserver les secrets dans l'environnement serveur, pas dans ce fichier.
 
 # Variables d'environnement
 .env

@@ -1,0 +1,18 @@
+Options -Indexes
+
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php [QSA,L]
+
+<FilesMatch "\.(sql|sqlite|sqlite3|db|py|pyc|sh|env)$">
+    Order deny,allow
+    Deny from all
+</FilesMatch>
+
+<FilesMatch "^config\.php$">
+    Order deny,allow
+    Deny from all
+</FilesMatch>
+
+RewriteRule ^(includes|pages)/ - [F,L]
