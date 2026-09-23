@@ -1,7 +1,7 @@
 <?php
 return [
     'groups.timetable.title' => 'Group schedules · 2026–2027',
-    'groups.timetable.intro' => 'Choose your group to see session times and applicable dates.',
+    'groups.timetable.intro' => 'View each group’s training times and applicable dates.',
     'groups.timetable.regular' => '16/11/2026–04/03/2027 · excluding school holidays',
     'groups.timetable.holidays' => 'School holidays: 21/12/2026–03/01/2027 and 22/02/2027–07/03/2027',
     'groups.timetable.season' => 'Weekends: 05/09/2026–26/06/2027',

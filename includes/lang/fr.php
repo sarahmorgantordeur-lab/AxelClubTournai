@@ -1,7 +1,7 @@
 <?php
 return [
     'groups.timetable.title' => 'Horaires par groupe · 2026–2027',
-    'groups.timetable.intro' => 'Choisissez votre groupe pour consulter les horaires et les périodes applicables.',
+    'groups.timetable.intro' => 'Consultez les horaires de chaque groupe et les périodes applicables.',
     'groups.timetable.regular' => 'Du 16/11/2026 au 04/03/2027 · hors vacances scolaires',
     'groups.timetable.holidays' => 'Vacances scolaires : 21/12/2026–03/01/2027 et 22/02/2027–07/03/2027',
     'groups.timetable.season' => 'Week-end : du 05/09/2026 au 26/06/2027',
