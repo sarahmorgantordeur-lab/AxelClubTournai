@@ -65,7 +65,6 @@ require __DIR__ . '/../includes/header.php';
                 <div class="form-group"><label><?= e(t('contact.form.email')) ?> <span style="color:var(--danger);">*</span></label><input type="email" name="email" required></div>
             </div>
             <div class="form-row">
-                <div class="form-group"><label><?= e(t('contact.form.phone')) ?></label><input type="tel" name="phone" placeholder="+32 XXX XX XX XX"></div>
                 <div class="form-group"><label><?= e(t('contact.form.subject')) ?> <span style="color:var(--danger);">*</span></label>
                     <select name="subject" required style="width:100%;padding:10px 14px;border:1px solid var(--silver-light);border-radius:var(--radius-sm);background:var(--crystal-white);color:var(--text-main);font-size:.95rem;">
                         <option value=""><?= e(t('contact.form.subject_placeholder')) ?></option>
