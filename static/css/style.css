@@ -323,8 +323,8 @@ body {
 }
 
 .group-card {
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-    color: white;
+    background: linear-gradient(135deg, var(--ice-light) 0%, var(--ice-medium) 100%);
+    color: var(--primary-color);
     padding: var(--padding);
     border-radius: var(--border-radius);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
