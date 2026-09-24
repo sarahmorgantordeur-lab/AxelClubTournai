@@ -177,7 +177,7 @@
 }
 
 .group-card-header p {
-    color: rgba(255,255,255,0.95);
+    color: var(--ice-deep);
     font-size: 0.9rem;
     margin: 0;
 }
