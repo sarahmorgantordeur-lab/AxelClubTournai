@@ -121,7 +121,7 @@
     left: 0;
     right: 0;
     height: 5px;
-    background: linear-gradient(90deg, var(--ice-dark), var(--ice-deep));
+    background: linear-gradient(90deg, var(--ice-light), var(--ice-medium));
 }
 
 .group-card.debutant::before {
