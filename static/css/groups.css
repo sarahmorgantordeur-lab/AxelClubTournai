@@ -17,7 +17,7 @@
 .groups-hero {
     padding: calc(80px + var(--space-xl)) var(--space-md) var(--space-xl);
     text-align: center;
-    background: linear-gradient(135deg, var(--ice-light) 0%, var(--pearl) 100%);
+    background: linear-gradient(135deg, var(--ice-light) 0%, var(--ice-medium) 100%);
     position: relative;
     overflow: hidden;
 }
@@ -125,25 +125,23 @@
 }
 
 .group-card.debutant::before {
-    background: linear-gradient(90deg, #7cb69d, #5a9a7d);
-}
+    background: linear-gradient(90deg, var(--ice-light), var(--ice-medium));}
 
 .group-card.intermediaire::before {
-    background: linear-gradient(90deg, var(--ice-dark), var(--ice-deep));
+    background: linear-gradient(90deg, var(--ice-light), var(--ice-medium));
 }
 
 .group-card.avance::before {
-    background: linear-gradient(90deg, var(--rose-gold), var(--rose-gold-light));
+    background: linear-gradient(90deg, var(--ice-light), var(--ice-medium));
 }
 
 .group-card.competition::before {
-    background: linear-gradient(90deg, #d4af37, #c9a227);
-}
+    background: linear-gradient(90deg, var(--ice-light), var(--ice-medium));}
 
 /* Card Header with gradient */
 .group-card-header {
     padding: var(--space-lg);
-    background: linear-gradient(135deg, var(--ice-deep) 0%, #1a4a6e 100%);
+    background: linear-gradient(135deg, var(--ice-light), var(--ice-medium));
     color: white;
     position: relative;
 }
