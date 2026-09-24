@@ -142,7 +142,7 @@
 .group-card-header {
     padding: var(--space-lg);
     background: linear-gradient(135deg, var(--ice-light), var(--ice-medium));
-    color: white;
+    color: var(--ice-deep);
     position: relative;
 }
 
